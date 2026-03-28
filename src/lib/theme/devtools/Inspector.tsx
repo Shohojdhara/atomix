@@ -57,7 +57,7 @@ export const ThemeInspector: React.FC<ThemeInspectorProps> = ({
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('');
   const [copiedPath, setCopiedPath] = useState<string | null>(null);
-  const searchTimeoutRef = useRef<NodeJS.Timeout>();
+  const searchTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   // Debounce search query
   useEffect(() => {

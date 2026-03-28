@@ -149,7 +149,7 @@ const StepsComp: React.FC<StepsProps> = ({
     if (currentStep !== activeIndex) {
       setCurrentStep(activeIndex);
     }
-  }, [activeIndex]);
+  }, [activeIndex, currentStep]);
 
   // Method to go to next step (Internal helper)
   const goToNextStep = () => {

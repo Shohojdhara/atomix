@@ -99,10 +99,12 @@ export const SectionIntro: React.FC<SectionIntroProps> = ({
     // Only run on client-side
     if (typeof window === 'undefined' || !sectionIntroRef.current) return undefined;
 
+    const currentInstance = sectionIntroInstance.current;
+    
     // Cleanup on unmount
     return () => {
-      if (sectionIntroInstance.current) {
-        sectionIntroInstance.current.destroy();
+      if (currentInstance) {
+        currentInstance.destroy();
       }
     };
   }, [alignment, backgroundImageSrc, showOverlay, size, skeleton]);

@@ -91,7 +91,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
 
     // Default fallback
     return 'default';
-  }, [defaultTheme, enablePersistence, storageKey]);
+  }, [defaultTheme, enablePersistence, storageKey, storageAdapter]);
 
   // Initialize state - handle both string and DesignTokens for defaultTheme
   const [currentTheme, setCurrentTheme] = useState<string>(() => {

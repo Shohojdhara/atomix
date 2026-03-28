@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import React, { useState, useEffect, useRef, forwardRef, useCallback } from 'react';
 import { SideMenuProps } from '../../../lib/types/components';
 import { useSideMenu } from '../../../lib/composables/useSideMenu';
 import { Icon } from '../../Icon';
@@ -116,16 +116,16 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
           delete nestedInnerRefs.current[index];
         }
       });
-    }, [menuItems?.length]);
+    }, [menuItems]);
 
     // Helper function to update nested wrapper height
-    const updateNestedHeight = (index: number, isOpen: boolean) => {
+    const updateNestedHeight = useCallback((index: number, isOpen: boolean) => {
       const wrapper = nestedWrapperRefs.current[index];
       const inner = nestedInnerRefs.current[index];
       if (wrapper && inner) {
         wrapper.style.height = isOpen ? `${inner.scrollHeight}px` : '0px';
       }
-    };
+    }, []);
 
     // Set initial heights for nested wrappers on mount and when menuItems change
     useEffect(() => {
@@ -141,7 +141,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       return () => clearTimeout(timeoutId);
       // Only run when menuItems change, nestedItemStates is read but not in deps to avoid loops
       // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [menuItems?.length]);
+    }, [menuItems, updateNestedHeight]);
 
     // Update nested wrapper heights when state changes
     useEffect(() => {
@@ -162,7 +162,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
       return () => {
         frameIds.forEach(id => cancelAnimationFrame(id));
       };
-    }, [nestedItemStates, menuItems?.length]);
+    }, [nestedItemStates, menuItems, updateNestedHeight]);
 
     // Combine refs using utility
     const combinedRef = useForkRef(sideMenuRef, ref);

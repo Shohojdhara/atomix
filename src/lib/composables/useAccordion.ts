@@ -1,5 +1,5 @@
 import { AccordionProps, AccordionState, IconPosition, ElementRefs } from '../types/components';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { ACCORDION } from '../constants/components';
 
 /**
@@ -72,20 +72,20 @@ export function useAccordion(
   /**
    * Update panel height based on content
    */
-  const updatePanelHeight = (): void => {
+  const updatePanelHeight = useCallback((): void => {
     if (contentRef.current && panelRef.current) {
       const height = isOpen ? `${contentRef.current.clientHeight}px` : '0px';
       panelRef.current.style.setProperty(ACCORDION.CSS_VARS.PANEL_HEIGHT, height);
       setPanelHeight(height);
     }
-  };
+  }, [isOpen]);
 
   /**
    * Effect to update panel height when open state changes
    */
   useEffect(() => {
     updatePanelHeight();
-  }, [isOpen]);
+  }, [isOpen, updatePanelHeight]);
 
   /**
    * Effect to handle window resize and update panel height
@@ -99,7 +99,7 @@ export function useAccordion(
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isOpen]);
+  }, [isOpen, updatePanelHeight]);
 
   /**
    * Generate accordion class names based on state

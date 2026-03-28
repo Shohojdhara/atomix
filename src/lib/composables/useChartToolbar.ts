@@ -148,17 +148,17 @@ export function useChartToolbar(
     return { ...getChartDefaults(), ...defaults };
   }, [getChartDefaults, defaults]);
 
-  const enhancedHandlers = {
-    onRefresh: useCallback(() => {
-      setState(prev => ({ ...prev, isRefreshing: true }));
-      handlers.onRefresh?.();
-      setTimeout(() => {
-        setState(prev => ({ ...prev, isRefreshing: false }));
-      }, 1000);
-    }, [handlers.onRefresh]),
+  const enhancedHandlers = useMemo(
+    () => ({
+      onRefresh: () => {
+        setState(prev => ({ ...prev, isRefreshing: true }));
+        handlers.onRefresh?.();
+        setTimeout(() => {
+          setState(prev => ({ ...prev, isRefreshing: false }));
+        }, 1000);
+      },
 
-    onExport: useCallback(
-      async (format: string) => {
+      onExport: async (format: string) => {
         setState(prev => ({ ...prev, isExporting: true }));
         try {
           await handlers.onExport?.(format);
@@ -166,83 +166,65 @@ export function useChartToolbar(
           setState(prev => ({ ...prev, isExporting: false }));
         }
       },
-      [handlers.onExport]
-    ),
 
-    onFullscreen: useCallback(
-      (isFullscreen: boolean) => {
+      onFullscreen: (isFullscreen: boolean) => {
         setState(prev => ({ ...prev, isFullscreen }));
         handlers.onFullscreen?.(isFullscreen);
       },
-      [handlers.onFullscreen]
-    ),
 
-    onZoomIn: useCallback(() => {
-      setState(prev => ({ ...prev, zoomLevel: Math.min(prev.zoomLevel * 1.2, 5) }));
-      handlers.onZoomIn?.();
-    }, [handlers.onZoomIn]),
+      onZoomIn: () => {
+        setState(prev => ({ ...prev, zoomLevel: Math.min(prev.zoomLevel * 1.2, 5) }));
+        handlers.onZoomIn?.();
+      },
 
-    onZoomOut: useCallback(() => {
-      setState(prev => ({ ...prev, zoomLevel: Math.max(prev.zoomLevel / 1.2, 0.2) }));
-      handlers.onZoomOut?.();
-    }, [handlers.onZoomOut]),
+      onZoomOut: () => {
+        setState(prev => ({ ...prev, zoomLevel: Math.max(prev.zoomLevel / 1.2, 0.2) }));
+        handlers.onZoomOut?.();
+      },
 
-    onZoomReset: useCallback(() => {
-      setState(prev => ({ ...prev, zoomLevel: 1 }));
-      handlers.onZoomReset?.();
-    }, [handlers.onZoomReset]),
+      onZoomReset: () => {
+        setState(prev => ({ ...prev, zoomLevel: 1 }));
+        handlers.onZoomReset?.();
+      },
 
-    onPanToggle: useCallback(
-      (enabled: boolean) => {
+      onPanToggle: (enabled: boolean) => {
         setState(prev => ({ ...prev, panEnabled: enabled }));
         handlers.onPanToggle?.(enabled);
       },
-      [handlers.onPanToggle]
-    ),
 
-    onReset: useCallback(() => {
-      setState(prev => ({
-        ...prev,
-        zoomLevel: 1,
-        panEnabled: false,
-      }));
-      handlers.onReset?.();
-    }, [handlers.onReset]),
+      onReset: () => {
+        setState(prev => ({
+          ...prev,
+          zoomLevel: 1,
+          panEnabled: false,
+        }));
+        handlers.onReset?.();
+      },
 
-    onGridToggle: useCallback(
-      (show: boolean) => {
+      onGridToggle: (show: boolean) => {
         setState(prev => ({ ...prev, showGrid: show }));
         handlers.onGridToggle?.(show);
       },
-      [handlers.onGridToggle]
-    ),
 
-    onLegendToggle: useCallback(
-      (show: boolean) => {
+      onLegendToggle: (show: boolean) => {
         setState(prev => ({ ...prev, showLegend: show }));
         handlers.onLegendToggle?.(show);
       },
-      [handlers.onLegendToggle]
-    ),
 
-    onTooltipsToggle: useCallback(
-      (show: boolean) => {
+      onTooltipsToggle: (show: boolean) => {
         setState(prev => ({ ...prev, showTooltips: show }));
         handlers.onTooltipsToggle?.(show);
       },
-      [handlers.onTooltipsToggle]
-    ),
 
-    onAnimationsToggle: useCallback(
-      (enabled: boolean) => {
+      onAnimationsToggle: (enabled: boolean) => {
         setState(prev => ({ ...prev, animationsEnabled: enabled }));
         handlers.onAnimationsToggle?.(enabled);
       },
-      [handlers.onAnimationsToggle]
-    ),
 
-    onSettings: useCallback(() => {}, []),
-  };
+      onSettings: () => {},
+    }),
+    [handlers]
+  );
 
   // Generate chart-specific toolbar groups
   const generateToolbarGroups = useCallback((): ChartToolbarGroup[] => {
@@ -441,7 +423,7 @@ export function useChartToolbar(
     }
 
     return groups;
-  }, [chartType, finalDefaults, state, enhancedHandlers, customActions, customGroups]);
+  }, [finalDefaults, state, enhancedHandlers, customActions, customGroups]);
 
   // Keyboard shortcuts
   useEffect(() => {

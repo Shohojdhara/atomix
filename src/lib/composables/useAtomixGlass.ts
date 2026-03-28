@@ -153,9 +153,9 @@ const setCachedBackgroundDetection = (
 };
 
 interface UseAtomixGlassOptions extends Omit<AtomixGlassProps, 'children'> {
-  glassRef: React.RefObject<HTMLDivElement>;
-  contentRef: React.RefObject<HTMLDivElement>;
-  wrapperRef?: React.RefObject<HTMLDivElement>;
+  glassRef: React.RefObject<HTMLDivElement | null>;
+  contentRef: React.RefObject<HTMLDivElement | null>;
+  wrapperRef?: React.RefObject<HTMLDivElement | null>;
   children?: React.ReactNode;
   isFixedOrSticky?: boolean;
   // Phase 1: Time-Based Animation System

@@ -273,7 +273,7 @@ const ChartRenderer = memo(
       const transform = useMemo(() => {
         if (!chartContext) return '';
         return `translate(${chartContext.panOffset.x}px, ${chartContext.panOffset.y}px) scale(${chartContext.zoomLevel})`;
-      }, [chartContext?.panOffset.x, chartContext?.panOffset.y, chartContext?.zoomLevel]);
+      }, [chartContext]);
 
       // Calculate chart data with enhanced features using responsive dimensions
       // This MUST be called before any early returns to maintain consistent hook order

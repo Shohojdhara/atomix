@@ -305,7 +305,7 @@ export const usePhotoViewer = ({
         };
       });
     },
-    [isMounted, currentIndex, calculateBounds, constrainPosition]
+    [currentIndex, calculateBounds, constrainPosition]
   );
 
   const setImagePosition = useCallback(
@@ -366,7 +366,7 @@ export const usePhotoViewer = ({
         };
       });
     },
-    [isMounted, currentIndex, calculateBounds, constrainPosition]
+    [currentIndex, calculateBounds, constrainPosition]
   );
 
   // Handle mouse wheel for zooming with proper bounds
@@ -866,7 +866,6 @@ export const usePhotoViewer = ({
       });
     },
     [
-      isMounted,
       enableGestures,
       isDragging,
       startDragPosition,

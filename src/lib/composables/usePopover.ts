@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, RefObject } from 'react';
+import { useState, useRef, useEffect, RefObject, useCallback } from 'react';
 
 type PopoverPosition = 'top' | 'bottom' | 'left' | 'right';
 type PopoverTrigger = 'click' | 'hover';
@@ -57,14 +57,17 @@ export const usePopover = ({
   const isOpenState = isControlled ? controlledIsOpen : isOpen;
 
   // Define setIsOpen function before using it in useEffect
-  const setIsOpen = (newIsOpen: boolean) => {
-    if (!isControlled) {
-      setIsOpenState(newIsOpen);
-    }
-    if (onOpenChange) {
-      onOpenChange(newIsOpen);
-    }
-  };
+  const setIsOpen = useCallback(
+    (newIsOpen: boolean) => {
+      if (!isControlled) {
+        setIsOpenState(newIsOpen);
+      }
+      if (onOpenChange) {
+        onOpenChange(newIsOpen);
+      }
+    },
+    [isControlled, onOpenChange]
+  );
 
   // Handle hover events if trigger is hover
   useEffect(() => {
@@ -115,141 +118,150 @@ export const usePopover = ({
     popoverRef.current.addEventListener('mouseenter', handlePopoverMouseEnter);
     popoverRef.current.addEventListener('mouseleave', handlePopoverMouseLeave);
 
+    const currentTrigger = triggerRef.current;
+    const currentPopover = popoverRef.current;
+
     return () => {
-      if (triggerRef.current) {
-        triggerRef.current.removeEventListener('mouseenter', handleTriggerMouseEnter);
-        triggerRef.current.removeEventListener('mouseleave', handleTriggerMouseLeave);
+      if (currentTrigger) {
+        currentTrigger.removeEventListener('mouseenter', handleTriggerMouseEnter);
+        currentTrigger.removeEventListener('mouseleave', handleTriggerMouseLeave);
       }
-      if (popoverRef.current) {
-        popoverRef.current.removeEventListener('mouseenter', handlePopoverMouseEnter);
-        popoverRef.current.removeEventListener('mouseleave', handlePopoverMouseLeave);
+      if (currentPopover) {
+        currentPopover.removeEventListener('mouseenter', handlePopoverMouseEnter);
+        currentPopover.removeEventListener('mouseleave', handlePopoverMouseLeave);
       }
       if (timeoutRef.current !== null) {
         window.clearTimeout(timeoutRef.current);
       }
     };
-  }, [trigger, delay, isOpenState]);
+  }, [trigger, delay, isOpenState, setIsOpen]);
 
-  const updatePosition = (event?: Event) => {
-    if (!triggerRef.current || !popoverRef.current) return;
+  const updatePosition = useCallback(
+    (event?: Event) => {
+      if (!triggerRef.current || !popoverRef.current) return;
 
-    const triggerRect = triggerRef.current.getBoundingClientRect();
-    const popoverRect = popoverRef.current.getBoundingClientRect();
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
+      const triggerRect = triggerRef.current.getBoundingClientRect();
+      const popoverRect = popoverRef.current.getBoundingClientRect();
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
 
-    // Check if the trigger is near viewport edges
-    const isNearViewportEdge =
-      triggerRect.top < 50 ||
-      triggerRect.bottom > viewportHeight - 50 ||
-      triggerRect.left < 50 ||
-      triggerRect.right > viewportWidth - 50;
+      // Check if the trigger is near viewport edges
+      const isNearViewportEdge =
+        triggerRect.top < 50 ||
+        triggerRect.bottom > viewportHeight - 50 ||
+        triggerRect.left < 50 ||
+        triggerRect.right > viewportWidth - 50;
 
-    // If this is a scroll update and trigger isn't near edges, skip repositioning
-    if (event?.type === 'scroll' && !isNearViewportEdge) {
-      return;
-    }
-
-    // Calculate space available in each direction
-    const spaceTop = triggerRect.top;
-    const spaceBottom = viewportHeight - triggerRect.bottom;
-    const spaceLeft = triggerRect.left;
-    const spaceRight = viewportWidth - triggerRect.right;
-
-    // Determine best position based on available space
-    let bestPosition: PopoverPosition = position === 'auto' ? 'top' : (position as PopoverPosition);
-
-    // If specified position is 'auto', find the position with most space
-    if (position === 'auto') {
-      const spaces = [
-        { position: 'top', space: spaceTop },
-        { position: 'right', space: spaceRight },
-        { position: 'bottom', space: spaceBottom },
-        { position: 'left', space: spaceLeft },
-      ];
-
-      // Sort by available space (descending)
-      spaces.sort((a, b) => b.space - a.space);
-
-      // Select position with most space
-      bestPosition = spaces[0]?.position as PopoverPosition;
-    } else {
-      // Check if the preferred position has enough space
-      const needsFlip =
-        (position === 'top' &&
-          spaceTop < popoverRect.height + offset &&
-          spaceBottom >= popoverRect.height + offset) ||
-        (position === 'bottom' &&
-          spaceBottom < popoverRect.height + offset &&
-          spaceTop >= popoverRect.height + offset) ||
-        (position === 'left' &&
-          spaceLeft < popoverRect.width + offset &&
-          spaceRight >= popoverRect.width + offset) ||
-        (position === 'right' &&
-          spaceRight < popoverRect.width + offset &&
-          spaceLeft >= popoverRect.width + offset);
-
-      if (needsFlip) {
-        // Flip to the opposite side
-        const oppositePositions: Record<PopoverPosition | 'auto', PopoverPosition> = {
-          top: 'bottom',
-          bottom: 'top',
-          left: 'right',
-          right: 'left',
-          auto: 'bottom',
-        };
-        bestPosition = oppositePositions[position as PopoverPosition | 'auto'];
+      // If this is a scroll update and trigger isn't near edges, skip repositioning
+      if (event?.type === 'scroll' && !isNearViewportEdge) {
+        return;
       }
-    }
 
-    setCurrentPosition(bestPosition);
+      // Calculate space available in each direction
+      const spaceTop = triggerRect.top;
+      const spaceBottom = viewportHeight - triggerRect.bottom;
+      const spaceLeft = triggerRect.left;
+      const spaceRight = viewportWidth - triggerRect.right;
 
-    // Calculate position based on the determined best position
-    let top = 0;
-    let left = 0;
+      // Determine best position based on available space
+      let bestPosition: PopoverPosition =
+        position === 'auto' ? 'top' : (position as PopoverPosition);
 
-    // Calculate viewport-relative position
-    switch (bestPosition) {
-      case 'top':
-        top = triggerRect.top - popoverRect.height - offset;
-        left = triggerRect.left + triggerRect.width / 2 - popoverRect.width / 2;
-        break;
-      case 'bottom':
-        top = triggerRect.bottom + offset;
-        left = triggerRect.left + triggerRect.width / 2 - popoverRect.width / 2;
-        break;
-      case 'left':
-        top = triggerRect.top + triggerRect.height / 2 - popoverRect.height / 2;
-        left = triggerRect.left - popoverRect.width - offset;
-        break;
-      case 'right':
-        top = triggerRect.top + triggerRect.height / 2 - popoverRect.height / 2;
-        left = triggerRect.right + offset;
-        break;
-    }
+      // If specified position is 'auto', find the position with most space
+      if (position === 'auto') {
+        const spaces = [
+          { position: 'top', space: spaceTop },
+          { position: 'right', space: spaceRight },
+          { position: 'bottom', space: spaceBottom },
+          { position: 'left', space: spaceLeft },
+        ];
 
-    // Constrain to viewport boundaries
-    if (left < 0) {
-      left = 5;
-    } else if (left + popoverRect.width > viewportWidth) {
-      left = viewportWidth - popoverRect.width - 5;
-    }
+        // Sort by available space (descending)
+        spaces.sort((a, b) => b.space - a.space);
 
-    if (top < 0) {
-      top = 5;
-    } else if (top + popoverRect.height > viewportHeight) {
-      top = viewportHeight - popoverRect.height - 5;
-    }
+        // Select position with most space
+        bestPosition = spaces[0]?.position as PopoverPosition;
+      } else {
+        // Check if the preferred position has enough space
+        const needsFlip =
+          (position === 'top' &&
+            spaceTop < popoverRect.height + offset &&
+            spaceBottom >= popoverRect.height + offset) ||
+          (position === 'bottom' &&
+            spaceBottom < popoverRect.height + offset &&
+            spaceTop >= popoverRect.height + offset) ||
+          (position === 'left' &&
+            spaceLeft < popoverRect.width + offset &&
+            spaceRight >= popoverRect.width + offset) ||
+          (position === 'right' &&
+            spaceRight < popoverRect.width + offset &&
+            spaceLeft >= popoverRect.width + offset);
 
-    // Add scroll position to convert viewport coordinates to absolute position
-    const absoluteTop = top + window.scrollY;
-    const absoluteLeft = left + window.scrollX;
+        if (needsFlip) {
+          // Flip to the opposite side
+          const oppositePositions: Record<PopoverPosition | 'auto', PopoverPosition> = {
+            top: 'bottom',
+            bottom: 'top',
+            left: 'right',
+            right: 'left',
+            auto: 'bottom',
+          };
+          bestPosition = oppositePositions[position as PopoverPosition | 'auto'];
+        }
+      }
 
-    // Apply position using absolute positioning to follow when scrolling
-    popoverRef.current.style.position = 'absolute';
-    popoverRef.current.style.top = `${absoluteTop}px`;
-    popoverRef.current.style.left = `${absoluteLeft}px`;
-  };
+      setCurrentPosition(bestPosition);
+
+      // Calculate position based on the determined best position
+      let top = 0;
+      let left = 0;
+
+      // Calculate viewport-relative position
+      switch (bestPosition) {
+        case 'top':
+          top = triggerRect.top - popoverRect.height - offset;
+          left = triggerRect.left + triggerRect.width / 2 - popoverRect.width / 2;
+          break;
+        case 'bottom':
+          top = triggerRect.bottom + offset;
+          left = triggerRect.left + triggerRect.width / 2 - popoverRect.width / 2;
+          break;
+        case 'left':
+          top = triggerRect.top + triggerRect.height / 2 - popoverRect.height / 2;
+          left = triggerRect.left - popoverRect.width - offset;
+          break;
+        case 'right':
+          top = triggerRect.top + triggerRect.height / 2 - popoverRect.height / 2;
+          left = triggerRect.right + offset;
+          break;
+      }
+
+      // Constrain to viewport boundaries
+      if (left < 0) {
+        left = 5;
+      } else if (left + popoverRect.width > viewportWidth) {
+        left = viewportWidth - popoverRect.width - 5;
+      }
+
+      if (top < 0) {
+        top = 5;
+      } else if (top + popoverRect.height > viewportHeight) {
+        top = viewportHeight - popoverRect.height - 5;
+      }
+
+      // Add scroll position to convert viewport coordinates to absolute position
+      const absoluteTop = top + window.scrollY;
+      const absoluteLeft = left + window.scrollX;
+
+      // Apply position using absolute positioning to follow when scrolling
+      if (popoverRef.current) {
+        popoverRef.current.style.position = 'absolute';
+        popoverRef.current.style.top = `${absoluteTop}px`;
+        popoverRef.current.style.left = `${absoluteLeft}px`;
+      }
+    },
+    [position, offset]
+  );
 
   // Position the popover
   useEffect(() => {
@@ -289,7 +301,7 @@ export const usePopover = ({
       }
       clearInterval(intervalId);
     };
-  }, [isOpenState, position, offset]);
+  }, [isOpenState, updatePosition]);
 
   // Handle click outside to close popover
   useEffect(() => {
@@ -311,7 +323,7 @@ export const usePopover = ({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpenState, closeOnClickOutside]);
+  }, [isOpenState, closeOnClickOutside, setIsOpen]);
 
   // Handle escape key to close popover
   useEffect(() => {
@@ -328,7 +340,7 @@ export const usePopover = ({
     return () => {
       document.removeEventListener('keydown', handleEscapeKey);
     };
-  }, [isOpenState, closeOnEscape]);
+  }, [isOpenState, closeOnEscape, setIsOpen]);
 
   // Clean up on unmount
   useEffect(() => {

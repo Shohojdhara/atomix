@@ -123,28 +123,32 @@ export const useDropdown = ({
       const currentIndex = items.indexOf(document.activeElement as HTMLElement);
 
       switch (event.key) {
-        case 'ArrowDown':
+        case 'ArrowDown': {
           event.preventDefault();
           const nextIndex = (currentIndex + 1) % items.length;
           const nextItem = items[nextIndex];
           if (nextItem) nextItem.focus();
           break;
-        case 'ArrowUp':
+        }
+        case 'ArrowUp': {
           event.preventDefault();
           const prevIndex = (currentIndex - 1 + items.length) % items.length;
           const prevItem = items[prevIndex];
           if (prevItem) prevItem.focus();
           break;
-        case 'Home':
+        }
+        case 'Home': {
           event.preventDefault();
           const firstItem = items[0];
           if (firstItem) firstItem.focus();
           break;
-        case 'End':
+        }
+        case 'End': {
           event.preventDefault();
           const lastItem = items[items.length - 1];
           if (lastItem) lastItem.focus();
           break;
+        }
         case 'Tab':
           // Close dropdown on tab
           setIsOpen(false);
@@ -315,9 +319,11 @@ export const useDropdown = ({
     // Use a less frequent interval (500ms instead of 200ms)
     const intervalId = window.setInterval(updatePosition, 500);
 
+    const currentMenu = menuRef.current;
+    
     return () => {
-      if (resizeObserver && menuRef.current) {
-        resizeObserver.unobserve(menuRef.current);
+      if (resizeObserver && currentMenu) {
+        resizeObserver.unobserve(currentMenu);
         resizeObserver.disconnect();
       }
       window.removeEventListener('resize', handleResize);

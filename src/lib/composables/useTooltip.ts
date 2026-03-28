@@ -28,8 +28,8 @@ interface UseTooltipResult {
   isVisible: boolean;
   isPositioned: boolean;
   tooltipId: string;
-  triggerRef: RefObject<HTMLDivElement>;
-  tooltipRef: RefObject<HTMLDivElement>;
+  triggerRef: RefObject<HTMLDivElement | null>;
+  tooltipRef: RefObject<HTMLDivElement | null>;
   tooltipStyle: React.CSSProperties;
   arrowStyle: React.CSSProperties;
   showTooltip: () => void;

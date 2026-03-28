@@ -9,8 +9,7 @@ export type ListComponent = React.FC<ListProps> & {
   Item: typeof ListItem;
 };
 
-export const List: ListComponent = memo(
-  ({ children, variant = 'default', className = '', style, ...props }: ListProps) => {
+const ListComponentBase = ({ children, variant = 'default', className = '', style, ...props }: ListProps) => {
     // Generate CSS classes
     const listClasses = [LIST.BASE_CLASS, variant !== 'default' && `c-list--${variant}`, className]
       .filter(Boolean)
@@ -34,8 +33,9 @@ export const List: ListComponent = memo(
         })}
       </ListElement>
     );
-  }
-) as unknown as ListComponent;
+};
+
+export const List = memo(ListComponentBase) as unknown as ListComponent;
 
 List.displayName = 'List';
 List.Item = ListItem;

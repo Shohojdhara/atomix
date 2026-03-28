@@ -74,10 +74,12 @@ export const ProductReview: React.FC<ProductReviewProps> = ({
     // Only run on client-side
     if (typeof window === 'undefined' || !reviewRef.current) return undefined;
 
+    const currentInstance = reviewInstance.current;
+    
     // Cleanup on unmount
     return () => {
-      if (reviewInstance.current) {
-        reviewInstance.current.destroy();
+      if (currentInstance) {
+        currentInstance.destroy();
       }
     };
   }, [productName, productImage, initialRating, maxRating, allowHalf, ratingColor, onSubmit]);

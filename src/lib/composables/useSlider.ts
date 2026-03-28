@@ -39,7 +39,7 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     onSlideChange,
   } = options;
 
-  const slides = Array.isArray(rawSlides) ? rawSlides : [];
+  const slides = useMemo(() => (Array.isArray(rawSlides) ? rawSlides : []), [rawSlides]);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -364,8 +364,6 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     isTransitioning,
     speed,
     onSlideChange,
-    allSlides.length,
-    loopedSlides,
     autoplay,
   ]);
 
@@ -426,8 +424,6 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
     isTransitioning,
     speed,
     onSlideChange,
-    allSlides.length,
-    loopedSlides,
     autoplay,
   ]);
 
@@ -458,7 +454,7 @@ export function useSlider(options: UseSliderOptions): UseSliderReturn {
         onSlideChange?.(index);
       }, speed);
     },
-    [realIndex, isTransitioning, speed, onSlideChange, loop, loopedSlides, autoplay]
+    [realIndex, isTransitioning, speed, onSlideChange, loop, slides.length, autoplay]
   );
 
   const handleTouchStart = useCallback(

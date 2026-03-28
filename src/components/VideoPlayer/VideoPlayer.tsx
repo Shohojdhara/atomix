@@ -339,10 +339,12 @@ export const VideoPlayer = forwardRef<HTMLVideoElement, VideoPlayerProps>(
       // Also listen for window resize (in case styles change)
       window.addEventListener('resize', detectBorderRadius);
 
+      const currentContainer = containerRef.current;
+      
       return () => {
         window.removeEventListener('resize', detectBorderRadius);
-        if (resizeObserver && containerRef.current) {
-          resizeObserver.unobserve(containerRef.current);
+        if (resizeObserver && currentContainer) {
+          resizeObserver.unobserve(currentContainer);
           resizeObserver.disconnect();
         }
       };

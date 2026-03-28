@@ -173,7 +173,7 @@ export const extractBorderRadiusFromDOMElement = (element: HTMLElement | null): 
 /**
  * Extract border-radius from React element
  */
-export const extractBorderRadiusFromElement = (element: React.ReactElement): number | null => {
+export const extractBorderRadiusFromElement = (element: React.ReactElement<any>): number | null => {
   if (!element || !element.props) {
     return null;
   }

@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect, useMemo } from 'react';
 import {
   DatePickerViewMode,
   DatePickerSelectionMode,
@@ -106,7 +106,7 @@ export function useDatePicker({
   const datePickerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const today = new Date();
+  const today = useMemo(() => new Date(), []);
   const currentMonth = viewDate.getMonth();
   const currentYear = viewDate.getFullYear();
   const daysInMonth = getDaysInMonth(currentYear, currentMonth);

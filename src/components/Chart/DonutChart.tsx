@@ -2,7 +2,7 @@ import { forwardRef, memo, useMemo } from 'react';
 import BaseChart from './BaseChart';
 import ChartTooltip from './ChartTooltip';
 import { PieChartProps } from './PieChart';
-import { ChartDataPoint, ChartRenderContentParams } from './types';
+import { ChartDataPoint, ChartRenderContentParams, ChartDataset } from './types';
 
 interface DonutChartProps extends Omit<PieChartProps, 'type'> {
   /**
@@ -63,15 +63,18 @@ const DonutChart = memo(
       ref
     ) => {
       // Use the first dataset for donut chart
-      const dataset = datasets.length > 0 ? datasets[0] : { label: '', data: [] };
+      const dataset = useMemo(
+        () => (datasets.length > 0 ? (datasets[0] as ChartDataset) : { label: '', data: [] as ChartDataPoint[] }),
+        [datasets]
+      );
 
       // Prepare data for donut chart (calculations will be done in renderContent with actual dimensions)
       const chartData = useMemo(() => {
         if (!dataset?.data?.length) return null;
 
         // Filter out invalid data points
-        const validDataPoints = dataset?.data?.filter(
-          point =>
+        const validDataPoints = (dataset?.data || []).filter(
+          (point: ChartDataPoint) =>
             typeof point.value === 'number' &&
             !isNaN(point.value) &&
             isFinite(point.value) &&
@@ -117,16 +120,16 @@ const DonutChart = memo(
 
         const chartColors = dataset?.color
           ? [dataset.color]
-          : dataset?.data?.map((_, i) => defaultColors[i % defaultColors.length]) || defaultColors;
+          : dataset?.data?.map((_, i: number) => defaultColors[i % defaultColors.length]) || defaultColors;
 
         // Calculate total value
-        const total = chartData.validDataPoints.reduce((sum, point) => sum + point.value, 0);
+        const total = chartData.validDataPoints.reduce((sum: number, point: ChartDataPoint) => sum + point.value, 0);
 
         // Calculate angles for each slice
         const padAngleRad = ((pieOptions.padAngle || 1) * Math.PI) / 180;
         let currentAngle = ((pieOptions.startAngle || 0) * Math.PI) / 180;
 
-        const slices = chartData.validDataPoints.map((point, index) => {
+        const slices = chartData.validDataPoints.map((point: ChartDataPoint, index: number) => {
           const percentage = point.value / total;
           const sliceAngle = percentage * (2 * Math.PI) - padAngleRad;
           const startAngle = currentAngle;
@@ -176,7 +179,7 @@ const DonutChart = memo(
 
         return (
           <>
-            {slices.map((slice, index) => {
+            {slices.map((slice: any, index: number) => {
               const isHovered = hoveredPoint?.pointIndex === index;
 
               return (

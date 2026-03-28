@@ -8,19 +8,19 @@ import { EDGE_PANEL } from '../constants/components';
  * @returns EdgePanel state and methods
  */
 export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
-  // Default EdgePanel properties
-  const defaultProps: Partial<EdgePanelProps> = {
-    position: 'start',
-    mode: 'slide',
-    isOpen: false,
-    backdrop: true,
-    closeOnBackdropClick: true,
-    closeOnEscape: true,
-    glass: undefined,
-    ...initialProps,
-  };
+  const {
+    position = 'start',
+    mode = 'slide',
+    isOpen: propIsOpen = false,
+    backdrop = true,
+    closeOnBackdropClick = true,
+    closeOnEscape = true,
+    glass,
+    onOpenChange,
+    className = '',
+  } = initialProps || {};
 
-  const [isOpen, setIsOpen] = useState(defaultProps.isOpen || false);
+  const [isOpen, setIsOpen] = useState(propIsOpen || false);
   const containerRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
 
@@ -30,22 +30,21 @@ export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
    * @returns Class string
    */
   const generateEdgePanelClass = (props: Partial<EdgePanelProps>): string => {
-    const { position = defaultProps.position, className = '', isOpen: propIsOpen } = props;
+    const { position: propPosition = position, className: propClassName = className, isOpen: argIsOpen } = props;
 
     const baseClass = EDGE_PANEL.CLASSES.BASE;
-    const positionClass = position ? `${baseClass}--${position}` : '';
-    const openClass = (propIsOpen ?? isOpen) ? EDGE_PANEL.CLASSES.IS_OPEN : '';
+    const positionClass = propPosition ? `${baseClass}--${propPosition}` : '';
+    const openClass = (argIsOpen ?? isOpen) ? EDGE_PANEL.CLASSES.IS_OPEN : '';
 
-    return `${baseClass} ${positionClass} ${openClass} ${className}`.trim();
+    return `${baseClass} ${positionClass} ${openClass} ${propClassName}`.trim();
   };
 
   /**
    * Adjust body padding in push mode
    */
   const adjustBodyPadding = useCallback(() => {
-    if (!containerRef.current || defaultProps.mode !== 'push') return;
+    if (!containerRef.current || mode !== 'push') return;
 
-    const { position } = defaultProps;
     const size =
       position === 'top' || position === 'bottom'
         ? containerRef.current.clientHeight
@@ -67,15 +66,13 @@ export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
 
     document.body.style[paddingProperty as any] = `${size}px`;
     document.body.classList.add('is-pushed');
-  }, [defaultProps.mode, defaultProps.position]);
+  }, [mode, position]);
 
   /**
    * Reset body padding
    */
   const resetBodyPadding = useCallback(() => {
-    if (defaultProps.mode !== 'push') return;
-
-    const { position } = defaultProps;
+    if (mode !== 'push') return;
 
     // Map position to CSS padding property
     let paddingProperty: string;
@@ -93,7 +90,7 @@ export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
 
     document.body.style[paddingProperty as any] = '';
     document.body.classList.remove('is-pushed');
-  }, [defaultProps.mode, defaultProps.position]);
+  }, [mode, position]);
 
   /**
    * Open the panel
@@ -104,8 +101,6 @@ export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
       document.body.classList.add('is-edgepanel-open');
 
       if (containerRef.current) {
-        const { mode } = defaultProps;
-
         // Only add animation if not in 'none' mode
         if (mode !== 'none') {
           if (useFadeAnimation) {
@@ -148,16 +143,16 @@ export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
         }
 
         // If push mode, adjust body padding
-        if (defaultProps.mode === 'push') {
+        if (mode === 'push') {
           adjustBodyPadding();
         }
       }
 
-      if (defaultProps.onOpenChange) {
-        defaultProps.onOpenChange(true);
+      if (onOpenChange) {
+        onOpenChange(true);
       }
     },
-    [defaultProps, adjustBodyPadding]
+    [mode, adjustBodyPadding, onOpenChange]
   );
 
   /**
@@ -166,8 +161,6 @@ export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
   const closePanel = useCallback(
     (useFadeAnimation = false) => {
       if (containerRef.current) {
-        const { position, mode } = defaultProps;
-
         // Only add animation if not in 'none' mode
         if (mode !== 'none') {
           if (useFadeAnimation) {
@@ -209,7 +202,7 @@ export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
         }
 
         // Reset body padding if push mode
-        if (defaultProps.mode === 'push') {
+        if (mode === 'push') {
           resetBodyPadding();
         }
 
@@ -220,20 +213,20 @@ export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
           setIsOpen(false);
           document.body.classList.remove('is-edgepanel-open');
 
-          if (defaultProps.onOpenChange) {
-            defaultProps.onOpenChange(false);
+          if (onOpenChange) {
+            onOpenChange(false);
           }
         }, hideDelay);
       } else {
         setIsOpen(false);
         document.body.classList.remove('is-edgepanel-open');
 
-        if (defaultProps.onOpenChange) {
-          defaultProps.onOpenChange(false);
+        if (onOpenChange) {
+          onOpenChange(false);
         }
       }
     },
-    [defaultProps, resetBodyPadding]
+    [mode, position, onOpenChange, resetBodyPadding]
   );
 
   /**
@@ -241,11 +234,11 @@ export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
    */
   const handleEscapeKey = useCallback(
     (event: KeyboardEvent) => {
-      if (defaultProps.closeOnEscape && event.key === 'Escape' && isOpen) {
+      if (closeOnEscape && event.key === 'Escape' && isOpen) {
         closePanel();
       }
     },
-    [closePanel, defaultProps.closeOnEscape, isOpen]
+    [closePanel, closeOnEscape, isOpen]
   );
 
   /**
@@ -253,55 +246,53 @@ export function useEdgePanel(initialProps?: Partial<EdgePanelProps>) {
    */
   const handleBackdropClick = useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      if (defaultProps.closeOnBackdropClick && event.target === event.currentTarget) {
+      if (closeOnBackdropClick && event.target === event.currentTarget) {
         closePanel();
       }
     },
-    [closePanel, defaultProps.closeOnBackdropClick]
+    [closePanel, closeOnBackdropClick]
   );
 
   /**
    * Set up event listeners for keyboard events
    */
   useEffect(() => {
-    if (isOpen && defaultProps.closeOnEscape) {
+    if (isOpen && closeOnEscape) {
       document.addEventListener('keydown', handleEscapeKey);
     }
 
     return () => {
       document.removeEventListener('keydown', handleEscapeKey);
     };
-  }, [isOpen, handleEscapeKey, defaultProps.closeOnEscape]);
+  }, [isOpen, handleEscapeKey, closeOnEscape]);
 
   /**
    * Set initial transform values
    */
   useEffect(() => {
     if (containerRef.current) {
-      const { position, mode } = defaultProps;
-
       if (!isOpen && (mode === 'slide' || mode === 'push') && position) {
-        containerRef.current.style.transform = EDGE_PANEL.TRANSFORM_VALUES[position];
+        containerRef.current.style.transform = EDGE_PANEL.TRANSFORM_VALUES[position as keyof typeof EDGE_PANEL.TRANSFORM_VALUES];
         // Set initial opacity for fade animations
-        if (defaultProps.glass) {
+        if (glass) {
           containerRef.current.style.opacity = '0';
         }
       }
     }
-  }, [defaultProps.mode, defaultProps.position, defaultProps.glass, isOpen]);
+  }, [mode, position, glass, isOpen]);
 
   /**
    * Sync with prop changes
    */
   useEffect(() => {
-    if (defaultProps.isOpen !== undefined && defaultProps.isOpen !== isOpen) {
-      if (defaultProps.isOpen) {
-        openPanel(!!defaultProps.glass);
+    if (propIsOpen !== undefined && propIsOpen !== isOpen) {
+      if (propIsOpen) {
+        openPanel(!!glass);
       } else {
-        closePanel(!!defaultProps.glass);
+        closePanel(!!glass);
       }
     }
-  }, [defaultProps.isOpen, closePanel, isOpen, openPanel, defaultProps.glass]);
+  }, [propIsOpen, closePanel, isOpen, openPanel, glass]);
 
   return {
     isOpen,

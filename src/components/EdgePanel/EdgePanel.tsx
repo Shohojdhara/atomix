@@ -33,19 +33,20 @@ export const EdgePanelFooter = forwardRef<HTMLDivElement, React.HTMLAttributes<H
 );
 EdgePanelFooter.displayName = 'EdgePanelFooter';
 
-export const EdgePanelCloseButton = forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
-  ({ className = '', onClick, ...props }, ref) => (
-    <button
-      ref={ref}
-      className={`c-edge-panel__close c-btn c-btn--icon ${className}`.trim()}
-      onClick={onClick}
-      aria-label="Close panel"
-      {...props}
-    >
-      <Icon name="X" />
-    </button>
-  )
-);
+export const EdgePanelCloseButton = forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement>
+>(({ className = '', onClick, ...props }, ref) => (
+  <button
+    ref={ref}
+    className={`c-edge-panel__close c-btn c-btn--icon ${className}`.trim()}
+    onClick={onClick}
+    aria-label="Close panel"
+    {...props}
+  >
+    <Icon name="X" />
+  </button>
+));
 EdgePanelCloseButton.displayName = 'EdgePanelCloseButton';
 
 /**
@@ -82,113 +83,116 @@ type EdgePanelComponent = React.FC<EdgePanelProps> & {
   CloseButton: typeof EdgePanelCloseButton;
 };
 
-export const EdgePanel: EdgePanelComponent = memo(
-  ({
-    title,
-    children,
-    position = 'start',
-    mode = 'slide',
-    isOpen = false,
+const EdgePanelComponentBase = ({
+  title,
+  children,
+  position = 'start',
+  mode = 'slide',
+  isOpen = false,
+  onOpenChange,
+  backdrop = true,
+  closeOnBackdropClick = true,
+  closeOnEscape = true,
+  className = '',
+  style,
+  glass,
+}: EdgePanelProps) => {
+  const {
+    isOpen: isOpenState,
+    containerRef,
+    backdropRef,
+    generateEdgePanelClass,
+    closePanel,
+    handleBackdropClick,
+  } = useEdgePanel({
+    position,
+    mode,
+    isOpen,
     onOpenChange,
-    backdrop = true,
-    closeOnBackdropClick = true,
-    closeOnEscape = true,
-    className = '',
-    style,
+    backdrop,
+    closeOnBackdropClick,
+    closeOnEscape,
     glass,
-  }: EdgePanelProps) => {
-    const {
-      isOpen: isOpenState,
-      containerRef,
-      backdropRef,
-      generateEdgePanelClass,
-      closePanel,
-      handleBackdropClick,
-    } = useEdgePanel({
-      position,
-      mode,
-      isOpen,
-      onOpenChange,
-      backdrop,
-      closeOnBackdropClick,
-      closeOnEscape,
-      glass,
-    });
+  });
 
-    // Moved useRef outside of conditional rendering to fix hook order issue
-    const glassContentRef = useRef<HTMLDivElement>(null);
+  // Moved useRef outside of conditional rendering to fix hook order issue
+  const glassContentRef = useRef<HTMLDivElement>(null);
 
-    const panelClass = generateEdgePanelClass({
-      position,
-      isOpen,
-      className: glass ? `${className} c-edge-panel--glass` : className,
-    });
+  const panelClass = generateEdgePanelClass({
+    position,
+    isOpen,
+    className: glass ? `${className} c-edge-panel--glass` : className,
+  });
 
-    // If not open and not controlled by parent, don't render
-    // Note: useEdgePanel manages internal state if onOpenChange is not provided?
-    // Looking at useEdgePanel (implied): it seems to return isOpenState.
-    // If we return null here, animations might be cut off.
-    // Usually EdgePanel/Drawer should stay mounted but hidden or conditionally mounted.
-    // The original code returned null if !isOpenState && isOpen === false.
-    // Let's keep that logic.
-    if (!isOpenState && isOpen === false) {
-      return null;
-    }
-
-    const defaultGlassProps = {
-      elasticity: 0,
-    };
-
-    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
-
-    // Check for compound components
-    const hasCompoundComponents = React.Children.toArray(children).some((child) =>
-      React.isValidElement(child) &&
-      ['EdgePanelHeader', 'EdgePanelBody', 'EdgePanelFooter'].includes((child.type as any).displayName)
-    );
-
-    const panelContent = hasCompoundComponents ? (
-      children
-    ) : (
-      <>
-        <div className="c-edge-panel__header">
-          <h4>{title}</h4>
-          <button
-            className="c-edge-panel__close c-btn c-btn--icon"
-            onClick={() => closePanel()}
-            aria-label="Close panel"
-          >
-            <Icon name="X" />
-          </button>
-        </div>
-        <div className="c-edge-panel__body">{children}</div>
-      </>
-    );
-
-    return (
-      <div className={panelClass} data-position={position} data-mode={mode} style={style}>
-        {backdrop && (
-          <div ref={backdropRef} className="c-edge-panel__backdrop" onClick={handleBackdropClick} />
-        )}
-        <div ref={containerRef} className="c-edge-panel__container">
-          {glass ? (
-            <AtomixGlass {...glassProps}>
-              <div
-                ref={glassContentRef}
-                className="c-edge-panel__glass-content"
-                style={{ borderRadius: containerRef.current?.style.borderRadius }}
-              >
-                {panelContent}
-              </div>
-            </AtomixGlass>
-          ) : (
-            panelContent
-          )}
-        </div>
-      </div>
-    );
+  // If not open and not controlled by parent, don't render
+  // Note: useEdgePanel manages internal state if onOpenChange is not provided?
+  // Looking at useEdgePanel (implied): it seems to return isOpenState.
+  // If we return null here, animations might be cut off.
+  // Usually EdgePanel/Drawer should stay mounted but hidden or conditionally mounted.
+  // The original code returned null if !isOpenState && isOpen === false.
+  // Let's keep that logic.
+  if (!isOpenState && isOpen === false) {
+    return null;
   }
-) as unknown as EdgePanelComponent;
+
+  const defaultGlassProps = {
+    elasticity: 0,
+  };
+
+  const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
+
+  // Check for compound components
+  const hasCompoundComponents = React.Children.toArray(children).some(
+    child =>
+      React.isValidElement(child) &&
+      ['EdgePanelHeader', 'EdgePanelBody', 'EdgePanelFooter'].includes(
+        (child.type as any).displayName
+      )
+  );
+
+  const panelContent = hasCompoundComponents ? (
+    children
+  ) : (
+    <>
+      <div className="c-edge-panel__header">
+        <h4>{title}</h4>
+        <button
+          className="c-edge-panel__close c-btn c-btn--icon"
+          onClick={() => closePanel()}
+          aria-label="Close panel"
+        >
+          <Icon name="X" />
+        </button>
+      </div>
+      <div className="c-edge-panel__body">{children}</div>
+    </>
+  );
+
+  return (
+    <div className={panelClass} data-position={position} data-mode={mode} style={style}>
+      {backdrop && (
+        <div ref={backdropRef} className="c-edge-panel__backdrop" onClick={handleBackdropClick} />
+      )}
+      <div ref={containerRef} className="c-edge-panel__container">
+        {glass ? (
+          <AtomixGlass {...glassProps}>
+            <div
+              ref={glassContentRef}
+              className="c-edge-panel__glass-content"
+              style={{ borderRadius: containerRef.current?.style.borderRadius }}
+            >
+              {panelContent}
+            </div>
+          </AtomixGlass>
+        ) : (
+          panelContent
+        )}
+      </div>
+    </div>
+  );
+};
+
+export const EdgePanel = memo(EdgePanelComponentBase) as unknown as EdgePanelComponent;
 
 EdgePanel.displayName = 'EdgePanel';
 EdgePanel.Header = EdgePanelHeader;

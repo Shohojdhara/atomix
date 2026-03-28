@@ -89,8 +89,7 @@ type CalloutComponent = React.FC<CalloutProps> & {
   Content: typeof CalloutContent;
 };
 
-export const Callout: CalloutComponent = memo(
-  ({
+const CalloutComponentBase = ({
     title,
     children,
     icon,
@@ -212,8 +211,9 @@ export const Callout: CalloutComponent = memo(
         {calloutContent}
       </div>
     );
-  }
-) as unknown as CalloutComponent;
+};
+
+export const Callout = memo(CalloutComponentBase) as unknown as CalloutComponent;
 
 Callout.displayName = 'Callout';
 

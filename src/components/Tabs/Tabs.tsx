@@ -207,8 +207,7 @@ type TabsComponent = React.FC<TabsProps> & {
   Panel: typeof TabsPanel;
 };
 
-export const Tabs: TabsComponent = memo(
-  ({
+const TabsComponentBase = ({
     items,
     activeIndex = TAB.DEFAULTS.ACTIVE_INDEX,
     onTabChange,
@@ -317,7 +316,7 @@ export const Tabs: TabsComponent = memo(
         (child): child is React.ReactElement =>
           React.isValidElement(child) && (child.type as any).displayName === 'TabsList'
       );
-      const totalTabsCount = tabsList ? React.Children.count(tabsList.props.children) : 0;
+      const totalTabsCount = tabsList ? React.Children.count((tabsList.props as any).children) : 0;
 
       content = (
         <TabsContext.Provider
@@ -356,8 +355,9 @@ export const Tabs: TabsComponent = memo(
     }
 
     return wrapper;
-  }
-) as unknown as TabsComponent;
+};
+
+export const Tabs = memo(TabsComponentBase) as unknown as TabsComponent;
 
 Tabs.displayName = 'Tabs';
 Tabs.List = TabsList;

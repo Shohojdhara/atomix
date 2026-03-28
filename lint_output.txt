@@ -1,0 +1,4 @@
+
+> @shohojdhara/atomix@0.5.2 lint
+> eslint src
+

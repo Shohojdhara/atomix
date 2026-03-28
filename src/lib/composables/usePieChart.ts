@@ -294,7 +294,7 @@ export function usePieChart(data: ChartDataPoint[], options: PieChartOptions = {
 
       return parts.join(' - ');
     },
-    [options.labelFormatter, options.showLabels, options.showPercentages, options.showValues]
+    [options]
   );
 
   // Get slice transform for hover effect

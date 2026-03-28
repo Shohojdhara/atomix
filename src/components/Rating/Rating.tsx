@@ -116,10 +116,12 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
     useEffect(() => {
       if (!useVanillaJS || typeof window === 'undefined' || !internalRef.current) return undefined;
 
+      const currentInstance = ratingInstance.current;
+      
       // Cleanup on unmount
       return () => {
-        if (ratingInstance.current) {
-          ratingInstance.current.destroy();
+        if (currentInstance) {
+          currentInstance.destroy();
         }
       };
     }, [

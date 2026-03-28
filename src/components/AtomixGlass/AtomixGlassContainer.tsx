@@ -93,7 +93,7 @@ interface AtomixGlassContainerProps
   // Phase 1: Animation System props
   shaderTime?: number;
 
-  contentRef?: React.RefObject<HTMLDivElement>;
+  contentRef?: React.RefObject<HTMLDivElement | null>;
   children?: React.ReactNode;
 }
 

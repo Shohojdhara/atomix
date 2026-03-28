@@ -73,10 +73,12 @@ export const Testimonial: React.FC<TestimonialProps> = ({
     // Only run on client-side
     if (typeof window === 'undefined' || !testimonialRef.current) return undefined;
 
+    const currentInstance = testimonialInstance.current;
+    
     // Cleanup on unmount
     return () => {
-      if (testimonialInstance.current) {
-        testimonialInstance.current.destroy();
+      if (currentInstance) {
+        currentInstance.destroy();
       }
     };
   }, [size, skeleton]);

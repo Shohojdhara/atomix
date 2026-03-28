@@ -178,6 +178,32 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
       setItems(newItems);
     }, [children]);
 
+    // === MANAGE ITEM LAYOUT ===
+    const calculateLayout = useCallback(() => {
+      if (!containerRef.current || items.length === 0) return;
+      const containerWidth = containerRef.current.offsetWidth;
+      const colWidth = (containerWidth - gap * (columns - 1)) / columns;
+      columnHeights.current = Array(columns).fill(0);
+      const newPositions: ItemPosition[] = [];
+      items.forEach((item, index) => {
+        if (item.ref.current) {
+          // Find the shortest column
+          const shortestCol = columnHeights.current.indexOf(Math.min(...columnHeights.current));
+          const left = shortestCol * (colWidth + gap);
+          const top = columnHeights.current[shortestCol] ?? 0;
+          const height = item.ref.current.offsetHeight;
+          columnHeights.current[shortestCol] = top + height + gap;
+          newPositions[index] = {
+            left,
+            top,
+            width: colWidth,
+            height,
+          };
+        }
+      });
+      setPositions(newPositions);
+    }, [items, columns, gap]);
+
     // === TRACK & MANAGE IMAGES ===
 
     const handleImageLoad = useCallback(
@@ -218,7 +244,7 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
           onLayoutComplete?.();
         }
       },
-      [onImageLoad, onLayoutComplete, imagesLoaded]
+      [onImageLoad, onLayoutComplete, imagesLoaded, calculateLayout]
     );
 
     const trackImages = useCallback(() => {
@@ -261,32 +287,6 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
         });
       };
     }, [imagesLoaded, handleImageLoad, onLayoutComplete]);
-
-    // === MANAGE ITEM LAYOUT ===
-    const calculateLayout = useCallback(() => {
-      if (!containerRef.current || items.length === 0) return;
-      const containerWidth = containerRef.current.offsetWidth;
-      const colWidth = (containerWidth - gap * (columns - 1)) / columns;
-      columnHeights.current = Array(columns).fill(0);
-      const newPositions: ItemPosition[] = [];
-      items.forEach((item, index) => {
-        if (item.ref.current) {
-          // Find the shortest column
-          const shortestCol = columnHeights.current.indexOf(Math.min(...columnHeights.current));
-          const left = shortestCol * (colWidth + gap);
-          const top = columnHeights.current[shortestCol] ?? 0;
-          const height = item.ref.current.offsetHeight;
-          columnHeights.current[shortestCol] = top + height + gap;
-          newPositions[index] = {
-            left,
-            top,
-            width: colWidth,
-            height,
-          };
-        }
-      });
-      setPositions(newPositions);
-    }, [items, columns, gap]);
 
     // === OBSERVE CONTAINER RESIZE ===
     useEffect(() => {

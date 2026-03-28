@@ -104,9 +104,10 @@ export function useChart(initialProps?: Partial<ChartProps>) {
 
   // Cleanup animation frame on unmount
   useEffect(() => {
+    const currentRef = animationFrameRef.current;
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current);
+      if (currentRef) {
+        cancelAnimationFrame(currentRef);
       }
     };
   }, []);

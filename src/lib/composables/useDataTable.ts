@@ -255,7 +255,7 @@ export function useDataTable({
     ) {
       setColumnOrder(newOrder);
     }
-  }, [columns]);
+  }, [columns, columnOrder]);
 
   // Update column visibility when columns prop changes
   useEffect(() => {

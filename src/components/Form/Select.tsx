@@ -12,8 +12,7 @@ export type SelectComponent = React.FC<SelectProps> & {
 /**
  * Select - A component for dropdown selection
  */
-export const Select: SelectComponent = memo(
-  ({
+const SelectComponentBase = ({
     options,
     value,
     onChange,
@@ -314,8 +313,9 @@ export const Select: SelectComponent = memo(
     }
 
     return selectContent;
-  }
-) as unknown as SelectComponent;
+};
+
+export const Select = memo(SelectComponentBase) as unknown as SelectComponent;
 
 export type { SelectProps };
 

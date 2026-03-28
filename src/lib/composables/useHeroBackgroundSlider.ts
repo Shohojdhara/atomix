@@ -18,12 +18,12 @@ export interface UseHeroBackgroundSliderResult {
   /**
    * Array of refs for slide container elements
    */
-  slideRefs: React.RefObject<HTMLDivElement>[];
+  slideRefs: React.RefObject<HTMLDivElement | null>[];
 
   /**
    * Array of refs for video elements
    */
-  videoRefs: React.RefObject<HTMLVideoElement>[];
+  videoRefs: React.RefObject<HTMLVideoElement | null>[];
 
   /**
    * Handle slide transition to next index
@@ -55,18 +55,18 @@ export function useHeroBackgroundSlider(
   const [isTransitioning, setIsTransitioning] = useState(false);
   const autoplayRef = useRef<NodeJS.Timeout | null>(null);
   const isPausedRef = useRef(false);
-  const callbackRef = useRef<() => void>();
+  const callbackRef = useRef<() => void | undefined>(undefined);
 
   // Create refs for slide containers
   const slideRefs = useMemo(
     () => slides.map(() => React.createRef<HTMLDivElement>()),
-    [slides.length]
+    [slides]
   );
 
   // Create refs for video elements
   const videoRefs = useMemo(
     () => slides.map(() => React.createRef<HTMLVideoElement>()),
-    [slides.length]
+    [slides]
   );
 
   /**

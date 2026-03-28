@@ -6,7 +6,7 @@ import type { GlassSize } from '../../types/components';
 const { CONSTANTS } = ATOMIX_GLASS;
 
 interface UseGlassSizeProps {
-  glassRef: React.RefObject<HTMLDivElement>;
+  glassRef: React.RefObject<HTMLDivElement | null>;
   effectiveBorderRadius: number;
   cachedRectRef?: React.MutableRefObject<DOMRect | null>;
 }

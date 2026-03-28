@@ -325,7 +325,7 @@ export function useBarChart(datasets: ChartDataset[], options: BarChartOptions =
       }
       return value.toString();
     },
-    [options.valueFormatter]
+    [options]
   );
 
   // Calculate data label position
@@ -352,7 +352,7 @@ export function useBarChart(datasets: ChartDataset[], options: BarChartOptions =
           };
       }
     },
-    [options.dataLabelPosition]
+    [options]
   );
 
   return {

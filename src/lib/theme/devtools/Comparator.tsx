@@ -48,7 +48,7 @@ export const ThemeComparator: React.FC<ThemeComparatorProps> = ({
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState<string>('');
   const [filterType, setFilterType] = useState<'all' | 'added' | 'removed' | 'changed'>('all');
   const [filterCategory, setFilterCategory] = useState<string>('all');
-  const searchTimeoutRef = useRef<NodeJS.Timeout>();
+  const searchTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   // Debounce search query
   useEffect(() => {

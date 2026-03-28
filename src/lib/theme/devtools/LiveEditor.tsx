@@ -200,7 +200,7 @@ export const ThemeLiveEditor: React.FC<ThemeLiveEditorProps> = ({
   );
 
   // Debounced JSON update to history
-  const jsonUpdateTimeoutRef = useRef<NodeJS.Timeout>();
+  const jsonUpdateTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
   useEffect(() => {
     if (error) return;
 

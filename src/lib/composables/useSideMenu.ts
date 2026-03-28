@@ -8,20 +8,18 @@ import { SIDE_MENU } from '../constants/components';
  * @returns SideMenu state and methods
  */
 export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
-  // Default side menu properties
-  const defaultProps: Partial<SideMenuProps> = {
-    collapsible: true,
-    collapsibleDesktop: false,
-    defaultCollapsedDesktop: false,
-    isOpen: false,
-    ...initialProps,
-  };
+  const {
+    collapsible = true,
+    collapsibleDesktop = false,
+    defaultCollapsedDesktop = false,
+    isOpen,
+    onToggle,
+    disabled = false,
+  } = initialProps || {};
 
   // Local open state for when not controlled externally
   const [isOpenState, setIsOpenState] = useState(
-    defaultProps.defaultCollapsedDesktop !== undefined
-      ? !defaultProps.defaultCollapsedDesktop
-      : defaultProps.isOpen || false
+    defaultCollapsedDesktop !== undefined ? !defaultCollapsedDesktop : isOpen || false
   );
 
   // Refs for managing responsive behavior
@@ -31,19 +29,18 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
 
   // Update local state when external state changes
   useEffect(() => {
-    if (typeof defaultProps.isOpen !== 'undefined') {
-      setIsOpenState(defaultProps.isOpen);
-    } else if (defaultProps.defaultCollapsedDesktop !== undefined) {
-      setIsOpenState(!defaultProps.defaultCollapsedDesktop);
+    if (typeof isOpen !== 'undefined') {
+      setIsOpenState(isOpen);
+    } else if (defaultCollapsedDesktop !== undefined) {
+      setIsOpenState(!defaultCollapsedDesktop);
     }
-  }, [defaultProps.isOpen, defaultProps.defaultCollapsedDesktop]);
+  }, [isOpen, defaultCollapsedDesktop]);
 
   // Set initial height on mount
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
-    const shouldCollapse = isMobile ? defaultProps.collapsible : defaultProps.collapsibleDesktop;
-    const currentOpen =
-      typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
+    const shouldCollapse = isMobile ? collapsible : collapsibleDesktop;
+    const currentOpen = typeof isOpen !== 'undefined' ? isOpen : isOpenState;
 
     if (shouldCollapse && wrapperRef.current && innerRef.current) {
       // Use setTimeout to ensure DOM is fully rendered
@@ -62,13 +59,13 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
       wrapperRef.current.style.height = 'auto';
     }
     return undefined;
-  }, []); // Only run on mount
+  }, [collapsible, collapsibleDesktop, isOpen, isOpenState]);
 
   // Handle responsive behavior - vertical collapse for both mobile and desktop
   useEffect(() => {
     const handleResize = () => {
       const isMobile = window.innerWidth < 768; // MD breakpoint
-      const shouldCollapse = isMobile ? defaultProps.collapsible : defaultProps.collapsibleDesktop;
+      const shouldCollapse = isMobile ? collapsible : collapsibleDesktop;
 
       if (!shouldCollapse) {
         // Not collapsible - always show content
@@ -77,8 +74,7 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
         }
       } else if (wrapperRef.current && innerRef.current) {
         // Set proper height for vertical animation (both mobile and desktop)
-        const currentOpen =
-          typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
+        const currentOpen = typeof isOpen !== 'undefined' ? isOpen : isOpenState;
 
         // Use requestAnimationFrame to ensure DOM is ready
         requestAnimationFrame(() => {
@@ -101,22 +97,15 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
       clearTimeout(timeoutId);
       window.removeEventListener('resize', handleResize);
     };
-  }, [
-    defaultProps.collapsible,
-    defaultProps.collapsibleDesktop,
-    defaultProps.isOpen,
-    defaultProps.onToggle,
-    isOpenState,
-  ]);
+  }, [collapsible, collapsibleDesktop, isOpen, onToggle, isOpenState]);
 
   // Update wrapper height when open state changes (both mobile and desktop)
   useEffect(() => {
     const isMobile = window.innerWidth < 768;
-    const shouldCollapse = isMobile ? defaultProps.collapsible : defaultProps.collapsibleDesktop;
+    const shouldCollapse = isMobile ? collapsible : collapsibleDesktop;
 
     if (shouldCollapse && wrapperRef.current && innerRef.current) {
-      const currentOpen =
-        typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
+      const currentOpen = typeof isOpen !== 'undefined' ? isOpen : isOpenState;
 
       // Use requestAnimationFrame to ensure DOM is ready
       requestAnimationFrame(() => {
@@ -132,7 +121,7 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
       // Not collapsible - always show content
       wrapperRef.current.style.height = 'auto';
     }
-  }, [defaultProps.isOpen, isOpenState, defaultProps.collapsible, defaultProps.collapsibleDesktop]);
+  }, [isOpen, isOpenState, collapsible, collapsibleDesktop]);
 
   /**
    * Generate side menu class based on properties
@@ -159,14 +148,13 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
    * Handle toggle click (mobile)
    */
   const handleToggle = () => {
-    if (defaultProps.disabled) return;
+    if (disabled) return;
 
-    const newState =
-      typeof defaultProps.isOpen !== 'undefined' ? !defaultProps.isOpen : !isOpenState;
+    const newState = typeof isOpen !== 'undefined' ? !isOpen : !isOpenState;
 
-    if (typeof defaultProps.onToggle === 'function') {
+    if (typeof onToggle === 'function') {
       // Controlled component
-      defaultProps.onToggle(newState);
+      onToggle(newState);
     } else {
       // Uncontrolled component
       setIsOpenState(newState);
@@ -185,11 +173,10 @@ export function useSideMenu(initialProps?: Partial<SideMenuProps>) {
    * @returns Current open state
    */
   const getCurrentOpenState = (): boolean => {
-    return typeof defaultProps.isOpen !== 'undefined' ? defaultProps.isOpen : isOpenState;
+    return typeof isOpen !== 'undefined' ? isOpen : isOpenState;
   };
 
   return {
-    defaultProps,
     isOpenState: getCurrentOpenState(),
     wrapperRef,
     innerRef,
