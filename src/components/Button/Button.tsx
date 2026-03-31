@@ -5,6 +5,7 @@ import { Spinner } from '../Spinner/Spinner';
 import { Icon, type PhosphorIconsType } from '../Icon/Icon';
 import { BUTTON, THEME_NAMING } from '../../lib/constants/components';
 import { ThemeNaming } from '../../lib/utils/themeNaming';
+import { renderSlot } from '../../lib/patterns';
 
 export type ButtonAsProp = {
   as?: ElementType;
@@ -52,6 +53,7 @@ export const Button = React.memo(
         tabIndex,
         style,
         linkComponent,
+        slots,
         ...props
       },
       ref
@@ -161,17 +163,34 @@ export const Button = React.memo(
               )}
               aria-hidden="true"
             >
-              <Spinner
-                size={spinnerSize}
-                variant={
-                  variant === 'link' ||
-                  (typeof variant === 'string' && variant.startsWith('outline-'))
-                    ? 'primary'
-                    : variant === 'danger'
-                      ? 'error'
-                      : (variant as any)
-                }
-              />
+              {renderSlot(
+                slots?.spinner,
+                {
+                  className: ThemeNaming.bemClass(
+                    THEME_NAMING.BUTTON_PREFIX,
+                    THEME_NAMING.SPINNER_ELEMENT
+                  ),
+                  size: spinnerSize,
+                  variant:
+                    variant === 'link' ||
+                    (typeof variant === 'string' && variant.startsWith('outline-'))
+                      ? 'primary'
+                      : variant === 'danger'
+                        ? 'error'
+                        : (variant as any),
+                } as any,
+                <Spinner
+                  size={spinnerSize}
+                  variant={
+                    variant === 'link' ||
+                    (typeof variant === 'string' && variant.startsWith('outline-'))
+                      ? 'primary'
+                      : variant === 'danger'
+                        ? 'error'
+                        : (variant as any)
+                  }
+                />
+              )}
             </span>
           )}
           {iconElement && !loading && (
@@ -182,7 +201,18 @@ export const Button = React.memo(
               )}
               aria-hidden="true"
             >
-              {iconElement}
+              {renderSlot(
+                slots?.icon,
+                {
+                  className: ThemeNaming.bemClass(
+                    THEME_NAMING.BUTTON_PREFIX,
+                    THEME_NAMING.ICON_ELEMENT
+                  ),
+                  children: iconElement,
+                  size: iconSize,
+                } as any,
+                iconElement
+              )}
             </span>
           )}
           {!iconOnly && buttonText && (
@@ -192,7 +222,17 @@ export const Button = React.memo(
                 THEME_NAMING.LABEL_ELEMENT
               )}
             >
-              {buttonText}
+              {renderSlot(
+                slots?.label,
+                {
+                  className: ThemeNaming.bemClass(
+                    THEME_NAMING.BUTTON_PREFIX,
+                    THEME_NAMING.LABEL_ELEMENT
+                  ),
+                  children: buttonText,
+                } as any,
+                buttonText
+              )}
             </span>
           )}
         </>
@@ -218,48 +258,65 @@ export const Button = React.memo(
 
       let content: React.ReactElement;
 
-      // Render as anchor if href is provided
-      if (shouldRenderAsLink) {
-        // Use custom linkComponent if provided (e.g., Next.js Link)
-        if (linkComponent) {
-          const LinkComp = linkComponent as React.ComponentType<any>;
-          const linkProps = {
-            ...buttonProps,
-            ref: ref as any, // linkComponent usually forwards ref to anchor
-            href: isDisabled ? undefined : href,
-            to: isDisabled ? undefined : href,
-            target,
-            rel: target === '_blank' ? 'noopener noreferrer' : undefined,
-          };
+      // Render the button content using the root slot if provided
+      const buttonChildren = renderSlot(
+        slots?.root,
+        {
+          className: buttonClass,
+          children: buttonContent,
+          disabled: isDisabled,
+          loading: loading,
+          onClick: handleClickEvent,
+          type: type,
+          'aria-label': safeAriaLabel,
+          'aria-disabled': isDisabled,
+          'aria-busy': loading,
+        } as any,
+        (() => {
+          // Render as anchor if href is provided
+          if (shouldRenderAsLink) {
+            // Use custom linkComponent if provided (e.g., Next.js Link)
+            if (linkComponent) {
+              const LinkComp = linkComponent as React.ComponentType<any>;
+              const linkProps = {
+                ...buttonProps,
+                ref: ref as any, // linkComponent usually forwards ref to anchor
+                href: isDisabled ? undefined : href,
+                to: isDisabled ? undefined : href,
+                target,
+                rel: target === '_blank' ? 'noopener noreferrer' : undefined,
+              };
 
-          content = <LinkComp {...linkProps}>{buttonContent}</LinkComp>;
-        } else {
-          // Fallback to regular anchor tag
-          content = (
-            <a
-              {...buttonProps}
-              ref={ref as React.Ref<HTMLAnchorElement>}
-              href={isDisabled ? undefined : href}
-              target={target}
-              rel={target === '_blank' ? 'noopener noreferrer' : undefined}
-            >
-              {buttonContent}
-            </a>
-          );
-        }
-      } else {
-        // Default button rendering
-        content = (
-          <Component
-            {...buttonProps}
-            ref={ref}
-            type={Component === 'button' ? type : undefined}
-            disabled={isDisabled}
-          >
-            {buttonContent}
-          </Component>
-        );
-      }
+              return <LinkComp {...linkProps}>{buttonContent}</LinkComp>;
+            } else {
+              // Fallback to regular anchor tag
+              return (
+                <a
+                  {...buttonProps}
+                  ref={ref as React.Ref<HTMLAnchorElement>}
+                  href={isDisabled ? undefined : href}
+                  target={target}
+                  rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+                >
+                  {buttonContent}
+                </a>
+              );
+            }
+          } else {
+            // Default button rendering
+            return (
+              <Component
+                {...buttonProps}
+                ref={ref}
+                type={Component === 'button' ? type : undefined}
+                disabled={isDisabled}
+              >
+                {buttonContent}
+              </Component>
+            );
+          }
+        })()
+      );
 
       if (glass) {
         // Default glass props
@@ -270,10 +327,10 @@ export const Button = React.memo(
           elasticity: 0,
         };
         const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
-        return <AtomixGlass {...glassProps}>{content}</AtomixGlass>;
+        return <AtomixGlass {...glassProps}>{buttonChildren}</AtomixGlass>;
       }
 
-      return content;
+      return buttonChildren;
     }
   )
 );
