@@ -263,6 +263,10 @@ export const WithAllProps: Story = {
 };
 
 export const CompoundUsage: Story = {
+  args: {
+    title: 'Compound Accordion Example',
+    children: <p>Compound pattern content</p>
+  },
   render: args => (
     <Accordion {...args}>
       <Accordion.Header>
