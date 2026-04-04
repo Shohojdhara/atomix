@@ -137,6 +137,11 @@ program
   .option('-i, --interactive', 'Interactive mode', false)
   .option('-p, --path <path>', 'Output path', './src/components')
   .option('--prompt <prompt>', 'AI prompt for generating component')
+  .option('--ai-provider <provider>', 'AI provider override (openai|anthropic)')
+  .option('--ai-model <model>', 'AI model override')
+  .option('--ai-temperature <temp>', 'AI creativity level 0.0-1.0', parseFloat, 0.7)
+  .option('--ai-preview', 'Preview AI output before writing files', false)
+  .option('--ai-max-tokens <tokens>', 'Maximum tokens for AI response', parseInt, 4000)
   .option(
     '--complexity <level>',
     'Template complexity (React: simple|medium|complex; Next: simple|client|complex). Default is framework-specific.'

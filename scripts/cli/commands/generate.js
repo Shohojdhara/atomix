@@ -127,7 +127,12 @@ export async function generateAction(type, name, options) {
     if (options.prompt) {
       path = await generator.generateAIComponent(config.name, options.prompt, {
         ...config,
-        logger: { debug: (msg) => logger.debug(msg) }
+        logger: { debug: (msg) => logger.debug(msg) },
+        aiProvider: options.aiProvider,
+        aiModel: options.aiModel,
+        aiTemperature: options.aiTemperature,
+        aiPreview: options.aiPreview,
+        aiMaxTokens: options.aiMaxTokens
       });
     } else {
       path = await generator.generateComponent(config.name, {

@@ -110,11 +110,12 @@ export function getAtomixConfig(context) {
 
     return require(configPath);
   } catch {
+    // Return default config matching AtomixConfig interface
     return {
-      theme: 'default',
-      optimize: true,
-      includeAtoms: false,
-      components: [],
+      prefix: 'atomix',
+      theme: {
+        extend: {}
+      }
     };
   }
 }

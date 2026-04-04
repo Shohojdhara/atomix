@@ -217,6 +217,7 @@ export const entryBuilds = [
   ...createEntryBuild('layout', INPUT_FILES.layout),
   ...createEntryBuild('heavy', INPUT_FILES.heavy),
   ...createEntryBuild('core', INPUT_FILES.core),
+  ...createEntryBuild('config', INPUT_FILES.config),
 ];
 
 /**
@@ -230,6 +231,7 @@ export const entryJsBuilds = [
   ...createEntryBuild('layout', INPUT_FILES.layout),
   ...createEntryBuild('heavy', INPUT_FILES.heavy),
   ...createEntryBuild('core', INPUT_FILES.core),
+  ...createEntryBuild('config', INPUT_FILES.config),
 ].filter(build => build.output.file.endsWith('.js'));
 
 /**
@@ -243,6 +245,7 @@ export const entryTypesBuilds = [
   ...createEntryBuild('layout', INPUT_FILES.layout),
   ...createEntryBuild('heavy', INPUT_FILES.heavy),
   ...createEntryBuild('core', INPUT_FILES.core),
+  ...createEntryBuild('config', INPUT_FILES.config),
 ].filter(build => build.output.file.endsWith('.d.ts'));
 
 /**

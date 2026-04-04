@@ -1,3 +1,4 @@
+
 # Grid System
 
 The Atomix Grid System provides a powerful, flexible, and responsive layout solution built on modern CSS Grid and Flexbox technologies. It offers a complete set of components for creating any layout from simple columns to complex dashboard interfaces.
@@ -14,6 +15,7 @@ The Grid System is based on a 12-column layout with responsive breakpoints and f
 - **⚡ Flexbox & CSS Grid** - Modern CSS technologies
 - **♿ Accessible** - WCAG 2.1 AA compliant
 - **🎨 Customizable** - CSS custom properties and SCSS variables
+- **✨ Advanced Layouts** - Combine with [CSS Grid](./css-grid.md) for complex designs
 
 ## Installation
 
@@ -797,6 +799,7 @@ The grid system uses progressive enhancement:
 ## Related Components
 
 - **[Container](./grid.md#container)** - Responsive content containers
+- **[CSS Grid](./css-grid.md)** - Advanced two-dimensional layouts with template areas
 - **[MasonryGrid](./masonry-grid.md)** - Pinterest-style grid layouts
 - **[Card](../components/card.md)** - Content cards for grid layouts
 - **[Navigation](../components/navigation.md)** - Navigation components

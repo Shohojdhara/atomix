@@ -22,6 +22,7 @@ import { tokenValidator } from './tokens/token-validator.js';
 import { componentValidator } from './component-validator.js';
 import { generateComponentStylesPackage } from './itcss-generator.js';
 import { generateHookFile } from './hook-generator.js';
+import { configLoader } from './config-loader.js';
 
 export { COMPLEXITY_LEVELS };
 
@@ -34,8 +35,23 @@ export const COMPONENT_FEATURES = {
   ACCESSIBILITY: { name: 'accessibility', default: true }
 };
 
-// Global rate limiter for AI operations
-const aiRateLimiter = new RateLimiter(5, 60000); // 5 requests per minute
+// Global rate limiter for AI operations - initialized with defaults, will be updated from config
+let aiRateLimiter = new RateLimiter(5, 60000); // 5 requests per minute default
+
+/**
+ * Initialize rate limiter from config
+ */
+async function initializeRateLimiter() {
+  const config = configLoader.get('ai') || {};
+  const rateLimitConfig = config.rateLimit;
+  
+  if (rateLimitConfig) {
+    aiRateLimiter = new RateLimiter(
+      rateLimitConfig.requests || 5,
+      rateLimitConfig.windowMs || 60000
+    );
+  }
+}
 
 export const generator = {
   /**
@@ -272,12 +288,15 @@ export const generator = {
    * Generates component files using AI based on a prompt
    * @param {string} name - Component name
    * @param {string} prompt - AI prompt
-   * @param {Object} options - Generation options
+   * @param {Object} options - Generation options (aiProvider, aiModel, aiTemperature, aiMaxTokens, aiPreview)
    * @returns {Promise<string>} Path to generated component
    * @throws {AtomixCLIError} If generation fails
    */
   async generateAIComponent(name, prompt, options = {}) {
-    const { outputPath, logger } = options;
+    const { outputPath, logger, aiProvider, aiModel, aiTemperature, aiMaxTokens, aiPreview } = options;
+    
+    // Initialize rate limiter from config
+    await initializeRateLimiter();
     
     // Apply rate limiting for AI operations
     const userId = process.env.USER || 'anonymous';
@@ -312,10 +331,15 @@ export const generator = {
 
     const componentPath = join(outputPath, sanitizedName);
 
-    // Call AI Engine
+    // Call AI Engine with override options
     let generated;
     try {
-      generated = await aiEngine.generateComponent(name, prompt);
+      generated = await aiEngine.generateComponent(name, prompt, {
+        provider: aiProvider,
+        model: aiModel,
+        temperature: aiTemperature,
+        maxTokens: aiMaxTokens
+      });
     } catch (error) {
       throw new AtomixCLIError(
         `AI generation failed: ${error.message}`,
@@ -327,6 +351,42 @@ export const generator = {
           'Use regular generation as fallback'
         ]
       );
+    }
+
+    // Preview mode: show output without writing files
+    if (aiPreview) {
+      logger.info('\n' + '='.repeat(60));
+      logger.info('📝 AI PREVIEW MODE - Generated content will not be saved');
+      logger.info('='.repeat(60));
+      
+      logger.info('\n📄 Component File:');
+      logger.info(generated.component || 'No component generated');
+      
+      if (generated.styles) {
+        logger.info('\n🎨 Styles File:');
+        logger.info(generated.styles);
+      }
+      
+      if (generated.tests) {
+        logger.info('\n🧪 Test File:');
+        logger.info(generated.tests);
+      }
+      
+      if (generated.stories) {
+        logger.info('\n📚 Stories File:');
+        logger.info(generated.stories);
+      }
+      
+      if (generated.readme) {
+        logger.info('\n📖 README:');
+        logger.info(generated.readme);
+      }
+      
+      logger.info('\n' + '='.repeat(60));
+      logger.info('Preview complete. Run without --ai-preview to save files.');
+      logger.info('='.repeat(60));
+      
+      return componentPath; // Return path without writing
     }
 
     // Write component file

@@ -125,6 +125,11 @@
       "require": "./build-tools/index.js",
       "default": "./build-tools/index.js"
     },
+    "./config": {
+      "types": "./dist/config.d.ts",
+      "import": "./dist/config.js",
+      "default": "./dist/config.js"
+    },
     "./package.json": "./package.json"
   },
   "dependencies": {

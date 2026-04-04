@@ -42,6 +42,7 @@ export const INPUT_FILES = {
   layout: 'src/entries/layout.ts',
   heavy: 'src/entries/heavy.ts',
   core: 'src/entries/core.ts',
+  config: 'src/entries/config.ts',
 };
 
 // Output files from package.json

@@ -264,6 +264,17 @@ export interface AtomixConfig {
     model?: string;
     /** API key for the provider */
     apiKey?: string;
+    /** Temperature for AI creativity (0.0-1.0, default: 0.7) */
+    temperature?: number;
+    /** Maximum tokens per AI response (default: 4000) */
+    maxTokens?: number;
+    /** Rate limiting configuration */
+    rateLimit?: {
+      /** Maximum requests allowed */
+      requests: number;
+      /** Time window in milliseconds */
+      windowMs: number;
+    };
   };
 
   /**

@@ -1,17 +1,53 @@
 @use 'settings.config' as config;
 @use 'settings.breakpoints' as breakpoints;
+@use 'settings.design-tokens' as tokens;
+@use 'settings.colors' as colors;
 
-// Define all masonry grid variables with !default flag for overriding
-$masonry-grid-gap: 16px !default;
-$masonry-grid-gap-sm: 8px !default;
-$masonry-grid-gap-lg: 24px !default;
+// === MASONRY GRID DESIGN TOKENS ===
+// Integrated with Atomix design system using CSS custom properties
+
+// Core spacing and layout tokens
+$masonry-grid-gap: var(--#{config.$prefix}spacing-16) !default;
+$masonry-grid-gap-sm: var(--#{config.$prefix}spacing-8) !default;
+$masonry-grid-gap-lg: var(--#{config.$prefix}spacing-24) !default;
+$masonry-grid-gap-xl: var(--#{config.$prefix}spacing-32) !default;
+
+// Responsive column configuration using design system breakpoints
 $masonry-grid-columns-xs: 1 !default;
 $masonry-grid-columns-sm: 2 !default;
 $masonry-grid-columns-md: 3 !default;
 $masonry-grid-columns-lg: 4 !default;
 $masonry-grid-columns-xl: 4 !default;
 $masonry-grid-columns-xxl: 5 !default;
-$masonry-grid-item-transition: all 0.3s ease-in-out !default;
 
-// Define dark mode variables if needed
+// Animation and transition tokens
+$masonry-grid-item-transition: 
+  opacity var(--#{config.$prefix}transition-duration-base) var(--#{config.$prefix}transition-timing-base),
+  top var(--#{config.$prefix}transition-duration-base) var(--#{config.$prefix}transition-timing-base),
+  left var(--#{config.$prefix}transition-duration-base) var(--#{config.$prefix}transition-timing-base) !default;
+
+$masonry-grid-item-animation-duration: var(--#{config.$prefix}transition-duration-base) !default;
+$masonry-grid-item-animation-timing: var(--#{config.$prefix}transition-timing-base) !default;
+
+// Loading state tokens
+$masonry-grid-loading-indicator-size: var(--#{config.$prefix}spacing-24) !default;
+$masonry-grid-loading-indicator-border-width: var(--#{config.$prefix}border-width-2) !default;
+$masonry-grid-loading-indicator-color: var(--#{config.$prefix}brand-border-subtle) !default;
+
+// Dark mode specific tokens (will automatically switch with design system)
 $masonry-grid-item-bg-dark: var(--#{config.$prefix}gray-9) !default;
+$masonry-grid-loading-overlay-dark: var(--#{config.$prefix}gray-20) !default;
+
+// Accessibility and focus management
+$masonry-grid-focus-ring-width: var(--#{config.$prefix}focus-ring-width) !default;
+$masonry-grid-focus-ring-color: var(--#{config.$prefix}focus-ring-color) !default;
+$masonry-grid-focus-ring-offset: var(--#{config.$prefix}focus-ring-offset) !default;
+
+// Mobile-first responsive design tokens
+$masonry-grid-min-height-mobile: var(--#{config.$prefix}spacing-200) !default;
+$masonry-grid-min-height-desktop: var(--#{config.$prefix}spacing-100) !default;
+
+// Z-index layering
+$masonry-grid-z-index-base: var(--#{config.$prefix}z-index-1) !default;
+$masonry-grid-z-index-loading: var(--#{config.$prefix}z-index-10) !default;
+$masonry-grid-z-index-focus: var(--#{config.$prefix}z-index-5) !default;

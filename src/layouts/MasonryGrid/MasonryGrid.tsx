@@ -7,9 +7,7 @@ import React, {
   useRef,
   useState,
   useCallback,
-  useMemo,
   Children,
-  cloneElement,
   isValidElement,
 } from 'react';
 // Import styles for scoped CSS modules
@@ -122,7 +120,7 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
     // === REFS & STATE ===
     const [columns, setColumns] = useState(xs);
     const [positions, setPositions] = useState<ItemPosition[]>([]);
-    const [layoutComplete, setLayoutComplete] = useState(false);
+    const [, setLayoutComplete] = useState(false);
     const [loadingImages, setLoadingImages] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
     const columnHeights = useRef<number[]>([]);
@@ -221,26 +219,24 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
             itemElement.classList.remove('o-masonry-grid__item-loading');
           }
         }
-        // Ensure layout is recalculated after DOM paints the item image (prevents overlap on slow/late image loads)
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => {
+        // Schedule layout recalculation after next paint to prevent overlap
+        const scheduleLayoutUpdate = () => {
+          const frameId = requestAnimationFrame(() => {
+            onImageLoad?.(imagesLoadedCount.current, totalImagesCount.current);
             calculateLayout();
           });
-        });
-        onImageLoad?.(imagesLoadedCount.current, totalImagesCount.current);
+          return () => cancelAnimationFrame(frameId);
+        };
+
+        // Clean up previous scheduled updates
+        const cleanup = scheduleLayoutUpdate();
 
         // If all images have loaded, update loading state and complete layout
         if (imagesLoadedCount.current >= totalImagesCount.current && totalImagesCount.current > 0) {
           setLayoutComplete(true);
-          setLoadingImages(false); // This ensures the loading class is removed *immediately* after images load
-          // Force a double requestAnimationFrame for final layout calculation after all images are loaded (guarantees DOM paint)
-          requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-              calculateLayout();
-              // As a failsafe, if still present for some render lag, force another setLoadingImages(false)
-              setLoadingImages(false);
-            });
-          });
+          setLoadingImages(false);
+          setTimeout(() => cleanup(), 0); // Clean up after current execution
+          scheduleLayoutUpdate();
           onLayoutComplete?.();
         }
       },
@@ -291,11 +287,25 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
     // === OBSERVE CONTAINER RESIZE ===
     useEffect(() => {
       if (!containerRef.current) return undefined;
+      
       let animationFrame: ReturnType<typeof requestAnimationFrame> | null = null;
-      const observer = new ResizeObserver(() => {
-        if (animationFrame) cancelAnimationFrame(animationFrame);
-        animationFrame = requestAnimationFrame(() => calculateLayout());
+      let lastWidth = 0;
+      
+      const observer = new ResizeObserver((entries) => {
+        const entry = entries[0];
+        if (!entry) return;
+        const currentWidth = entry.contentRect.width;
+        
+        // Only recalculate if width actually changed (prevents excessive calculations)
+        if (Math.abs(currentWidth - lastWidth) > 1) {
+          if (animationFrame) cancelAnimationFrame(animationFrame);
+          animationFrame = requestAnimationFrame(() => {
+            calculateLayout();
+            lastWidth = currentWidth;
+          });
+        }
       });
+      
       observer.observe(containerRef.current);
       return () => {
         observer.disconnect();
@@ -317,26 +327,28 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
       // Only reset layoutComplete when items or columns change
     }, [items, columns, calculateLayout, imagesLoaded, trackImages]);
 
-    // === NEW: Add ResizeObservers to all grid items for bulletproof image+content measurement ===
+    // === ADD RESIZEOBSERVERS TO GRID ITEMS FOR DYNAMIC CONTENT MEASUREMENT ===
     React.useEffect(() => {
-      // Clean up old observers if items ever change
       const observers: ResizeObserver[] = [];
+      let animationFrame: ReturnType<typeof requestAnimationFrame> | null = null;
+      
+      // Debounced layout calculation for item resize events
+      const debouncedCalculateLayout = () => {
+        if (animationFrame) cancelAnimationFrame(animationFrame);
+        animationFrame = requestAnimationFrame(calculateLayout);
+      };
+      
       items.forEach(item => {
         if (item.ref.current) {
-          const obs = new ResizeObserver(() => {
-            // Double rAF: ensures layout only runs after DOM/paint/async renders
-            requestAnimationFrame(() => {
-              requestAnimationFrame(() => {
-                calculateLayout();
-              });
-            });
-          });
+          const obs = new ResizeObserver(debouncedCalculateLayout);
           obs.observe(item.ref.current);
           observers.push(obs);
         }
       });
+      
       return () => {
         observers.forEach(obs => obs.disconnect());
+        if (animationFrame) cancelAnimationFrame(animationFrame);
       };
     }, [items, calculateLayout]);
 
@@ -376,7 +388,7 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
             return (
               <div
                 key={item.id}
-                ref={item.ref as React.LegacyRef<HTMLDivElement>}
+                ref={item.ref as React.RefObject<HTMLDivElement>}
                 style={{ opacity: 0, position: 'absolute' }}
               >
                 {item.element}
@@ -386,7 +398,7 @@ export const MasonryGrid = forwardRef<HTMLDivElement, MasonryGridProps>(
           return (
             <div
               key={item.id}
-              ref={item.ref as React.LegacyRef<HTMLDivElement>}
+              ref={item.ref as React.RefObject<HTMLDivElement>}
               className="o-masonry-grid__item"
               style={{
                 position: 'absolute',

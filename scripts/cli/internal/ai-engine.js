@@ -17,9 +17,15 @@ export class AIEngine {
 
   /**
    * Generate component code based on prompt
+   * @param {string} name - Component name
+   * @param {string} prompt - User prompt for AI
+   * @param {Object} options - Override options (provider, model, temperature, maxTokens)
    */
-  async generateComponent(name, prompt) {
-    const provider = this.config.provider || 'openai';
+  async generateComponent(name, prompt, options = {}) {
+    const provider = options.provider || this.config.provider || 'openai';
+    const model = options.model || this.config.model;
+    const temperature = options.temperature ?? this.config.temperature ?? 0.7;
+    const maxTokens = options.maxTokens || this.config.maxTokens || 4000;
     const apiKey = this.config.apiKey || process.env.ATOMIX_AI_API_KEY;
 
     if (!apiKey) {
@@ -31,9 +37,9 @@ export class AIEngine {
     try {
       let response;
       if (provider === 'openai') {
-        response = await this.callOpenAI(name, prompt, apiKey);
+        response = await this.callOpenAI(name, prompt, apiKey, model, temperature, maxTokens);
       } else if (provider === 'anthropic') {
-        response = await this.callAnthropic(name, prompt, apiKey);
+        response = await this.callAnthropic(name, prompt, apiKey, model, temperature, maxTokens);
       } else {
         throw new Error(`Unsupported AI provider: ${provider}`);
       }
@@ -47,9 +53,15 @@ export class AIEngine {
 
   /**
    * Call OpenAI API
+   * @param {string} name - Component name
+   * @param {string} prompt - User prompt
+   * @param {string} apiKey - API key
+   * @param {string} [modelOverride] - Model override
+   * @param {number} [temperature] - Temperature (0.0-1.0)
+   * @param {number} [maxTokens] - Max tokens
    */
-  async callOpenAI(name, prompt, apiKey) {
-    const model = this.config.model || 'gpt-4';
+  async callOpenAI(name, prompt, apiKey, modelOverride, temperature, maxTokens) {
+    const model = modelOverride || 'gpt-4';
     const systemPrompt = this.getSystemPrompt(name);
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
@@ -64,7 +76,8 @@ export class AIEngine {
           { role: 'system', content: systemPrompt },
           { role: 'user', content: prompt }
         ],
-        temperature: 0.7
+        temperature: temperature,
+        max_tokens: maxTokens
       })
     });
 
@@ -79,9 +92,15 @@ export class AIEngine {
 
   /**
    * Call Anthropic API
+   * @param {string} name - Component name
+   * @param {string} prompt - User prompt
+   * @param {string} apiKey - API key
+   * @param {string} [modelOverride] - Model override
+   * @param {number} [temperature] - Temperature (0.0-1.0)
+   * @param {number} [maxTokens] - Max tokens
    */
-  async callAnthropic(name, prompt, apiKey) {
-    const model = this.config.model || 'claude-3-sonnet-20240229';
+  async callAnthropic(name, prompt, apiKey, modelOverride, temperature, maxTokens) {
+    const model = modelOverride || 'claude-3-sonnet-20240229';
     const systemPrompt = this.getSystemPrompt(name);
 
     const response = await fetch('https://api.anthropic.com/v1/messages', {
@@ -93,7 +112,8 @@ export class AIEngine {
       },
       body: JSON.stringify({
         model: model,
-        max_tokens: 4000,
+        max_tokens: maxTokens,
+        temperature: temperature,
         system: systemPrompt,
         messages: [
           { role: 'user', content: prompt }
