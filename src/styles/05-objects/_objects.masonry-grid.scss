@@ -131,12 +131,12 @@
       opacity: 0;
       // CSS @property for smoother opacity transitions
       @supports (property: opacity) and (animation-timeline: view()) {
+        opacity: var(--masonry-img-opacity);
         @property --masonry-img-opacity {
           syntax: '<number>';
           inherits: false;
           initial-value: 0;
         }
-        opacity: var(--masonry-img-opacity);
       }
     }
   }
@@ -149,13 +149,13 @@
       
       // CSS @property for precise opacity control
       @supports (property: opacity) and (animation-timeline: view()) {
+        opacity: var(--masonry-img-opacity);
+        animation: masonry-item-fade-in-advanced masonry.$masonry-grid-item-animation-duration masonry.$masonry-grid-item-animation-timing forwards;
         @property --masonry-img-opacity {
           syntax: '<number>';
           inherits: false;
           initial-value: 0;
         }
-        opacity: var(--masonry-img-opacity);
-        animation: masonry-item-fade-in-advanced masonry.$masonry-grid-item-animation-duration masonry.$masonry-grid-item-animation-timing forwards;
       }
     }
   }

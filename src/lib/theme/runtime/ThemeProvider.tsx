@@ -80,6 +80,15 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     if (enablePersistence && storageAdapter.isAvailable()) {
       const stored = storageAdapter.getItem(storageKey);
       if (stored) {
+        // If it looks like a JSON object, parse it
+        if (stored.trim().startsWith('{')) {
+          try {
+            return JSON.parse(stored);
+          } catch (e) {
+            logger.error('Failed to parse stored theme tokens', e as Error);
+            return stored;
+          }
+        }
         return stored;
       }
     }
@@ -148,10 +157,15 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   // Handle persistence
   useEffect(() => {
     if (enablePersistence && storageAdapter.isAvailable()) {
-      const storageValue = currentTheme === 'tokens-theme' && activeTokens 
-        ? JSON.stringify(activeTokens) 
-        : currentTheme;
-      storageAdapter.setItem(storageKey, storageValue);
+      if (currentTheme === 'tokens-theme') {
+        // Only persist if we have actual tokens to store
+        if (activeTokens) {
+          storageAdapter.setItem(storageKey, JSON.stringify(activeTokens));
+        }
+      } else {
+        // Persist named theme string
+        storageAdapter.setItem(storageKey, String(currentTheme));
+      }
     }
   }, [currentTheme, activeTokens, enablePersistence, storageKey, storageAdapter]);
 

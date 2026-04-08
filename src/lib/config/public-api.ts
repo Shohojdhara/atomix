@@ -1,99 +1,54 @@
 /**
  * Public API for loading and managing Atomix configuration
- * 
- * This module provides the public-facing API for configuration loading
- * in external projects.
+ *
+ * This module provides convenience functions for loading and validating
+ * Atomix configuration in external projects.
+ *
+ * Import from '@shohojdhara/atomix/config' for types and core utilities.
  */
 
-import type { AtomixConfig } from './types';
 import { loadAtomixConfig as internalLoadConfig, validateConfig as internalValidateConfig } from './loader';
 
+type LoadConfig = typeof internalLoadConfig;
+type AtomixConfigArg = Parameters<LoadConfig>[0] extends infer O
+  ? O extends { configPath?: string; required?: boolean }
+    ? O
+    : never
+  : never;
+
+/** Resolved config type from loader */
+type ResolvedConfig = ReturnType<LoadConfig>;
+
 /**
- * Load Atomix configuration from an external project
- * 
- * This function is designed for use in external projects that want to 
- * load the user's atomix.config.ts, atomix.config.js, or atomix.config.json file.
- * 
+ * Load Atomix configuration from an external project.
+ *
  * @param options - Loading options
  * @returns The loaded configuration
- * 
+ *
  * @example
  * ```typescript
  * import { loadConfig } from '@shohojdhara/atomix/config';
- * 
+ *
  * const config = loadConfig();
  * console.log(config.prefix); // 'atomix' or user's custom prefix
  * ```
  */
-export function loadConfig(options?: { 
-  configPath?: string; 
-  required?: boolean 
-}): AtomixConfig {
+export function loadConfig(options?: {
+  configPath?: string;
+  required?: boolean;
+}): ResolvedConfig {
   return internalLoadConfig({
     configPath: options?.configPath,
-    required: options?.required ?? false
+    required: options?.required ?? false,
   });
 }
 
 /**
- * Validate Atomix configuration structure
- * 
- * Performs basic validation to catch common configuration errors early.
- * Returns warnings for potential issues like invalid formats, typos, or security concerns.
- * 
+ * Validate Atomix configuration structure.
+ *
  * @param config - Configuration object to validate
  * @returns Array of validation warnings (empty if valid)
- * 
- * @example
- * ```typescript
- * import { loadConfig, validateConfig } from '@shohojdhara/atomix/config';
- * 
- * const config = loadConfig();
- * const warnings = validateConfig(config);
- * 
- * if (warnings.length > 0) {
- *   console.warn('Configuration warnings:', warnings);
- * }
- * ```
  */
-export function validateConfig(config: AtomixConfig): string[] {
+export function validateConfig(config: ResolvedConfig): string[] {
   return internalValidateConfig(config);
 }
-
-/**
- * Defines an Atomix configuration with type safety
- * 
- * This is the same as the internal defineConfig but exported for public use.
- * 
- * @param config - The configuration object
- * @returns The configuration object
- * 
- * @example
- * ```typescript
- * import { defineConfig } from '@shohojdhara/atomix/config';
- * 
- * export default defineConfig({
- *   prefix: 'myapp',
- *   theme: {
- *     extend: {
- *       colors: {
- *         primary: { main: '#7AFFD7' },
- *       },
- *     },
- *   },
- * });
- * ```
- */
-export { defineConfig } from './index';
-
-// Export the config types for use in external projects
-export type { 
-  AtomixConfig,
-  ThemeTokens,
-  ThemeDefinition,
-  CSSThemeDefinition,
-  JSThemeDefinition,
-  BuildConfig,
-  RuntimeConfig,
-  IntegrationConfig
-} from './types';

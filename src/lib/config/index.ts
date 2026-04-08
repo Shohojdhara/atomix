@@ -489,33 +489,8 @@ export function defineConfig(config: AtomixConfig): AtomixConfig {
   return config;
 }
 
-/**
- * Main Configuration Module
- * 
- * This module exports the configuration-related functionality for external use.
- */
-
-export type {
-  /**
-   * Type definitions for the configuration system
-   */
-  AtomixConfig,
-  ThemeTokens,
-  DesignTokenCategory,
-  DesignTokenValue,
-  ThemeDefinition,
-  CSSThemeDefinition,
-  JSThemeDefinition,
-  RuntimeConfig,
-  IntegrationConfig,
-} from './types';
-
-export {
-  /**
-   * Helper function to define configuration with type safety
-   */
-  defineConfig,
-} from './config';
+// Re-export only types that are NOT defined locally in this file
+export type { DesignTokenCategory, DesignTokenValue } from './types';
 
 // Export the config loader functions
 export { 
@@ -530,5 +505,4 @@ export {
   type ValidationResult 
 } from './validator';
 
-// Export the public API for external projects
-export * from './public-api';
+
