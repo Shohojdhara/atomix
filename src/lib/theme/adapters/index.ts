@@ -4,7 +4,7 @@
  * Adapters for working with DesignTokens and CSS variables
  */
 
-export { designTokensToCSSVars } from './themeAdapter';
+export { designTokensToTheme, themeToDesignTokens, designTokensToCSSVars, configToTokens } from './themeAdapter';
 
 export {
   generateCSSVariableName,

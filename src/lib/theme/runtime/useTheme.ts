@@ -40,6 +40,7 @@ export function useTheme(): UseThemeReturn {
     theme: context.theme,
     activeTokens: context.activeTokens,
     setTheme: context.setTheme,
+    updateTheme: context.updateTheme,
     availableThemes: context.availableThemes,
     isLoading: context.isLoading,
     error: context.error,

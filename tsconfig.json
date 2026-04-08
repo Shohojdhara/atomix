@@ -1,25 +1,18 @@
 {
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    /* For linting only (since Rollup handles compilation) */
-    "noEmit": true,
-    "sourceMap": true,
-    "moduleDetection": "force",
-    "verbatimModuleSyntax": false
+    "moduleResolution": "bundler",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@shohojdhara/atomix/*": ["./src/*"]
+    }
   },
-  "include": ["src/**/*", "types/**/*", "vitest.config.ts"],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "**/*.stories.tsx",
-    "**/*.stories.ts",
-    "**/*.test.ts",
-    "**/*.test.tsx",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/scripts/**",
-    "src/htmlComponentsEntry.ts",
-    ".storybook/**/*",
-    "src/stories/**/*"
+  "include": [
+    "src/**/*",
+    "rollup/**/*",
+    "scripts/**/*",
+    "themes/**/*",
+    "*.config.ts",
+    "examples/**/*"
   ]
 }

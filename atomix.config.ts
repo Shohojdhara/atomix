@@ -39,7 +39,7 @@
 
 // For library development, use local import
 // For external developers, use: import { defineConfig } from '@shohojdhara/atomix/config';
-import { defineConfig } from './src/lib/config/index.ts';
+import { defineConfig } from './src/lib/config';
 
 export default defineConfig({
     /**
@@ -162,11 +162,11 @@ export default defineConfig({
                     // 3: '#bfdbfe',
                     // 4: '#93c5fd',
                     // 5: '#60a5fa',
-                    // 6: '#3b82f6',  // main (default)
+                    // 6: '#3b82f6',  # main (default)
                     // 7: '#2563eb',
                     // 8: '#1d4ed8',
                     // 9: '#1e40af',
-                    // 10: '#1e3a8a', // darkest
+                    // 10: '#1e3a8a', # darkest
                 },
                 // Customize other semantic colors
                 // secondary: { main: '#10b981' },
@@ -183,17 +183,17 @@ export default defineConfig({
              * These map to tokens like 'spacing-4', 'spacing-8', etc.
              */
             // spacing: {
-            //   '1': '0.25rem',   // 4px
-            //   '2': '0.5rem',    // 8px
-            //   '3': '0.75rem',   // 12px
-            //   '4': '1rem',      // 16px
-            //   '5': '1.25rem',   // 20px
-            //   '6': '1.5rem',    // 24px
-            //   '8': '2rem',      // 32px
-            //   '10': '2.5rem',   // 40px
-            //   '12': '3rem',     // 48px
-            //   '16': '4rem',     // 64px
-            //   '20': '5rem',     // 80px
+            //   '1': '0.25rem',   # 4px
+            //   '2': '0.5rem',    # 8px
+            //   '3': '0.75rem',   # 12px
+            //   '4': '1rem',      # 16px
+            //   '5': '1.25rem',   # 20px
+            //   '6': '1.5rem',    # 24px
+            //   '8': '2rem',      # 32px
+            //   '10': '2.5rem',   # 40px
+            //   '12': '3rem',     # 48px
+            //   '16': '4rem',     # 64px
+            //   '20': '5rem',     # 80px
             // },
 
             /**
@@ -202,24 +202,24 @@ export default defineConfig({
              * Customize fonts, sizes, weights, and line heights.
              */
             // typography: {
-            //   // Font families
+            //   # Font families
             //   fontFamilies: {
             //     sans: ['Inter', 'system-ui', 'sans-serif'],
             //     serif: ['Georgia', 'serif'],
             //     mono: ['Fira Code', 'monospace'],
             //   },
-            //   // Font sizes
+            //   # Font sizes
             //   fontSizes: {
-            //     'xs': '0.75rem',   // 12px
-            //     'sm': '0.875rem',  // 14px
-            //     'base': '1rem',    // 16px
-            //     'lg': '1.125rem',  // 18px
-            //     'xl': '1.25rem',   // 20px
-            //     '2xl': '1.5rem',    // 24px
-            //     '3xl': '1.875rem', // 30px
-            //     '4xl': '2.25rem',  // 36px
+            //     'xs': '0.75rem',   # 12px
+            //     'sm': '0.875rem',  # 14px
+            //     'base': '1rem',    # 16px
+            //     'lg': '1.125rem',  # 18px
+            //     'xl': '1.25rem',   # 20px
+            //     '2xl': '1.5rem',    # 24px
+            //     '3xl': '1.875rem', # 30px
+            //     '4xl': '2.25rem',  # 36px
             //   },
-            //   // Font weights
+            //   # Font weights
             //   fontWeights: {
             //     'light': 300,
             //     'normal': 400,
@@ -227,7 +227,7 @@ export default defineConfig({
             //     'semibold': 600,
             //     'bold': 700,
             //   },
-            //   // Line heights
+            //   # Line heights
             //   lineHeights: {
             //     'tight': 1.2,
             //     'normal': 1.5,
@@ -241,11 +241,11 @@ export default defineConfig({
              * Customize border radius values.
              */
             // borderRadius: {
-            //   'sm': '0.25rem',   // 4px
-            //   'md': '0.5rem',     // 8px (default)
-            //   'lg': '0.75rem',   // 12px
-            //   'xl': '1rem',       // 16px
-            //   'full': '9999px',   // Fully rounded
+            //   'sm': '0.25rem',   # 4px
+            //   'md': '0.5rem',     # 8px (default)
+            //   'lg': '0.75rem',   # 12px
+            //   'xl': '1rem',       # 16px
+            //   'full': '9999px',   # Fully rounded
             // },
 
             /**
@@ -304,7 +304,7 @@ export default defineConfig({
         // tokens: {
         //   colors: { /* your full color system */ },
         //   spacing: { /* your full spacing scale */ },
-        //   // ... other token categories
+        //   # ... other token categories
         // },
     },
 });

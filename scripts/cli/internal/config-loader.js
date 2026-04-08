@@ -1,6 +1,6 @@
 /**
  * Atomix CLI Configuration Loader
- * Supports loading atomix.config.ts and atomix.config.js
+ * Supports loading atomix.config.ts, atomix.config.js and atomix.config.json
  */
 
 import { existsSync } from 'fs';
@@ -9,7 +9,7 @@ import { pathToFileURL } from 'url';
 import { logger } from '../utils/logger.js';
 import { hookManager } from './hooks.js';
 
-export class ConfigLoader {
+class ConfigLoader {
   constructor() {
     this.config = null;
     this.configPath = null;
@@ -23,7 +23,11 @@ export class ConfigLoader {
   async load(projectRoot = process.cwd()) {
     if (this.config) return this.config;
 
-    const configFiles = ['atomix.config.ts', 'atomix.config.js'];
+    const configFiles = [
+      'atomix.config.ts',
+      'atomix.config.js', 
+      'atomix.config.json'
+    ];
     let foundFile = null;
 
     for (const file of configFiles) {
@@ -43,23 +47,29 @@ export class ConfigLoader {
     this.configPath = foundFile;
 
     try {
-      // If it's a TypeScript file, we need to register ts-node
-      if (foundFile.endsWith('.ts')) {
-        // Dynamic import to avoid issues in pure JS environments
-        const { register } = await import('ts-node');
-        register({
-          transpileOnly: true,
-          esm: true,
-          compilerOptions: {
-            module: 'ESNext',
-            target: 'ESNext'
-          }
-        });
-      }
+      // Handle JSON files differently from JS/TS files
+      if (foundFile.endsWith('.json')) {
+        const fs = await import('fs');
+        this.config = JSON.parse(fs.readFileSync(foundFile, 'utf8'));
+      } else {
+        // If it's a TypeScript file, we need to register ts-node
+        if (foundFile.endsWith('.ts')) {
+          // Dynamic import to avoid issues in pure JS environments
+          const { register } = await import('ts-node');
+          register({
+            transpileOnly: true,
+            esm: true,
+            compilerOptions: {
+              module: 'ESNext',
+              target: 'ESNext'
+            }
+          });
+        }
 
-      // Use dynamic import for ESM compatibility
-      const configModule = await import(pathToFileURL(foundFile).href);
-      this.config = configModule.default || configModule;
+        // Use dynamic import for ESM compatibility
+        const configModule = await import(pathToFileURL(foundFile).href);
+        this.config = configModule.default || configModule;
+      }
 
       logger.debug(`Loaded configuration from ${foundFile}`);
 

@@ -141,6 +141,8 @@ export interface UseThemeReturn {
     theme: string | import('./tokens').DesignTokens | Partial<import('./tokens').DesignTokens>,
     options?: ThemeLoadOptions
   ) => Promise<void>;
+  /** Update a specific theme section */
+  updateTheme: (section: ThemeSection, values: any) => Promise<void>;
   /** Available themes */
   availableThemes: ThemeMetadata[];
   /** Whether a theme is currently loading */
@@ -251,6 +253,16 @@ export interface ThemeProviderProps {
 }
 
 /**
+ * Theme configuration (partial tokens)
+ */
+export type ThemeConfig = Partial<import('./tokens').DesignTokens>;
+
+/**
+ * Theme section name
+ */
+export type ThemeSection = keyof import('./tokens').DesignTokens;
+
+/**
  * Theme context value
  */
 export interface ThemeContextValue {
@@ -263,6 +275,8 @@ export interface ThemeContextValue {
     theme: string | import('./tokens').DesignTokens | Partial<import('./tokens').DesignTokens>,
     options?: ThemeLoadOptions
   ) => Promise<void>;
+  /** Update a specific theme section */
+  updateTheme: (section: ThemeSection, values: any) => Promise<void>;
   /** Available themes */
   availableThemes: ThemeMetadata[];
   /** Loading state */
@@ -501,6 +515,83 @@ export interface BorderRadiusOptions {
  * Users can augment this interface via module augmentation
  */
 export interface ThemeCustomProperties {
+  // Advanced Features Configuration
+  interactiveEffects?: {
+    vortex?: {
+      enabled?: boolean;
+      strength?: number;
+      radius?: number;
+      decay?: number;
+    };
+    chromaticAberration?: {
+      enabled?: boolean;
+      mode?: 'longitudinal' | 'lateral' | 'hybrid';
+      redShift?: number;
+      greenShift?: number;
+      blueShift?: number;
+      edgeOnly?: boolean;
+      edgeThreshold?: number;
+    };
+    mouseInteraction?: {
+      sensitivity?: number;
+      trailEffect?: boolean;
+    };
+    animationSpeed?: {
+      base?: number;
+      timeMultiplier?: number;
+    };
+  };
+  optimization?: {
+    responsive?: {
+      breakpoints?: {
+        mobile?: string;
+        tablet?: string;
+        desktop?: string;
+        wide?: string;
+      };
+      deviceScaling?: {
+        mobile?: number;
+        tablet?: number;
+        desktop?: number;
+      };
+    };
+    performance?: {
+      fpsTarget?: number;
+      autoScaling?: boolean;
+    };
+    autoScaling?: {
+      enabled?: boolean;
+      qualityThresholds?: {
+        lowEnd?: number;
+        midRange?: number;
+        highEnd?: number;
+      };
+    };
+  };
+  
+  visualPolish?: {
+    borders?: {
+      iridescentGlow?: boolean;
+      shimmerEffect?: boolean;
+      beveledEdges?: boolean;
+      pulsingGlow?: boolean;
+    };
+    contentAwareBlur?: {
+      enabled?: boolean;
+      depthDetection?: boolean;
+      edgePreservation?: boolean;
+      variableRadius?: boolean;
+    };
+    holographicEffects?: {
+      enabled?: boolean;
+      rainbowDiffraction?: boolean;
+      scanlineAnimation?: boolean;
+      gridOverlay?: boolean;
+      dataStream?: boolean;
+      pulseRings?: boolean;
+    };
+  };
+  
   [key: string]: any;
 }
 

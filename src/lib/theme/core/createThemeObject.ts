@@ -242,16 +242,16 @@ function createPaletteColor(color: Partial<PaletteColor> | string): PaletteColor
   if (typeof color === 'string') {
     return {
       main: color,
-      light: lighten(color),
-      dark: darken(color),
+      light: lighten(color, 0.15),
+      dark: darken(color, 0.15),
       contrastText: getContrastText(color),
     };
   }
 
   return {
     main: color.main || '#000000',
-    light: color.light || lighten(color.main || '#000000'),
-    dark: color.dark || darken(color.main || '#000000'),
+    light: color.light || lighten(color.main || '#000000', 0.15),
+    dark: color.dark || darken(color.main || '#000000', 0.15),
     contrastText: color.contrastText || getContrastText(color.main || '#000000'),
   };
 }
@@ -327,6 +327,7 @@ export function createThemeObject(...options: ThemeOptions[]): Theme {
     }),
     background: {
       default: mergedOptions.palette?.background?.default || DEFAULT_PALETTE.background.default,
+      paper: mergedOptions.palette?.background?.paper || DEFAULT_PALETTE.background.paper,
       subtle: mergedOptions.palette?.background?.subtle || DEFAULT_PALETTE.background.subtle,
     },
     text: {
@@ -334,6 +335,8 @@ export function createThemeObject(...options: ThemeOptions[]): Theme {
       secondary: mergedOptions.palette?.text?.secondary || DEFAULT_PALETTE.text.secondary,
       disabled: mergedOptions.palette?.text?.disabled || DEFAULT_PALETTE.text.disabled,
     },
+    // Spread other palette properties
+    ...mergedOptions.palette,
   };
 
   // Create typography

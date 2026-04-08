@@ -379,6 +379,59 @@ export interface DesignTokens {
   'breakpoint-xxl': string;
 
   // ============================================================================
+  // Advanced Features - Interactive Effects (Phase 2)
+  // ============================================================================
+  'interactive-vortex-enabled': string;
+  'interactive-vortex-strength': string;
+  'interactive-vortex-radius': string;
+  'interactive-vortex-decay': string;
+  'interactive-chromatic-enabled': string;
+  'interactive-chromatic-mode': string;
+  'interactive-chromatic-red-shift': string;
+  'interactive-chromatic-green-shift': string;
+  'interactive-chromatic-blue-shift': string;
+  'interactive-chromatic-edge-only': string;
+  'interactive-chromatic-edge-threshold': string;
+  'interactive-mouse-sensitivity': string;
+  'interactive-mouse-trail-effect': string;
+  'interactive-animation-speed-base': string;
+  'interactive-animation-speed-multiplier': string;
+
+  // ============================================================================
+  // Advanced Features - Optimization (Phase 3)
+  // ============================================================================
+  'optimization-breakpoint-mobile': string;
+  'optimization-breakpoint-tablet': string;
+  'optimization-breakpoint-desktop': string;
+  'optimization-breakpoint-wide': string;
+  'optimization-device-scaling-mobile': string;
+  'optimization-device-scaling-tablet': string;
+  'optimization-device-scaling-desktop': string;
+  'optimization-performance-fps-target': string;
+  'optimization-auto-scaling-enabled': string;
+  'optimization-auto-scaling-low-end': string;
+  'optimization-auto-scaling-mid-range': string;
+  'optimization-auto-scaling-high-end': string;
+
+  // ============================================================================
+  // Advanced Features - Visual Polish (Phase 4)
+  // ============================================================================
+  'visual-polish-border-iridescent-glow': string;
+  'visual-polish-border-shimmer-effect': string;
+  'visual-polish-border-beveled-edges': string;
+  'visual-polish-border-pulsing-glow': string;
+  'visual-polish-content-aware-blur-enabled': string;
+  'visual-polish-content-aware-depth-detection': string;
+  'visual-polish-content-aware-edge-preservation': string;
+  'visual-polish-content-aware-variable-radius': string;
+  'visual-polish-holographic-enabled': string;
+  'visual-polish-holographic-rainbow-diffraction': string;
+  'visual-polish-holographic-scanline-animation': string;
+  'visual-polish-holographic-grid-overlay': string;
+  'visual-polish-holographic-data-stream': string;
+  'visual-polish-holographic-pulse-rings': string;
+
+  // ============================================================================
   // Custom tokens (allow any additional tokens)
   // ============================================================================
   [key: string]: string | undefined;
@@ -701,6 +754,53 @@ export const defaultTokens: DesignTokens = {
   'breakpoint-lg': '992px',
   'breakpoint-xl': '1200px',
   'breakpoint-xxl': '1440px',
+
+  // Advanced Features - Interactive Effects (Phase 2)
+  'interactive-vortex-enabled': 'false',
+  'interactive-vortex-strength': '0.5',
+  'interactive-vortex-radius': '100',
+  'interactive-vortex-decay': '0.8',
+  'interactive-chromatic-enabled': 'false',
+  'interactive-chromatic-mode': 'lateral',
+  'interactive-chromatic-red-shift': '0.02',
+  'interactive-chromatic-green-shift': '0',
+  'interactive-chromatic-blue-shift': '-0.02',
+  'interactive-chromatic-edge-only': 'false',
+  'interactive-chromatic-edge-threshold': '0.5',
+  'interactive-mouse-sensitivity': '1.0',
+  'interactive-mouse-trail-effect': 'false',
+  'interactive-animation-speed-base': '1.0',
+  'interactive-animation-speed-multiplier': '1.0',
+
+  // Advanced Features - Optimization (Phase 3)
+  'optimization-breakpoint-mobile': '0px',
+  'optimization-breakpoint-tablet': '768px',
+  'optimization-breakpoint-desktop': '1024px',
+  'optimization-breakpoint-wide': '1440px',
+  'optimization-device-scaling-mobile': '0.5',
+  'optimization-device-scaling-tablet': '0.75',
+  'optimization-device-scaling-desktop': '1.0',
+  'optimization-performance-fps-target': '60',
+  'optimization-auto-scaling-enabled': 'false',
+  'optimization-auto-scaling-low-end': '0.5',
+  'optimization-auto-scaling-mid-range': '0.75',
+  'optimization-auto-scaling-high-end': '1.0',
+
+  // Advanced Features - Visual Polish (Phase 4)
+  'visual-polish-border-iridescent-glow': 'false',
+  'visual-polish-border-shimmer-effect': 'false',
+  'visual-polish-border-beveled-edges': 'false',
+  'visual-polish-border-pulsing-glow': 'false',
+  'visual-polish-content-aware-blur-enabled': 'false',
+  'visual-polish-content-aware-depth-detection': 'false',
+  'visual-polish-content-aware-edge-preservation': 'false',
+  'visual-polish-content-aware-variable-radius': 'false',
+  'visual-polish-holographic-enabled': 'false',
+  'visual-polish-holographic-rainbow-diffraction': 'false',
+  'visual-polish-holographic-scanline-animation': 'false',
+  'visual-polish-holographic-grid-overlay': 'false',
+  'visual-polish-holographic-data-stream': 'false',
+  'visual-polish-holographic-pulse-rings': 'false',
 };
 
 /**

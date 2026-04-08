@@ -1,264 +1,422 @@
 /**
  * Theme Adapter
- *
- * Converts between Theme objects and DesignTokens.
+ * 
+ * Converts between Theme objects and DesignTokens
  */
 
 import type { Theme } from '../types';
-import type { DesignTokens } from '../tokens/tokens';
-import { createTokens } from '../tokens/tokens';
-import { hexToRgb } from '../utils/themeUtils';
+import type { AtomixConfig } from '../../config';
+import { type DesignTokens, defaultTokens, createTokens } from '../tokens/tokens';
 
 /**
- * Convert Theme object to DesignTokens
- *
- * Extracts values from a Theme object and converts them to flat DesignTokens format.
- *
- * @param theme - Theme object to convert
- * @returns Partial DesignTokens object
- *
- * @example
- * ```typescript
- * const theme = createTheme({ palette: { primary: { main: '#7c3aed' } } });
- * const tokens = themeToDesignTokens(theme);
- * // Returns: { 'primary': '#7c3aed', ... }
- * ```
+ * Convert a Theme object to DesignTokens
  */
-export function themeToDesignTokens(theme: Theme): Partial<DesignTokens> {
+export function themeToDesignTokens(theme: Theme): DesignTokens {
   const tokens: Partial<DesignTokens> = {};
 
-  // Convert palette colors
+  // Convert colors
   if (theme.palette) {
-    // Primary colors
+    // Primary color
     if (theme.palette.primary) {
-      tokens['primary'] = theme.palette.primary.main;
-      if (theme.palette.primary.light) {
-        tokens['primary-3'] = theme.palette.primary.light;
-      }
-      if (theme.palette.primary.dark) {
-        tokens['primary-9'] = theme.palette.primary.dark;
-      }
-      // Extract RGB if available
-      if (theme.palette.primary.main) {
-        const rgb = hexToRgb(theme.palette.primary.main);
-        if (rgb) {
-          tokens['primary-rgb'] = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
-        }
-      }
+      const primaryMain = theme.palette.primary.main;
+      tokens.primary = primaryMain;
+      const rgb = hexToRgb(primaryMain);
+      if (rgb) tokens['primary-rgb'] = rgb;
     }
 
-    // Secondary colors
+    // Secondary color
     if (theme.palette.secondary) {
-      tokens['secondary'] = theme.palette.secondary.main;
-      if (theme.palette.secondary.light) {
-        tokens['gray-1'] = theme.palette.secondary.light;
-      }
-      if (theme.palette.secondary.dark) {
-        tokens['gray-3'] = theme.palette.secondary.dark;
-      }
-      const rgb = hexToRgb(theme.palette.secondary.main);
-      if (rgb) {
-        tokens['secondary-rgb'] = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
-      }
+      const secondaryMain = theme.palette.secondary.main;
+      tokens.secondary = secondaryMain;
+      const rgb = hexToRgb(secondaryMain);
+      if (rgb) tokens['secondary-rgb'] = rgb;
     }
 
-    // Error colors
-    if (theme.palette.error) {
-      tokens['error'] = theme.palette.error.main;
-      tokens['red-6'] = theme.palette.error.main;
-      if (theme.palette.error.light) {
-        tokens['red-4'] = theme.palette.error.light;
-      }
-      if (theme.palette.error.dark) {
-        tokens['red-9'] = theme.palette.error.dark;
-      }
-      const rgb = hexToRgb(theme.palette.error.main);
-      if (rgb) {
-        tokens['error-rgb'] = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
-      }
-    }
-
-    // Success colors
-    if (theme.palette.success) {
-      tokens['success'] = theme.palette.success.main;
-      tokens['green-6'] = theme.palette.success.main;
-      if (theme.palette.success.light) {
-        tokens['green-4'] = theme.palette.success.light;
-      }
-      if (theme.palette.success.dark) {
-        tokens['green-9'] = theme.palette.success.dark;
-      }
-      const rgb = hexToRgb(theme.palette.success.main);
-      if (rgb) {
-        tokens['success-rgb'] = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
-      }
-    }
-
-    // Warning colors
-    if (theme.palette.warning) {
-      tokens['warning'] = theme.palette.warning.main;
-      tokens['yellow-6'] = theme.palette.warning.main;
-      if (theme.palette.warning.light) {
-        tokens['yellow-4'] = theme.palette.warning.light;
-      }
-      if (theme.palette.warning.dark) {
-        tokens['yellow-9'] = theme.palette.warning.dark;
-      }
-      const rgb = hexToRgb(theme.palette.warning.main);
-      if (rgb) {
-        tokens['warning-rgb'] = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
-      }
-    }
-
-    // Info colors
-    if (theme.palette.info) {
-      tokens['info'] = theme.palette.info.main;
-      tokens['blue-6'] = theme.palette.info.main;
-      if (theme.palette.info.light) {
-        tokens['blue-4'] = theme.palette.info.light;
-      }
-      if (theme.palette.info.dark) {
-        tokens['blue-9'] = theme.palette.info.dark;
-      }
-      const rgb = hexToRgb(theme.palette.info.main);
-      if (rgb) {
-        tokens['info-rgb'] = `${rgb.r}, ${rgb.g}, ${rgb.b}`;
+    // Other colors
+    const colorKeys = ['error', 'warning', 'info', 'success'] as const;
+    for (const key of colorKeys) {
+      if (theme.palette[key]) {
+        const colorMain = theme.palette[key]!.main;
+        tokens[key] = colorMain;
+        const rgb = hexToRgb(colorMain);
+        if (rgb) tokens[`${key}-rgb` as keyof DesignTokens] = rgb as any;
       }
     }
 
     // Background colors
     if (theme.palette.background) {
       tokens['body-bg'] = theme.palette.background.default;
-      tokens['primary-bg-subtle'] = theme.palette.background.default;
-      tokens['secondary-bg-subtle'] = theme.palette.background.paper;
-      tokens['tertiary-bg-subtle'] = theme.palette.background.subtle;
     }
 
     // Text colors
     if (theme.palette.text) {
       tokens['body-color'] = theme.palette.text.primary;
-      tokens['heading-color'] = theme.palette.text.primary;
-      tokens['primary-text-emphasis'] = theme.palette.text.primary;
-      tokens['secondary-text-emphasis'] = theme.palette.text.secondary;
-      tokens['disabled-text-emphasis'] = theme.palette.text.disabled;
     }
   }
 
   // Convert typography
   if (theme.typography) {
     tokens['body-font-family'] = theme.typography.fontFamily;
-    tokens['font-sans-serif'] = theme.typography.fontFamily;
     tokens['body-font-size'] = `${theme.typography.fontSize}px`;
-    tokens['body-font-weight'] = String(theme.typography.fontWeightRegular);
-
-    // Font weights
-    tokens['font-weight-light'] = String(theme.typography.fontWeightLight);
-    tokens['font-weight-normal'] = String(theme.typography.fontWeightRegular);
-    tokens['font-weight-medium'] = String(theme.typography.fontWeightMedium);
-    tokens['font-weight-semibold'] = String(theme.typography.fontWeightSemiBold);
-    tokens['font-weight-bold'] = String(theme.typography.fontWeightBold);
-
-    // Line heights
-    if (theme.typography.h1?.lineHeight) {
-      tokens['line-height-base'] = String(theme.typography.h1.lineHeight);
-    }
+    tokens['font-weight-normal'] = `${theme.typography.fontWeightRegular}`;
+    tokens['font-weight-bold'] = `${theme.typography.fontWeightBold}`;
   }
 
-  // Convert spacing (if available as object)
-  if (
-    theme.spacing &&
-    typeof theme.spacing === 'object' &&
-    !('__isSpacingFunction' in theme.spacing)
-  ) {
-    const spacing = theme.spacing as Record<string, string | number>;
-    Object.entries(spacing).forEach(([key, value]) => {
-      tokens[`spacing-${key}` as keyof DesignTokens] = String(value);
-    });
-  }
-
-  // Convert border radius
-  if (theme.borderRadius) {
-    Object.entries(theme.borderRadius).forEach(([key, value]) => {
-      const tokenKey =
-        key === 'sm'
-          ? 'border-radius-sm'
-          : key === 'md'
-            ? 'border-radius'
-            : key === 'lg'
-              ? 'border-radius-lg'
-              : key === 'xl'
-                ? 'border-radius-xl'
-                : key === 'xxl'
-                  ? 'border-radius-xxl'
-                  : `border-radius-${key}`;
-      tokens[tokenKey as keyof DesignTokens] = String(value);
-    });
-  }
-
-  // Convert shadows
-  if (theme.shadows) {
-    Object.entries(theme.shadows).forEach(([key, value]) => {
-      const tokenKey =
-        key === 'xs'
-          ? 'box-shadow-xs'
-          : key === 'sm'
-            ? 'box-shadow-sm'
-            : key === 'md'
-              ? 'box-shadow'
-              : key === 'lg'
-                ? 'box-shadow-lg'
-                : key === 'xl'
-                  ? 'box-shadow-xl'
-                  : `box-shadow-${key}`;
-      tokens[tokenKey as keyof DesignTokens] = String(value);
-    });
-  }
-
-  // Convert z-index
-  if (theme.zIndex) {
-    Object.entries(theme.zIndex).forEach(([key, value]) => {
-      tokens[`z-${key}` as keyof DesignTokens] = String(value);
-    });
-  }
-
-  // Convert transitions
-  if (theme.transitions) {
-    if (theme.transitions.duration) {
-      Object.entries(theme.transitions.duration).forEach(([key, value]) => {
-        tokens[`transition-duration-${key}` as keyof DesignTokens] = String(value);
-      });
-    }
-    if (theme.transitions.easing) {
-      Object.entries(theme.transitions.easing).forEach(([key, value]) => {
-        tokens[`easing-${key}` as keyof DesignTokens] = String(value);
-      });
-    }
+  // Convert spacing
+  if (typeof theme.spacing === 'function') {
+    // If spacing is a function, call it with some values to get results
+    tokens['spacing-1'] = theme.spacing(1);
+    tokens['spacing-2'] = theme.spacing(2);
+    tokens['spacing-4'] = theme.spacing(4);
   }
 
   // Convert breakpoints
   if (theme.breakpoints?.values) {
-    Object.entries(theme.breakpoints.values).forEach(([key, value]) => {
-      tokens[`breakpoint-${key}` as keyof DesignTokens] = String(value);
-    });
+    tokens['breakpoint-xs'] = `${theme.breakpoints.values.xs}px`;
+    tokens['breakpoint-sm'] = `${theme.breakpoints.values.sm}px`;
+    tokens['breakpoint-md'] = `${theme.breakpoints.values.md}px`;
+    tokens['breakpoint-lg'] = `${theme.breakpoints.values.lg}px`;
+    tokens['breakpoint-xl'] = `${theme.breakpoints.values.xl}px`;
   }
 
-  // Merge any existing cssVars from theme
-  if (theme.cssVars) {
-    Object.entries(theme.cssVars).forEach(([key, value]) => {
-      // Remove --atomix- prefix if present
-      const cleanKey = key.replace(/^--atomix-/, '').replace(/^--/, '');
-      tokens[cleanKey as keyof DesignTokens] = String(value);
-    });
+  // Convert shadows
+  if (theme.shadows) {
+    tokens['box-shadow'] = theme.shadows[2]; // Use a moderate shadow
+    tokens['box-shadow-sm'] = theme.shadows[1];
+    tokens['box-shadow-lg'] = theme.shadows[3];
   }
 
-  return tokens;
+  // Convert transitions
+  if (theme.transitions) {
+    tokens['transition-duration-base'] = `${theme.transitions.duration.standard}ms`;
+  }
+
+  // Convert z-index
+  if (theme.zIndex) {
+    tokens['z-modal'] = `${theme.zIndex.modal}`;
+    tokens['z-popover'] = `${theme.zIndex.popover}`;
+    tokens['z-tooltip'] = `${theme.zIndex.tooltip}`;
+  }
+
+  // Convert border radius
+  if (theme.borderRadius) {
+    const baseRadius = theme.borderRadius.base;
+    tokens['border-radius'] = typeof baseRadius === 'number' 
+      ? `${baseRadius}px` 
+      : baseRadius;
+  }
+
+  // Add advanced feature tokens if available in theme
+  if (theme.custom) {
+    // Interactive Effects (Phase 2)
+    if (theme.custom.interactiveEffects) {
+      const ie = theme.custom.interactiveEffects;
+      
+      // Vortex effects
+      if (ie.vortex) {
+        tokens['interactive-vortex-enabled'] = String(ie.vortex.enabled ?? false);
+        tokens['interactive-vortex-strength'] = String(ie.vortex.strength ?? 0.5);
+        tokens['interactive-vortex-radius'] = String(ie.vortex.radius ?? 100);
+        tokens['interactive-vortex-decay'] = String(ie.vortex.decay ?? 0.8);
+      }
+      
+      // Chromatic aberration
+      if (ie.chromaticAberration) {
+        tokens['interactive-chromatic-enabled'] = String(ie.chromaticAberration.enabled ?? false);
+        tokens['interactive-chromatic-mode'] = ie.chromaticAberration.mode ?? 'lateral';
+        tokens['interactive-chromatic-red-shift'] = String(ie.chromaticAberration.redShift ?? 0.02);
+        tokens['interactive-chromatic-green-shift'] = String(ie.chromaticAberration.greenShift ?? 0);
+        tokens['interactive-chromatic-blue-shift'] = String(ie.chromaticAberration.blueShift ?? -0.02);
+        tokens['interactive-chromatic-edge-only'] = String(ie.chromaticAberration.edgeOnly ?? false);
+        tokens['interactive-chromatic-edge-threshold'] = String(ie.chromaticAberration.edgeThreshold ?? 0.5);
+      }
+      
+      // Mouse interaction
+      if (ie.mouseInteraction) {
+        tokens['interactive-mouse-sensitivity'] = String(ie.mouseInteraction.sensitivity ?? 1.0);
+        tokens['interactive-mouse-trail-effect'] = String(ie.mouseInteraction.trailEffect ?? false);
+      }
+      
+      // Animation speed
+      if (ie.animationSpeed) {
+        tokens['interactive-animation-speed-base'] = String(ie.animationSpeed.base ?? 1.0);
+        tokens['interactive-animation-speed-multiplier'] = String(ie.animationSpeed.timeMultiplier ?? 1.0);
+      }
+    }
+    
+    // Optimization (Phase 3)
+    if (theme.custom.optimization) {
+      const opt = theme.custom.optimization;
+      
+      // Responsive breakpoints
+      if (opt.responsive) {
+        if (opt.responsive.breakpoints) {
+          tokens['optimization-breakpoint-mobile'] = opt.responsive.breakpoints.mobile ?? '0px';
+          tokens['optimization-breakpoint-tablet'] = opt.responsive.breakpoints.tablet ?? '768px';
+          tokens['optimization-breakpoint-desktop'] = opt.responsive.breakpoints.desktop ?? '1024px';
+          tokens['optimization-breakpoint-wide'] = opt.responsive.breakpoints.wide ?? '1440px';
+        }
+        
+        if (opt.responsive.deviceScaling) {
+          tokens['optimization-device-scaling-mobile'] = String(opt.responsive.deviceScaling.mobile ?? 0.5);
+          tokens['optimization-device-scaling-tablet'] = String(opt.responsive.deviceScaling.tablet ?? 0.75);
+          tokens['optimization-device-scaling-desktop'] = String(opt.responsive.deviceScaling.desktop ?? 1.0);
+        }
+      }
+      
+      // Performance settings
+      if (opt.performance) {
+        tokens['optimization-performance-fps-target'] = String(opt.performance.fpsTarget ?? 60);
+        tokens['optimization-auto-scaling-enabled'] = String(opt.performance.autoScaling ?? false);
+      }
+      
+      // Auto-scaling settings
+      if (opt.autoScaling) {
+        tokens['optimization-auto-scaling-enabled'] = String(opt.autoScaling.enabled ?? false);
+        tokens['optimization-auto-scaling-low-end'] = String(opt.autoScaling.qualityThresholds?.lowEnd ?? 0.5);
+        tokens['optimization-auto-scaling-mid-range'] = String(opt.autoScaling.qualityThresholds?.midRange ?? 0.75);
+        tokens['optimization-auto-scaling-high-end'] = String(opt.autoScaling.qualityThresholds?.highEnd ?? 1.0);
+      }
+    }
+    
+    // Visual Polish (Phase 4)
+    if (theme.custom.visualPolish) {
+      const vp = theme.custom.visualPolish;
+      
+      if (vp.borders) {
+        tokens['visual-polish-border-iridescent-glow'] = String(vp.borders.iridescentGlow ?? false);
+        tokens['visual-polish-border-shimmer-effect'] = String(vp.borders.shimmerEffect ?? false);
+        tokens['visual-polish-border-beveled-edges'] = String(vp.borders.beveledEdges ?? false);
+        tokens['visual-polish-border-pulsing-glow'] = String(vp.borders.pulsingGlow ?? false);
+      }
+      
+      if (vp.contentAwareBlur) {
+        tokens['visual-polish-content-aware-blur-enabled'] = String(vp.contentAwareBlur.enabled ?? false);
+        tokens['visual-polish-content-aware-depth-detection'] = String(vp.contentAwareBlur.depthDetection ?? false);
+        tokens['visual-polish-content-aware-edge-preservation'] = String(vp.contentAwareBlur.edgePreservation ?? false);
+        tokens['visual-polish-content-aware-variable-radius'] = String(vp.contentAwareBlur.variableRadius ?? false);
+      }
+      
+      if (vp.holographicEffects) {
+        tokens['visual-polish-holographic-enabled'] = String(vp.holographicEffects.enabled ?? false);
+        tokens['visual-polish-holographic-rainbow-diffraction'] = String(vp.holographicEffects.rainbowDiffraction ?? false);
+        tokens['visual-polish-holographic-scanline-animation'] = String(vp.holographicEffects.scanlineAnimation ?? false);
+        tokens['visual-polish-holographic-grid-overlay'] = String(vp.holographicEffects.gridOverlay ?? false);
+        tokens['visual-polish-holographic-data-stream'] = String(vp.holographicEffects.dataStream ?? false);
+        tokens['visual-polish-holographic-pulse-rings'] = String(vp.holographicEffects.pulseRings ?? false);
+      }
+    }
+  }
+
+  // Create full tokens object with defaults
+  return createTokens(tokens);
 }
 
 /**
- * Convert DesignTokens to Theme-compatible CSS variables
+ * Convert DesignTokens to a Theme object
+ */
+export function designTokensToTheme(tokens: DesignTokens): Theme {
+  // Implementation would go here if needed
+  // For now, we're primarily concerned with the direction from theme to tokens
+  throw new Error('designTokensToTheme not yet implemented');
+}
+
+/**
+ * Converts an AtomixConfig to DesignTokens
+ * 
+ * This function maps the configuration from the user-facing format
+ * to the internal DesignTokens format used by the theme system.
+ * 
+ * @param config - The configuration object to convert
+ * @returns DesignTokens object ready for theme generation
+ * 
+ * @example
+ * ```typescript
+ * import { configToTokens } from '@shohojdhara/atomix/theme';
+ * 
+ * const config = { 
+ *   prefix: 'myapp',
+ *   theme: { extend: { colors: { primary: { main: '#7AFFD7' } } } }
+ * };
+ * const tokens = configToTokens(config);
+ * ```
+ */
+export function configToTokens(config: AtomixConfig): DesignTokens {
+  const prefix = config.prefix || 'atomix';
+  const theme = config.theme || {};
+  
+  // Start with default tokens
+  let tokens: DesignTokens = { ...defaultTokens };
+  
+  // Apply theme extensions
+  if (theme.extend) {
+    // Apply extensions to tokens
+    Object.entries(theme.extend).forEach(([category, values]) => {
+      if (typeof values === 'object' && values !== null) {
+        Object.entries(values).forEach(([key, value]) => {
+          // Map theme categories to token names
+          const tokenName = `${category}-${key}`;
+          
+          if (typeof value === 'string' || typeof value === 'number') {
+            tokens[tokenName as keyof DesignTokens] = String(value);
+          } else if (typeof value === 'object' && value !== null) {
+            // Handle nested objects like color scales
+            Object.entries(value).forEach(([nestedKey, nestedValue]) => {
+              if (typeof nestedValue === 'string' || typeof nestedValue === 'number') {
+                tokens[`${tokenName}-${nestedKey}` as keyof DesignTokens] = String(nestedValue);
+              }
+            });
+          }
+        });
+      }
+    });
+  }
+  
+  // Apply theme tokens if provided (completely replacing defaults)
+  if (theme.tokens) {
+    tokens = { ...tokens, ...theme.tokens } as DesignTokens;
+  }
+  
+  // Apply advanced features if available in config
+  if (config) {
+    // Interactive Effects (Phase 2)
+    if (config.interactiveEffects) {
+      const ie = config.interactiveEffects;
+      
+      // Vortex effects
+      if (ie.vortex) {
+        tokens['interactive-vortex-enabled'] = String(ie.vortex.enabled ?? false);
+        tokens['interactive-vortex-strength'] = String(ie.vortex.strength ?? 0.5);
+        tokens['interactive-vortex-radius'] = String(ie.vortex.radius ?? 100);
+        tokens['interactive-vortex-decay'] = String(ie.vortex.decay ?? 0.8);
+        tokens['interactive-vortex-curl-noise'] = String(ie.vortex.curlNoise ?? false);
+        tokens['interactive-vortex-velocity-tracking'] = String(ie.vortex.velocityTracking ?? false);
+      }
+      
+      // Chromatic aberration
+      if (ie.chromaticAberration) {
+        tokens['interactive-chromatic-enabled'] = String(ie.chromaticAberration.enabled ?? false);
+        tokens['interactive-chromatic-mode'] = ie.chromaticAberration.mode ?? 'lateral';
+        tokens['interactive-chromatic-red-shift'] = String(ie.chromaticAberration.redShift ?? 0.02);
+        tokens['interactive-chromatic-green-shift'] = String(ie.chromaticAberration.greenShift ?? 0);
+        tokens['interactive-chromatic-blue-shift'] = String(ie.chromaticAberration.blueShift ?? -0.02);
+        tokens['interactive-chromatic-edge-only'] = String(ie.chromaticAberration.edgeOnly ?? false);
+        tokens['interactive-chromatic-edge-threshold'] = String(ie.chromaticAberration.edgeThreshold ?? 0.5);
+      }
+      
+      // Mouse interaction
+      if (ie.mouseInteraction) {
+        tokens['interactive-mouse-sensitivity'] = String(ie.mouseInteraction.sensitivity ?? 1.0);
+        tokens['interactive-mouse-trail-effect'] = String(ie.mouseInteraction.trailEffect ?? false);
+        tokens['interactive-mouse-pressure-sensitivity'] = String(ie.mouseInteraction.pressureSensitivity ?? false);
+      }
+      
+      // Animation speed
+      if (ie.animationSpeed) {
+        tokens['interactive-animation-speed-base'] = String(ie.animationSpeed.base ?? 1.0);
+        tokens['interactive-animation-speed-multiplier'] = String(ie.animationSpeed.timeMultiplier ?? 1.0);
+      }
+    }
+    
+    // Optimization (Phase 3)
+    if (config.optimization) {
+      const opt = config.optimization;
+      
+      // Responsive breakpoints
+      if (opt.responsive) {
+        if (opt.responsive.breakpoints) {
+          tokens['optimization-breakpoint-mobile'] = opt.responsive.breakpoints.mobile ?? '0px';
+          tokens['optimization-breakpoint-tablet'] = opt.responsive.breakpoints.tablet ?? '768px';
+          tokens['optimization-breakpoint-desktop'] = opt.responsive.breakpoints.desktop ?? '1024px';
+          tokens['optimization-breakpoint-wide'] = opt.responsive.breakpoints.wide ?? '1440px';
+        }
+        
+        if (opt.responsive.deviceScaling) {
+          tokens['optimization-device-scaling-mobile'] = String(opt.responsive.deviceScaling.mobile ?? 0.5);
+          tokens['optimization-device-scaling-tablet'] = String(opt.responsive.deviceScaling.tablet ?? 0.75);
+          tokens['optimization-device-scaling-desktop'] = String(opt.responsive.deviceScaling.desktop ?? 1.0);
+        }
+      }
+      
+      // Performance settings
+      if (opt.performance) {
+        tokens['optimization-performance-fps-target'] = String(opt.performance.fpsTarget ?? 60);
+        tokens['optimization-auto-scaling-enabled'] = String(opt.performance.autoScaling ?? false);
+        tokens['optimization-monitor-dashboard-enabled'] = String(opt.performance.monitorDashboard ?? false);
+      }
+      
+      // Auto-scaling settings
+      if (opt.autoScaling) {
+        tokens['optimization-auto-scaling-enabled'] = String(opt.autoScaling.enabled ?? false);
+        tokens['optimization-auto-scaling-low-end'] = String(opt.autoScaling.qualityThresholds?.lowEnd ?? 0.5);
+        tokens['optimization-auto-scaling-mid-range'] = String(opt.autoScaling.qualityThresholds?.midRange ?? 0.75);
+        tokens['optimization-auto-scaling-high-end'] = String(opt.autoScaling.qualityThresholds?.highEnd ?? 1.0);
+      }
+    }
+    
+    // Visual Polish (Phase 4)
+    if (config.visualPolish) {
+      const vp = config.visualPolish;
+      
+      if (vp.borders) {
+        tokens['visual-polish-border-iridescent-glow'] = String(vp.borders.iridescentGlow ?? false);
+        tokens['visual-polish-border-shimmer-effect'] = String(vp.borders.shimmerEffect ?? false);
+        tokens['visual-polish-border-beveled-edges'] = String(vp.borders.beveledEdges ?? false);
+        tokens['visual-polish-border-pulsing-glow'] = String(vp.borders.pulsingGlow ?? false);
+      }
+      
+      if (vp.contentAwareBlur) {
+        tokens['visual-polish-content-aware-blur-enabled'] = String(vp.contentAwareBlur.enabled ?? false);
+        tokens['visual-polish-content-aware-depth-detection'] = String(vp.contentAwareBlur.depthDetection ?? false);
+        tokens['visual-polish-content-aware-edge-preservation'] = String(vp.contentAwareBlur.edgePreservation ?? false);
+        tokens['visual-polish-content-aware-variable-radius'] = String(vp.contentAwareBlur.variableRadius ?? false);
+      }
+      
+      if (vp.holographicEffects) {
+        tokens['visual-polish-holographic-enabled'] = String(vp.holographicEffects.enabled ?? false);
+        tokens['visual-polish-holographic-rainbow-diffraction'] = String(vp.holographicEffects.rainbowDiffraction ?? false);
+        tokens['visual-polish-holographic-scanline-animation'] = String(vp.holographicEffects.scanlineAnimation ?? false);
+        tokens['visual-polish-holographic-grid-overlay'] = String(vp.holographicEffects.gridOverlay ?? false);
+        tokens['visual-polish-holographic-data-stream'] = String(vp.holographicEffects.dataStream ?? false);
+        tokens['visual-polish-holographic-pulse-rings'] = String(vp.holographicEffects.pulseRings ?? false);
+      }
+    }
+  }
+  
+  // Apply prefix to all tokens
+  const prefixedTokens: DesignTokens = {} as DesignTokens;
+  Object.entries(tokens).forEach(([key, value]) => {
+    // If the token key already starts with the prefix, use as-is
+    // Otherwise, add the prefix
+    const prefixedKey = key.startsWith(prefix) ? key : `${prefix}-${key}`;
+    prefixedTokens[prefixedKey as keyof DesignTokens] = value;
+  });
+  
+  return prefixedTokens;
+}
+
+/**
+ * Convert hex color to RGB
+ */
+function hexToRgb(hex: string): string {
+  // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+  const shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hex = hex.replace(shorthandRegex, (m, r, g, b) => {
+    return r + r + g + g + b + b;
+  });
+
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (!result || !result[1] || !result[2] || !result[3]) {
+    return '0, 0, 0';
+  }
+  return `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}`;
+}
+
+/**
+ * Converts DesignTokens to CSS variables
  *
- * @param tokens - DesignTokens object
- * @returns CSS variables object compatible with Theme.cssVars
+ * @param tokens - The tokens to convert
+ * @returns A record of CSS variable names and values
  */
 export function designTokensToCSSVars(tokens: Partial<DesignTokens>): Record<string, string> {
   const cssVars: Record<string, string> = {};
@@ -270,33 +428,4 @@ export function designTokensToCSSVars(tokens: Partial<DesignTokens>): Record<str
   });
 
   return cssVars;
-}
-
-/**
- * Create DesignTokens from Theme with defaults
- *
- * Converts a Theme to DesignTokens and merges with default tokens.
- *
- * @param theme - Theme object to convert
- * @returns Complete DesignTokens object
- */
-export function createDesignTokensFromTheme(theme: Theme): DesignTokens {
-  const partialTokens = themeToDesignTokens(theme);
-  return createTokens(partialTokens);
-}
-
-/**
- * Create a minimal Theme object from DesignTokens
- *
- * @param tokens - DesignTokens to convert
- * @returns Minimal Theme object with cssVars populated
- */
-export function designTokensToTheme(tokens: Partial<DesignTokens>): Partial<Theme> {
-  const cssVars = designTokensToCSSVars(tokens);
-
-  return {
-    name: 'Design Tokens Theme',
-    cssVars,
-    __isJSTheme: true,
-  } as Partial<Theme>;
 }

@@ -53,6 +53,115 @@ export interface PaletteColorOptions {
 }
 
 /**
+ * Interactive Effect Configuration
+ */
+export interface InteractiveEffectsConfig {
+  /** Vortex & flow field effects */
+  vortex?: {
+    enabled?: boolean;
+    strength?: number;
+    radius?: number;
+    decay?: number;
+    curlNoise?: boolean;
+    velocityTracking?: boolean;
+  };
+  
+  /** Chromatic aberration effects */
+  chromaticAberration?: {
+    enabled?: boolean;
+    mode?: 'longitudinal' | 'lateral' | 'hybrid';
+    redShift?: number;
+    greenShift?: number;
+    blueShift?: number;
+    edgeOnly?: boolean;
+    edgeThreshold?: number;
+  };
+  
+  /** Mouse interaction settings */
+  mouseInteraction?: {
+    sensitivity?: number;
+    trailEffect?: boolean;
+    pressureSensitivity?: boolean;
+  };
+  
+  /** Animation speed controls */
+  animationSpeed?: {
+    base?: number;
+    timeMultiplier?: number;
+  };
+}
+
+/**
+ * Optimization Configuration
+ */
+export interface OptimizationConfig {
+  /** Responsive breakpoint system */
+  responsive?: {
+    breakpoints?: {
+      mobile?: string;
+      tablet?: string;
+      desktop?: string;
+      wide?: string;
+    };
+    /** Device-aware parameter scaling */
+    deviceScaling?: {
+      mobile?: number;
+      tablet?: number;
+      desktop?: number;
+    };
+  };
+  
+  /** Performance monitoring */
+  performance?: {
+    enabled?: boolean;
+    fpsTarget?: number;
+    autoScaling?: boolean;
+    monitorDashboard?: boolean;
+  };
+  
+  /** Auto-scaling logic based on device capabilities */
+  autoScaling?: {
+    enabled?: boolean;
+    qualityThresholds?: {
+      lowEnd?: number;
+      midRange?: number;
+      highEnd?: number;
+    };
+  };
+}
+
+/**
+ * Visual Polish Configuration
+ */
+export interface VisualPolishConfig {
+  /** Advanced border effects */
+  borders?: {
+    iridescentGlow?: boolean;
+    shimmerEffect?: boolean;
+    beveledEdges?: boolean;
+    pulsingGlow?: boolean;
+  };
+  
+  /** Content-aware blur */
+  contentAwareBlur?: {
+    enabled?: boolean;
+    depthDetection?: boolean;
+    edgePreservation?: boolean;
+    variableRadius?: boolean;
+  };
+  
+  /** Holographic effect modes */
+  holographicEffects?: {
+    enabled?: boolean;
+    rainbowDiffraction?: boolean;
+    scanlineAnimation?: boolean;
+    gridOverlay?: boolean;
+    dataStream?: boolean;
+    pulseRings?: boolean;
+  };
+}
+
+/**
  * Design Tokens Schema (Tailwind-like)
  */
 export interface ThemeTokens {
@@ -294,6 +403,16 @@ export interface AtomixConfig {
    */
   generator?: GeneratorConfig;
 
+  // Advanced Features Configuration
+  /** Phase 2: Interactive Effects Configuration */
+  interactiveEffects?: InteractiveEffectsConfig;
+  
+  /** Phase 3: Optimization Configuration */
+  optimization?: OptimizationConfig;
+  
+  /** Phase 4: Visual Polish Configuration */
+  visualPolish?: VisualPolishConfig;
+
   /**
    * Theme customization (Tailwind-like)
    *
@@ -369,3 +488,47 @@ export interface AtomixConfig {
 export function defineConfig(config: AtomixConfig): AtomixConfig {
   return config;
 }
+
+/**
+ * Main Configuration Module
+ * 
+ * This module exports the configuration-related functionality for external use.
+ */
+
+export type {
+  /**
+   * Type definitions for the configuration system
+   */
+  AtomixConfig,
+  ThemeTokens,
+  DesignTokenCategory,
+  DesignTokenValue,
+  ThemeDefinition,
+  CSSThemeDefinition,
+  JSThemeDefinition,
+  RuntimeConfig,
+  IntegrationConfig,
+} from './types';
+
+export {
+  /**
+   * Helper function to define configuration with type safety
+   */
+  defineConfig,
+} from './config';
+
+// Export the config loader functions
+export { 
+  loadAtomixConfig, 
+  resolveConfigPath 
+} from './loader';
+
+// Export the validator
+export { 
+  validateConfiguration, 
+  printConfigReport,
+  type ValidationResult 
+} from './validator';
+
+// Export the public API for external projects
+export * from './public-api';

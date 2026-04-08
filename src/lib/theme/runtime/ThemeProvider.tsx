@@ -103,17 +103,19 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   });
 
   const [activeTokens, setActiveTokens] = useState<DesignTokens | null>(() => {
-    // If defaultTheme is DesignTokens, validate and store them
+    // 1. Check if initialDefaultTheme (from storage) is an object
+    if (initialDefaultTheme && typeof initialDefaultTheme !== 'string') {
+      const { tokens, validation } = validateAndMergeTokens(initialDefaultTheme);
+      if (validation.valid) {
+        return tokens;
+      }
+    }
+
+    // 2. Check if defaultTheme prop is an object
     if (defaultTheme && typeof defaultTheme !== 'string') {
       const { tokens, validation } = validateAndMergeTokens(defaultTheme);
       if (validation.valid) {
         return tokens;
-      } else {
-        logger.warn('Invalid default theme tokens, using defaults', {
-          errors: validation.errors,
-          warnings: validation.warnings,
-        });
-        return createTokens({}); // Use defaults if validation fails
       }
     }
     return null;
@@ -143,12 +145,15 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     }
   }, [currentTheme, dataAttribute]);
 
-  // Handle theme persistence
+  // Handle persistence
   useEffect(() => {
     if (enablePersistence && storageAdapter.isAvailable()) {
-      storageAdapter.setItem(storageKey, String(currentTheme));
+      const storageValue = currentTheme === 'tokens-theme' && activeTokens 
+        ? JSON.stringify(activeTokens) 
+        : currentTheme;
+      storageAdapter.setItem(storageKey, storageValue);
     }
-  }, [currentTheme, storageKey, enablePersistence, storageAdapter]);
+  }, [currentTheme, activeTokens, enablePersistence, storageKey, storageAdapter]);
 
   // Cleanup: Remove completed promises and abort controllers on unmount
   useEffect(() => {
@@ -430,6 +435,19 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     [themes, isThemeLoaded, handleError, basePath, useMinified, cdnPath]
   );
 
+  // Update theme section function
+  const updateTheme = useCallback(
+    async (sectionOrTokens: any, values?: any) => {
+      if (typeof sectionOrTokens === 'string' && values) {
+        // Legacy support: updateTheme('colors', { primary: '...' })
+        return setTheme(values);
+      }
+      // Direct partial update: updateTheme({ primary: '...' })
+      return setTheme(sectionOrTokens);
+    },
+    [setTheme]
+  );
+
   // Create a mock theme manager instance for the context
   const themeManager = useMemo(() => {
     // This would normally be a real ThemeManager instance
@@ -455,6 +473,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       theme: currentTheme,
       activeTokens,
       setTheme,
+      updateTheme,
       availableThemes,
       isLoading,
       error,
@@ -466,6 +485,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
       currentTheme,
       activeTokens,
       setTheme,
+      updateTheme,
       availableThemes, // Use memoized value
       isLoading,
       error,

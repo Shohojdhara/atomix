@@ -22,14 +22,11 @@
 // Core Theme Functions
 // ============================================================================
 
-// Create theme CSS from DesignTokens
-export { createTheme } from './core';
-
-// Theme composition
-export { deepMerge, mergeTheme, extendTheme } from './core';
-
-// Simplified Theme Registry
-export {
+import {
+  createTheme,
+  deepMerge,
+  mergeTheme,
+  extendTheme,
   createThemeRegistry,
   registerTheme,
   unregisterTheme,
@@ -41,12 +38,28 @@ export {
   getThemeCount,
 } from './core';
 
+export {
+  createTheme,
+  deepMerge,
+  mergeTheme,
+  extendTheme,
+  createThemeRegistry,
+  registerTheme,
+  unregisterTheme,
+  hasTheme,
+  getTheme,
+  getAllThemes,
+  getThemeIds,
+  clearThemes,
+  getThemeCount,
+};
+
 // ============================================================================
 // Theme Injection and Management
 // ============================================================================
 
 import { injectCSS, removeCSS, isCSSInjected } from './utils/injectCSS';
-// File saving utilities removed to prevent bundling Node.js modules in browser
+export { injectCSS, removeCSS, isCSSInjected };
 
 /**
  * Inject theme CSS into DOM
@@ -66,23 +79,30 @@ export function removeTheme(id: string = 'atomix-theme'): void {
 // Token Utilities
 // ============================================================================
 
-export { createTokens, defaultTokens, type DesignTokens } from './tokens';
+import { createTokens, defaultTokens, type DesignTokens } from './tokens';
+export { createTokens, defaultTokens, type DesignTokens };
 
 // ============================================================================
 // CSS Generation
 // ============================================================================
 
-export {
+import {
   generateCSSVariables,
   generateCSSVariablesForSelector,
   type GenerateCSSVariablesOptions,
 } from './generators';
 
+export {
+  generateCSSVariables,
+  generateCSSVariablesForSelector,
+  type GenerateCSSVariablesOptions,
+};
+
 // ============================================================================
 // Naming and Component Theming Utilities
 // ============================================================================
 
-export {
+import {
   generateClassName,
   generateCSSVariableName,
   normalizeThemeTokens,
@@ -92,6 +112,15 @@ export {
 } from './utils/naming';
 
 export {
+  generateClassName,
+  generateCSSVariableName,
+  normalizeThemeTokens,
+  camelToKebab,
+  themePropertyToCSSVar,
+  type NamingOptions,
+};
+
+import {
   getComponentThemeValue,
   generateComponentCSSVars,
   applyComponentTheme,
@@ -99,38 +128,171 @@ export {
   type ComponentThemeOptions,
 } from './utils/componentTheming';
 
+export {
+  getComponentThemeValue,
+  generateComponentCSSVars,
+  applyComponentTheme,
+  useComponentTheme,
+  type ComponentThemeOptions,
+};
+
 // ============================================================================
-// Injection Utilities
+// Theme Utilities (Switching, Persistence, Colors)
 // ============================================================================
 
-export { injectCSS, removeCSS, isCSSInjected } from './utils/injectCSS';
+import {
+  // Theme Mode Switching
+  switchTheme,
+  toggleTheme,
+  getCurrentTheme,
+  getSystemTheme,
+  initializeTheme,
+  listenToSystemTheme,
+  
+  // Theme Persistence
+  persistTheme,
+  clearThemePreference,
+  
+  // Token Manipulation
+  mergeTokens,
+  overrideTokens,
+  pickTokens,
+  omitTokens,
+  
+  // Color Utilities
+  hexToRgb,
+  rgbToHex,
+  getLuminance,
+  getContrastRatio,
+  isAccessible,
+  getContrastText,
+  lighten,
+  darken,
+  alpha,
+  emphasize,
+  createSpacing,
+  
+  // Types
+  type ThemeMode,
+  type ThemeSwitcherOptions,
+  type ThemePersistenceOptions,
+} from './utils/themeUtils';
 
-// Config loader removed to prevent bundling Node.js modules in browser
+export {
+  switchTheme,
+  toggleTheme,
+  getCurrentTheme,
+  getSystemTheme,
+  initializeTheme,
+  listenToSystemTheme,
+  persistTheme,
+  clearThemePreference,
+  mergeTokens,
+  overrideTokens,
+  pickTokens,
+  omitTokens,
+  hexToRgb,
+  rgbToHex,
+  getLuminance,
+  getContrastRatio,
+  isAccessible,
+  getContrastText,
+  lighten,
+  darken,
+  alpha,
+  emphasize,
+  createSpacing,
+  type ThemeMode,
+  type ThemeSwitcherOptions,
+  type ThemePersistenceOptions,
+};
 
 // ============================================================================
 // React Integration
 // ============================================================================
 
-// Core React components and hooks
-export { ThemeProvider } from './runtime/ThemeProvider';
-export { useTheme } from './runtime/useTheme';
-export { useThemeTokens } from './runtime/useThemeTokens';
-export { ThemeContext } from './runtime/ThemeContext';
-export { ThemeErrorBoundary } from './runtime/ThemeErrorBoundary';
+import { ThemeProvider } from './runtime/ThemeProvider';
+import { useTheme } from './runtime/useTheme';
+import { useThemeTokens } from './runtime/useThemeTokens';
+import { ThemeContext } from './runtime/ThemeContext';
+import { ThemeErrorBoundary, type ThemeErrorBoundaryProps } from './runtime/ThemeErrorBoundary';
 
-// Theme application
-export { ThemeApplicator, getThemeApplicator, applyTheme } from './runtime/ThemeApplicator';
+export {
+  ThemeProvider,
+  useTheme,
+  useThemeTokens,
+  ThemeContext,
+  ThemeErrorBoundary,
+  type ThemeErrorBoundaryProps,
+};
+
+import {
+  useThemeSwitcher,
+  type UseThemeSwitcherOptions,
+  type UseThemeSwitcherReturn,
+} from './hooks/useThemeSwitcher';
+
+export {
+  useThemeSwitcher,
+  type UseThemeSwitcherOptions,
+  type UseThemeSwitcherReturn,
+};
+
+import { ThemeToggle, type ThemeToggleProps } from './components/ThemeToggle';
+export { ThemeToggle, type ThemeToggleProps };
+
+import { ThemeApplicator, getThemeApplicator, applyTheme } from './runtime/ThemeApplicator';
+export { ThemeApplicator, getThemeApplicator, applyTheme };
 
 // DevTools (for development and debugging)
 export * from './devtools';
 
-// CSS variable utilities
-export { designTokensToCSSVars } from './adapters';
+// Theme adapters
+import { designTokensToCSSVars, configToTokens } from './adapters';
+export { designTokensToCSSVars, configToTokens };
 
-// Theme helpers (utilities for working with DesignTokens)
-export { isDesignTokens } from './utils/themeHelpers';
+// Theme helpers
+import { isDesignTokens } from './utils/themeHelpers';
+export { isDesignTokens };
+
+// Performance utilities
+import {
+  createPerformanceMonitor,
+  usePerformanceMonitor,
+  type PerformanceMetrics,
+} from './utils/performanceMonitor';
+
+export {
+  createPerformanceMonitor,
+  usePerformanceMonitor,
+  type PerformanceMetrics,
+};
+
+// Responsive utilities
+import {
+  createResponsiveUtil,
+  useResponsive,
+} from './utils/responsive';
+
+export {
+  createResponsiveUtil,
+  useResponsive,
+};
 
 // CSS variable utilities
+import {
+  mapSCSSTokensToCSSVars,
+  applyCSSVariables,
+  removeCSSVariables,
+  getCSSVariable,
+  cssVarsToStyle,
+  mergeCSSVars,
+  isValidCSSVariableName,
+  extractComponentName,
+  type CSSVariableConfig,
+  type CSSVariableNamingOptions,
+} from './adapters/cssVariableMapper';
+
 export {
   mapSCSSTokensToCSSVars,
   applyCSSVariables,
@@ -140,10 +302,12 @@ export {
   mergeCSSVars,
   isValidCSSVariableName,
   extractComponentName,
-} from './adapters/cssVariableMapper';
+  type CSSVariableConfig,
+  type CSSVariableNamingOptions,
+};
 
-// RTL Support
-export { RTLManager } from './i18n/rtl';
+import { RTLManager, createRTLManager, isRTLLocale, getDirectionFromLocale, rtlCSS, type RTLConfig } from './i18n/rtl';
+export { RTLManager, createRTLManager, isRTLLocale, getDirectionFromLocale, rtlCSS, type RTLConfig };
 
 // Types
 export type {
@@ -155,14 +319,134 @@ export type {
   UseThemeReturn,
   ComponentThemeOverride,
   ThemeComponentOverrides,
+  Theme,
 } from './types';
 
-// Note: Theme type is deprecated - use DesignTokens instead
-// Keeping for backward compatibility with devtools and internal use only
-export type { Theme } from './types';
-
-export type { ThemeErrorBoundaryProps } from './runtime/ThemeErrorBoundary';
-
-export type { CSSVariableConfig, CSSVariableNamingOptions } from './adapters/cssVariableMapper';
-
-export type { RTLConfig } from './i18n/rtl';
+/**
+ * Main theme module interface
+ */
+export default {
+  // Core
+  createTheme,
+  injectTheme,
+  removeTheme,
+  
+  // Context and Provider
+  ThemeProvider,
+  useTheme,
+  useThemeTokens,
+  ThemeContext,
+  ThemeErrorBoundary,
+  
+  // Adapters
+  configToTokens,
+  designTokensToCSSVars,
+  
+  // Theme Utils
+  switchTheme,
+  toggleTheme,
+  getCurrentTheme,
+  getSystemTheme,
+  initializeTheme,
+  listenToSystemTheme,
+  persistTheme,
+  clearThemePreference,
+  
+  // Token Manipulation
+  mergeTokens,
+  overrideTokens,
+  pickTokens,
+  omitTokens,
+  
+  // Color Utilities
+  hexToRgb,
+  rgbToHex,
+  getLuminance,
+  getContrastRatio,
+  isAccessible,
+  getContrastText,
+  lighten,
+  darken,
+  alpha,
+  emphasize,
+  createSpacing,
+  
+  // Performance utilities
+  createPerformanceMonitor,
+  usePerformanceMonitor,
+  
+  // Responsive utilities
+  createResponsiveUtil,
+  useResponsive,
+  
+  // Components
+  ThemeToggle,
+  ThemeApplicator,
+  applyTheme,
+  getThemeApplicator,
+  
+  // Registry
+  createThemeRegistry,
+  registerTheme,
+  unregisterTheme,
+  hasTheme,
+  getTheme,
+  getAllThemes,
+  getThemeIds,
+  clearThemes,
+  getThemeCount,
+  
+  // Composition
+  deepMerge,
+  mergeTheme,
+  extendTheme,
+  
+  // Tokens
+  createTokens,
+  defaultTokens,
+  
+  // Generators
+  generateCSSVariables,
+  generateCSSVariablesForSelector,
+  
+  // Naming
+  generateClassName,
+  generateCSSVariableName,
+  normalizeThemeTokens,
+  camelToKebab,
+  themePropertyToCSSVar,
+  
+  // Component Theming
+  getComponentThemeValue,
+  generateComponentCSSVars,
+  applyComponentTheme,
+  useComponentTheme,
+  
+  // Hooks
+  useThemeSwitcher,
+  
+  // Helpers
+  isDesignTokens,
+  
+  // CSS Variable Mapper
+  mapSCSSTokensToCSSVars,
+  applyCSSVariables,
+  removeCSSVariables,
+  getCSSVariable,
+  cssVarsToStyle,
+  mergeCSSVars,
+  isValidCSSVariableName,
+  extractComponentName,
+  
+  // Injection Utils
+  injectCSS,
+  removeCSS,
+  isCSSInjected,
+  
+  // I18n
+  RTLManager,
+  createRTLManager,
+  isRTLLocale,
+  getDirectionFromLocale,
+  rtlCSS,
+};

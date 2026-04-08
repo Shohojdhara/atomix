@@ -31,7 +31,6 @@
     "skipLibCheck": true,
     
     /* Path Mapping */
-    "baseUrl": ".",
     "paths": {
       "@shohojdhara/atomix": ["./src/index.ts"],
       "@/*": ["./src/*"]
