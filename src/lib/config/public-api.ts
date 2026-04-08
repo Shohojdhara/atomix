@@ -1,23 +1,12 @@
 /**
  * Public API for loading and managing Atomix configuration
  *
- * This module provides convenience functions for loading and validating
- * Atomix configuration in external projects.
- *
- * Import from '@shohojdhara/atomix/config' for types and core utilities.
+ * This module provides the public-facing API for configuration loading
+ * in external projects.
  */
 
+import type { AtomixConfig } from './types';
 import { loadAtomixConfig as internalLoadConfig, validateConfig as internalValidateConfig } from './loader';
-
-type LoadConfig = typeof internalLoadConfig;
-type AtomixConfigArg = Parameters<LoadConfig>[0] extends infer O
-  ? O extends { configPath?: string; required?: boolean }
-    ? O
-    : never
-  : never;
-
-/** Resolved config type from loader */
-type ResolvedConfig = ReturnType<LoadConfig>;
 
 /**
  * Load Atomix configuration from an external project.
@@ -36,7 +25,7 @@ type ResolvedConfig = ReturnType<LoadConfig>;
 export function loadConfig(options?: {
   configPath?: string;
   required?: boolean;
-}): ResolvedConfig {
+}): AtomixConfig {
   return internalLoadConfig({
     configPath: options?.configPath,
     required: options?.required ?? false,
@@ -49,6 +38,6 @@ export function loadConfig(options?: {
  * @param config - Configuration object to validate
  * @returns Array of validation warnings (empty if valid)
  */
-export function validateConfig(config: ResolvedConfig): string[] {
+export function validateConfig(config: AtomixConfig): string[] {
   return internalValidateConfig(config);
 }

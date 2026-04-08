@@ -5,7 +5,7 @@
  * especially for advanced features (Phases 2, 3, and 4).
  */
 
-import type { AtomixConfig } from './index';
+import type { AtomixConfig } from './types';
 import { validateConfig } from './loader';
 
 /**
@@ -87,7 +87,7 @@ export function validateConfiguration(
     : {
         browsers: true,
         ssr: true,
-        frameworks: ['react', 'vue', 'angular', 'svelte', 'vanillajs']
+        frameworks: ['react', 'vue', 'angular', 'svelte', 'vanillajs'] as ('react' | 'vue' | 'angular' | 'svelte' | 'vanillajs')[]
       };
   
   return {
@@ -239,7 +239,7 @@ function generateCompatibilityReport(config: AtomixConfig): ValidationResult['co
   return {
     browsers: !hasHeavyEffects, // May have issues on older browsers
     ssr: true, // Works fine with SSR
-    frameworks: ['react', 'vue', 'angular', 'svelte', 'vanillajs'] // Compatible with all
+    frameworks: ['react', 'vue', 'angular', 'svelte', 'vanillajs'] as ('react' | 'vue' | 'angular' | 'svelte' | 'vanillajs')[] // Compatible with all
   };
 }
 

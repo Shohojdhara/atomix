@@ -5,7 +5,7 @@
  * Now also supports atomix.config.js and atomix.config.json
  */
 
-import type { AtomixConfig } from './index';
+import type { AtomixConfig } from './types';
 import { existsSync } from 'fs';
 import { join } from 'path';
 
