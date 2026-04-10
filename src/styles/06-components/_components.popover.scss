@@ -96,7 +96,7 @@
     #{$root}__content-inner {
       @include dynamic-background(
         var(--#{$prefix}popover-bg),
-        $background-transparency-enable: true
+        $enable-transparency: true
       );
       box-shadow: none;
     }

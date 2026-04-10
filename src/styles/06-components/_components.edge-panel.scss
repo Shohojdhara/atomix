@@ -373,7 +373,7 @@
     transition: opacity 0.3s ease;
     @include dynamic-background(
       var(--#{$prefix}edge-panel-bg),
-      $background-transparency-enable: true
+      $enable-transparency: true
     );
   }
 
@@ -406,7 +406,7 @@
   .c-edge-panel__backdrop {
     @include dynamic-background(
       var(--#{$prefix}edge-panel-backdrop-bg),
-      $background-transparency-enable: true
+      $enable-transparency: true
     );
     animation: fadeIn 0.3s ease forwards;
     z-index: map.get($z-layers, 1);

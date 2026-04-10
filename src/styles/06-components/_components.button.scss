@@ -231,13 +231,13 @@
   &--glass {
     @include dynamic-background(
       var(--#{config.$prefix}btn-bg),
-      $background-transparency-enable: true
+      $enable-transparency: true
     );
 
     &:hover {
       @include dynamic-background(
         var(--#{config.$prefix}btn-hover-bg),
-        $background-transparency-enable: true
+        $enable-transparency: true
       );
     }
   }

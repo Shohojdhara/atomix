@@ -6,8 +6,6 @@
  */
 
 import type { AtomixConfig } from './types';
-import { existsSync } from 'fs';
-import { join } from 'path';
 
 /**
  * Validate Atomix configuration structure
@@ -392,6 +390,11 @@ export function resolveConfigPath(configPath?: string): string | null {
     if (typeof window !== 'undefined') {
         return null;
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { existsSync } = require('fs') as typeof import('fs');
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { join } = require('path') as typeof import('path');
 
     // If a specific config path is provided, check if it exists
     if (configPath) {

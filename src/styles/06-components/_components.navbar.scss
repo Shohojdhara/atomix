@@ -252,7 +252,7 @@
   &--glass {
     position: relative;
     background-color: transparent;
-    @include dynamic-background(var(--#{$prefix}navbar-bg), $background-transparency-enable: true);
+    @include dynamic-background(var(--#{$prefix}navbar-bg), $enable-transparency: true);
   }
 
   &--fixed-bottom {

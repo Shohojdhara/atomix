@@ -87,21 +87,21 @@
     #{$root}__content {
       @include dynamic-background(
         var(--#{$prefix}tooltip-bg),
-        $background-transparency-enable: true,
+        $enable-transparency: true,
         $transparency: 0.3
       );
     }
     #{$root}__arrow {
       @include dynamic-background(
         var(--#{$prefix}tooltip-bg),
-        $background-transparency-enable: true,
+        $enable-transparency: true,
         $transparency: 0.3
       );
     }
     #{$root}__arrow {
       @include dynamic-background(
         var(--#{$prefix}tooltip-bg),
-        $background-transparency-enable: true,
+        $enable-transparency: true,
         $transparency: 0.3
       );
     }

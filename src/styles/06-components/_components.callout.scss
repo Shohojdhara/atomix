@@ -220,7 +220,7 @@
       width: 100%;
       @include dynamic-background(
         var(--#{config.$prefix}callout-bg),
-        $background-transparency-enable: true
+        $enable-transparency: true
       );
     }
 
@@ -237,7 +237,7 @@
     &#{$root}--toast {
       @include dynamic-background(
         var(--#{config.$prefix}callout-bg),
-        $background-transparency-enable: true
+        $enable-transparency: true
       );
       box-shadow:
         0 8px 32px rgba(0, 0, 0, 0.1),

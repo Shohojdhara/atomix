@@ -222,7 +222,7 @@
 
   &--glass {
     max-width: none;
-    @include dynamic-background(var(--#{$prefix}card-bg), $background-transparency-enable: true);
+    @include dynamic-background(var(--#{$prefix}card-bg), $enable-transparency: true);
   }
 
   &--outlined {

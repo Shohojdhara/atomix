@@ -146,7 +146,7 @@
       &__content {
         @include dynamic-background(
           var(--#{config.$prefix}modal-content-bg),
-          $background-transparency-enable: true
+          $enable-transparency: true
         );
         box-shadow: none;
         border-radius: inherit;

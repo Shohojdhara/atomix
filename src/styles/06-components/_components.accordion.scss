@@ -146,13 +146,13 @@
       #{$root}__header {
         @include dynamic-background(
           var(--#{config.$prefix}accordion-header-bg),
-          $background-transparency-enable: true
+          $enable-transparency: true
         );
       }
       #{$root}__body {
         @include dynamic-background(
           var(--#{config.$prefix}accordion-header-bg),
-          $background-transparency-enable: true
+          $enable-transparency: true
         );
       }
     }

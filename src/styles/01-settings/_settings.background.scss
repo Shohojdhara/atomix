@@ -1,7 +1,36 @@
 // Global effect toggles
-$background-enable-gradient-overlay: false !default;
-$background-transparency-enable: false !default;
-$background-enable-with-shadow: false !default;
+$background-enable-gradient-overlay: true !default;
+$background-transparency-enable: true !default;
+$background-enable-with-shadow: true !default;
+$background-enable-mesh-gradient: false !default;
+$background-enable-noise-texture: false !default;
+$background-enable-shimmer: false !default;
 
-// Core transparency levels (used in dynamic-background-core defaults)
-$background-transparency: 0.5 !default;
+// Core transparency levels
+$background-transparency: 0.65 !default;
+$background-transparency-hover: 0.8 !default;
+$background-transparency-active: 0.9 !default;
+
+// Gradient configuration
+$background-gradient-angle: 135deg !default;
+$background-gradient-stops: 4 !default;
+$background-gradient-intensity: 1.2 !default;
+
+// Shadow configuration
+$background-shadow-layers: 3 !default;
+$background-shadow-intensity: 0.2 !default;
+$background-shadow-blur-base: 8px !default;
+$background-shadow-spread: 2px !default;
+
+// Border configuration
+$background-border-width: 1px !default;
+$background-border-opacity: 0.2 !default;
+$background-border-gradient-enable: true !default;
+
+// Noise texture (for glass-like grain)
+$background-noise-opacity: 0.03 !default;
+$background-noise-scale: 200 !default;
+
+// Shimmer effect
+$background-shimmer-duration: 3s !default;
+$background-shimmer-intensity: 0.15 !default;

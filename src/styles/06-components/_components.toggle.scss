@@ -106,7 +106,7 @@
     #{$root}__switch {
       @include dynamic-background(
         var(--#{$prefix}toggle-switch-bg),
-        $background-transparency-enable: true
+        $enable-transparency: true
       );
 
       &::before {

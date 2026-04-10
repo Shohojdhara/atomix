@@ -46,7 +46,7 @@
   &--glass {
     @include dynamic-background(
       var(--#{$prefix}tag-bg-color),
-      $background-transparency-enable: true,
+      $enable-transparency: true,
       $transparency: 0.2
     );
     border: 1px solid color-mix(in srgb, var(--#{$prefix}tag-color) 50%, transparent);

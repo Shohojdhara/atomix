@@ -194,7 +194,7 @@
     &--glass {
       @include dynamic-background(
         var(--#{$prefix}dropdown-bg),
-        $background-transparency-enable: true
+        $enable-transparency: true
       );
       box-shadow: var(--#{$prefix}dropdown-box-shadow);
     }
