@@ -1,0 +1,38 @@
+// 02-selective-import.scss
+// ─────────────────────────────────────────────────────────────────────────────
+// Import only the Atomix layers and components you actually use.
+// This reduces CSS output to the minimum needed.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// --- Token overrides (before any @use) --------------------------------------
+$primary: #6366f1;  // indigo-500
+
+// --- Layer 1 & 2: Settings + Tools (no CSS output) --------------------------
+@use '@shohojdhara/atomix/src/styles/01-settings/index' as *;
+@use '@shohojdhara/atomix/src/styles/02-tools/index' as *;
+
+// --- Layer 3: Generic — reset, :root CSS vars, font-face --------------------
+@use '@shohojdhara/atomix/src/styles/03-generic/index' as *;
+
+// --- Layer 4: Elements — base HTML element styles ---------------------------
+@use '@shohojdhara/atomix/src/styles/04-elements/index' as *;
+
+// --- Layer 5: Objects — container, grid layout ------------------------------
+@use '@shohojdhara/atomix/src/styles/05-objects/index' as *;
+
+// --- Layer 6: Only the components this project uses -------------------------
+@use '@shohojdhara/atomix/src/styles/06-components/components.button' as *;
+@use '@shohojdhara/atomix/src/styles/06-components/components.card' as *;
+@use '@shohojdhara/atomix/src/styles/06-components/components.input' as *;
+@use '@shohojdhara/atomix/src/styles/06-components/components.badge' as *;
+@use '@shohojdhara/atomix/src/styles/06-components/components.modal' as *;
+
+// --- Layer 7: Utilities (optional) ------------------------------------------
+@use '@shohojdhara/atomix/src/styles/99-utilities/index' as *;
+
+// --- Your own styles --------------------------------------------------------
+.page-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 map.get($spacing-sizes, 4); // 1rem
+}

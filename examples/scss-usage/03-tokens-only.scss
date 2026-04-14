@@ -1,0 +1,97 @@
+// 03-tokens-only.scss
+// ─────────────────────────────────────────────────────────────────────────────
+// Use Atomix as a token/mixin library only.
+// Zero component CSS is output — you write all your own styles using
+// Atomix design tokens and responsive mixins.
+// ─────────────────────────────────────────────────────────────────────────────
+@use 'sass:map';
+
+// Settings + Tools only — no CSS output
+@use '@shohojdhara/atomix/src/styles/01-settings/index' as *;
+@use '@shohojdhara/atomix/src/styles/02-tools/index' as *;
+
+// ─── Custom component using Atomix tokens ────────────────────────────────────
+
+.product-card {
+  background: $primary-bg;
+  border: 1px solid $primary-border;
+  border-radius: $border-radius-lg;
+  padding: map.get($spacing-sizes, 6);       // 1.5rem
+  box-shadow: $box-shadow-sm;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: $box-shadow;
+  }
+
+  // Responsive padding via Atomix breakpoint mixin
+  @include media-breakpoint-up(md) {
+    padding: map.get($spacing-sizes, 8);     // 2rem
+  }
+}
+
+.product-card__title {
+  font-size: $h4-font-size;                  // 1.25rem
+  font-weight: $font-weight-semibold;
+  color: $primary-text;
+  margin-bottom: map.get($spacing-sizes, 2); // 0.5rem
+}
+
+.product-card__price {
+  font-size: $font-size-lg;                  // 1.25rem
+  font-weight: $font-weight-bold;
+  color: $brand-text;                        // primary-6 purple
+}
+
+.product-card__badge {
+  display: inline-block;
+  padding: map.get($spacing-sizes, 1) map.get($spacing-sizes, 3);
+  background: $success-bg;
+  color: $success-text;
+  border-radius: $border-radius-xl;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+// ─── Responsive layout using Atomix breakpoints ──────────────────────────────
+
+.product-grid {
+  display: grid;
+  gap: map.get($spacing-sizes, 4);           // 1rem
+  grid-template-columns: 1fr;
+
+  @include media-breakpoint-up(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include media-breakpoint-up(xl) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+// ─── Dark mode using Atomix dark tokens ──────────────────────────────────────
+
+@media (prefers-color-scheme: dark) {
+  .product-card {
+    background: $primary-bg-dark;
+    border-color: $primary-border-dark;
+    color: $primary-text-dark;
+  }
+
+  .product-card__title {
+    color: $primary-text-dark;
+  }
+
+  .product-card__price {
+    color: $brand-text-dark;
+  }
+
+  .product-card__badge {
+    background: $success-bg-dark;
+    color: $success-text-dark;
+  }
+}

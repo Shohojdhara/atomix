@@ -1,0 +1,33 @@
+// 01-full-import.scss
+// ─────────────────────────────────────────────────────────────────────────────
+// Full Atomix SCSS import with design token overrides.
+// Override variables BEFORE the @use statement — all Atomix vars use !default.
+// ─────────────────────────────────────────────────────────────────────────────
+
+// --- Token overrides (must be declared before @use) -------------------------
+$primary: #0ea5e9;                        // sky-500 — replace purple brand
+$font-family-base: 'Inter', sans-serif;   // custom font
+$font-size-base: 1rem;                    // 16px base
+$border-radius: 0.375rem;                 // slightly tighter radius
+$spacer: 1rem;                            // base spacing unit
+
+// Custom breakpoints (optional)
+$grid-breakpoints: (
+  xs: 0,
+  sm: 480px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+  xxl: 1536px,
+);
+
+// --- Full Atomix import ------------------------------------------------------
+// Resolves to: node_modules/@shohojdhara/atomix/src/styles/index.scss
+@use '@shohojdhara/atomix/scss' as *;
+
+// --- Your project styles (after Atomix) -------------------------------------
+.my-hero {
+  background: var(--atomix-primary-bg);
+  padding: 4rem 2rem;
+  text-align: center;
+}
