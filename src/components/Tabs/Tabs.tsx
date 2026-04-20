@@ -113,8 +113,7 @@ export const TabsList = forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUL
       >
         {React.Children.map(children, (child, index) => {
           if (React.isValidElement(child)) {
-            // Inject index into TabsTrigger with type-safe props
-            return React.cloneElement(child, { index });
+            return React.cloneElement(child as React.ReactElement<any>, { index });
           }
           return child;
         })}
@@ -171,7 +170,7 @@ export const TabsPanels = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
       <div ref={ref} className={`c-tabs__panels ${className}`.trim()} {...props}>
         {React.Children.map(children, (child, index) => {
           if (React.isValidElement(child)) {
-            return React.cloneElement(child, { index });
+            return React.cloneElement(child as React.ReactElement<any>, { index });
           }
           return child;
         })}
@@ -329,8 +328,9 @@ const TabsComponentBase = ({
       (child): child is React.ReactElement =>
         React.isValidElement(child) &&
         (child.type as ExtendedComponentType).displayName === 'TabsList'
-    );
-    const totalTabsCount = tabsList ? React.Children.count(tabsList.props.children) : 0;
+    ) as React.ReactElement | undefined;
+    
+    const totalTabsCount = tabsList ? React.Children.count((tabsList as React.ReactElement<{ children: any }>).props.children) : 0;
 
     content = (
       <TabsContext.Provider

@@ -15,10 +15,11 @@ type ExtendedComponentType<P = {}> = ComponentType<P> & {
 }
 
 // Props interface for type-safe props access
-interface AccordionChildProps {
-  className?: string;
-  onClick?: React.MouseEventHandler<HTMLElement>;
+interface AccordionChildProps extends Omit<React.HTMLAttributes<HTMLElement>, 'onClick'> {
   iconPosition?: 'left' | 'right';
+  panelRef?: React.RefObject<HTMLDivElement>;
+  contentRef?: React.RefObject<HTMLDivElement>;
+  onClick?: (e: React.MouseEvent) => void;
 }
 
 // Default icon
@@ -100,7 +101,7 @@ export const AccordionBody = forwardRef<HTMLDivElement, AccordionBodyProps>(
         ref={mergedPanelRef}
         className={className} // Parent injects class names
         role="region"
-        {...props}
+        {...props} // Spreads id, aria-labelledby, etc.
       >
         <div className={ACCORDION.SELECTORS.BODY.replace('.', '')} ref={contentRef}>
           {children}
@@ -178,7 +179,7 @@ const AccordionImpl = memo(
                 return React.cloneElement(child, {
                   id: buttonId,
                   className: `${headerClassNames} ${childProps.className || ''}`.trim(),
-                  onClick: (e: React.MouseEvent) => {
+                  onClick: (e: React.MouseEvent<HTMLElement>) => {
                     toggle();
                     childProps?.onClick?.(e);
                   },
@@ -187,7 +188,7 @@ const AccordionImpl = memo(
                   'aria-disabled': disabled,
                   disabled: disabled,
                   iconPosition: childProps.iconPosition || iconPosition,
-                });
+                } as Partial<AccordionHeaderProps>);
               }
               if ((child.type as ExtendedComponentType).displayName === 'AccordionBody') {
                 return React.cloneElement(child, {
@@ -196,7 +197,7 @@ const AccordionImpl = memo(
                   'aria-labelledby': buttonId,
                   panelRef: panelRef,
                   contentRef: contentRef,
-                });
+                } as Partial<AccordionBodyProps>);
               }
             }
             return child;

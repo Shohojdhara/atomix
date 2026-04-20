@@ -256,7 +256,8 @@ const ModalImpl = memo(
               React.isValidElement(child) &&
               (child.type as ExtendedComponentType).displayName === 'ModalHeader'
             ) {
-              return React.cloneElement(child, {
+              return React.cloneElement(child as React.ReactElement<ModalHeaderProps>, {
+                ...(child.props as ModalHeaderProps),
                 onClose: (child.props as ModalHeaderProps).onClose || close,
                 id: titleId,
               });
