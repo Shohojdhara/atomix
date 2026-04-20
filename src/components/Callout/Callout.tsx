@@ -1,8 +1,13 @@
-import React, { memo, forwardRef } from 'react';
+import React, { memo, forwardRef, ComponentType } from 'react';
 import { CalloutProps } from '../../lib/types/components';
 import { useCallout } from '../../lib/composables/useCallout';
 import { Icon } from '../Icon/Icon';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+
+// Type-safe interface for compound component detection
+type ExtendedComponentType<P = {}> = ComponentType<P> & {
+  displayName?: string;
+};
 
 // Subcomponents
 export const CalloutIcon = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
@@ -90,51 +95,52 @@ type CalloutComponent = React.FC<CalloutProps> & {
 };
 
 const CalloutComponentBase = ({
-    title,
-    children,
-    icon,
-    variant = 'primary',
-    onClose,
-    actions,
-    compact = false,
-    isToast = false,
+  title,
+  children,
+  icon,
+  variant = 'primary',
+  onClose,
+  actions,
+  compact = false,
+  isToast = false,
+  glass,
+  className,
+  style,
+  ...props
+}: CalloutProps) => {
+  const { generateCalloutClass, handleClose } = useCallout({
+    variant,
+    compact,
+    isToast,
     glass,
     className,
     style,
-    ...props
-  }: CalloutProps) => {
-    const { generateCalloutClass, handleClose } = useCallout({
-      variant,
-      compact,
-      isToast,
-      glass,
-      className,
-      style,
-    });
+  });
 
-    // Determine appropriate ARIA attributes based on variant
-    const getAriaAttributes = () => {
-      const baseAttributes: Record<string, string> = {
-        role: 'region',
-      };
-
-      // For toast notifications or alerts, use appropriate role and live region
-      if (isToast) {
-        baseAttributes.role = 'alert';
-        baseAttributes['aria-live'] = 'polite';
-      } else if (['warning', 'error'].includes(variant)) {
-        baseAttributes.role = 'alert';
-        baseAttributes['aria-live'] = 'assertive';
-      } else if (['info', 'success'].includes(variant)) {
-        baseAttributes.role = 'status';
-        baseAttributes['aria-live'] = 'polite';
-      }
-
-      return baseAttributes;
+  // Determine appropriate ARIA attributes based on variant
+  const getAriaAttributes = () => {
+    const baseAttributes: Record<string, string> = {
+      role: 'region',
     };
 
-    // Check for compound usage
-    const hasCompoundComponents = React.Children.toArray(children).some((child) =>
+    // For toast notifications or alerts, use appropriate role and live region
+    if (isToast) {
+      baseAttributes.role = 'alert';
+      baseAttributes['aria-live'] = 'polite';
+    } else if (['warning', 'error'].includes(variant)) {
+      baseAttributes.role = 'alert';
+      baseAttributes['aria-live'] = 'assertive';
+    } else if (['info', 'success'].includes(variant)) {
+      baseAttributes.role = 'status';
+      baseAttributes['aria-live'] = 'polite';
+    }
+
+    return baseAttributes;
+  };
+
+  // Check for compound usage
+  const hasCompoundComponents = React.Children.toArray(children).some(
+    child =>
       React.isValidElement(child) &&
       [
         'CalloutIcon',
@@ -143,63 +149,40 @@ const CalloutComponentBase = ({
         'CalloutText',
         'CalloutActions',
         'CalloutContent',
-      ].includes((child.type as any).displayName)
-    );
+      ].includes((child.type as ExtendedComponentType).displayName || '')
+  );
 
-    const calloutContent = hasCompoundComponents ? (
-      children
-    ) : (
-      <>
-        <div className="c-callout__content">
-          {icon && <div className="c-callout__icon">{icon}</div>}
-          <div className="c-callout__message">
-            {title && <div className="c-callout__title">{title}</div>}
-            {children && <div className="c-callout__text">{children}</div>}
-          </div>
+  const calloutContent = hasCompoundComponents ? (
+    children
+  ) : (
+    <>
+      <div className="c-callout__content">
+        {icon && <div className="c-callout__icon">{icon}</div>}
+        <div className="c-callout__message">
+          {title && <div className="c-callout__title">{title}</div>}
+          {children && <div className="c-callout__text">{children}</div>}
         </div>
+      </div>
 
-        {actions && <div className="c-callout__actions">{actions}</div>}
+      {actions && <div className="c-callout__actions">{actions}</div>}
 
-        {onClose && (
-          <button
-            className="c-callout__close-btn"
-            onClick={handleClose(onClose)}
-            aria-label="Close"
-          >
-            <Icon name="X" size="md" />
-          </button>
-        )}
-      </>
-    );
+      {onClose && (
+        <button className="c-callout__close-btn" onClick={handleClose(onClose)} aria-label="Close">
+          <Icon name="X" size="md" />
+        </button>
+      )}
+    </>
+  );
 
-    if (glass) {
-      // Default glass settings for callouts
-      const defaultGlassProps = {
-        displacementScale: 30,
-        borderRadius: 8,
-        elasticity: 0,
-      };
+  if (glass) {
+    // Default glass settings for callouts
+    const defaultGlassProps = {
+      displacementScale: 30,
+      borderRadius: 8,
+      elasticity: 0,
+    };
 
-      const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
-
-      return (
-        <div
-          className={generateCalloutClass({ variant, compact, isToast, glass, className })}
-          {...getAriaAttributes()}
-          {...props}
-          style={style}
-        >
-          <AtomixGlass {...glassProps}>
-            <div
-              className="c-callout__glass-content"
-              style={{ borderRadius: glassProps.borderRadius }}
-            >
-              {calloutContent}
-            </div>
-          </AtomixGlass>
-        </div>
-      );
-    }
+    const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
     return (
       <div
@@ -208,9 +191,28 @@ const CalloutComponentBase = ({
         {...props}
         style={style}
       >
-        {calloutContent}
+        <AtomixGlass {...glassProps}>
+          <div
+            className="c-callout__glass-content"
+            style={{ borderRadius: glassProps.borderRadius }}
+          >
+            {calloutContent}
+          </div>
+        </AtomixGlass>
       </div>
     );
+  }
+
+  return (
+    <div
+      className={generateCalloutClass({ variant, compact, isToast, glass, className })}
+      {...getAriaAttributes()}
+      {...props}
+      style={style}
+    >
+      {calloutContent}
+    </div>
+  );
 };
 
 export const Callout = memo(CalloutComponentBase) as unknown as CalloutComponent;

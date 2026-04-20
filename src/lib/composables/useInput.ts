@@ -6,15 +6,17 @@ import { INPUT } from '../constants/components';
  * @param initialProps - Initial input properties
  * @returns Input state and methods
  */
+interface UseInputOptions {
+  prefixIcon?: boolean;
+  suffixIcon?: boolean;
+  clearable?: boolean;
+  showCounter?: boolean;
+  showPasswordToggle?: boolean;
+  fullWidth?: boolean;
+}
+
 export function useInput(
-  initialProps?: Partial<InputProps> & {
-    prefixIcon?: boolean;
-    suffixIcon?: boolean;
-    clearable?: boolean;
-    showCounter?: boolean;
-    showPasswordToggle?: boolean;
-    fullWidth?: boolean;
-  }
+  initialProps?: Partial<InputProps> & UseInputOptions
 ) {
   // Default input properties
   const defaultProps: Partial<InputProps> = {
@@ -74,7 +76,7 @@ export function useInput(
       showCounter = false,
       showPasswordToggle = false,
       fullWidth = false,
-    } = initialProps || {};
+    } = (initialProps as UseInputOptions) || {};
 
     const classes = [INPUT.ELEMENTS.WRAPPER];
 

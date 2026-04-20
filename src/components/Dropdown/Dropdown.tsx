@@ -8,6 +8,7 @@ import React, {
   memo,
   forwardRef,
   ReactNode,
+  ComponentType,
 } from 'react';
 import { DROPDOWN } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
@@ -26,6 +27,18 @@ export type DropdownContextType = {
   id: string;
   trigger: string;
 };
+
+// Type definitions for compound component handling
+type ExtendedComponentType<P = {}> = ComponentType<P> & {
+  displayName?: string;
+}
+
+interface DropdownTriggerProps extends React.HTMLAttributes<HTMLDivElement> {
+  onClick?: (e: React.MouseEvent) => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
+}
+
+interface DropdownMenuProps extends React.HTMLAttributes<HTMLUListElement> {}
 
 // Create context for dropdown state management
 const DropdownContext = createContext<DropdownContextType>({
@@ -140,7 +153,9 @@ export const DropdownItem: React.FC<DropdownItemProps> = memo(
         <li>
           {linkComponent ? (
             (() => {
-              const Component = linkComponent as React.ComponentType<any>;
+              const Component = linkComponent as React.ComponentType<
+                React.AnchorHTMLAttributes<HTMLAnchorElement>
+              >;
               return (
                 <Component {...linkProps}>
                   {icon && <span className="c-dropdown__menu-item-icon">{icon}</span>}
@@ -402,7 +417,9 @@ export const Dropdown: DropdownComponent = memo(function DropdownBase({
   const hasCompoundComponents = React.Children.toArray(children).some(
     child =>
       React.isValidElement(child) &&
-      ['DropdownTrigger', 'DropdownMenu'].includes((child.type as any).displayName)
+      ['DropdownTrigger', 'DropdownMenu'].includes(
+        (child.type as React.ComponentType & { displayName?: string }).displayName || ''
+      )
   );
 
   let triggerContent: ReactNode;
@@ -412,23 +429,25 @@ export const Dropdown: DropdownComponent = memo(function DropdownBase({
     // Find Trigger and Menu in children
     React.Children.forEach(children, child => {
       if (React.isValidElement(child)) {
-        if ((child.type as any).displayName === 'DropdownTrigger') {
-          triggerContent = React.cloneElement(child, {
+        const component = child.type as ExtendedComponentType;
+        if (component.displayName === 'DropdownTrigger') {
+          const triggerProps: DropdownTriggerProps = {
             ref: toggleRef,
             onClick: (e: React.MouseEvent) => {
               handleToggleClick(e);
-              (child.props as any).onClick?.(e);
+              (child.props as DropdownTriggerProps).onClick?.(e);
             },
             onKeyDown: (e: React.KeyboardEvent) => {
               handleToggleKeyDown(e);
-              (child.props as any).onKeyDown?.(e);
+              (child.props as DropdownTriggerProps).onKeyDown?.(e);
             },
             'aria-haspopup': 'menu',
             'aria-expanded': isOpen,
             'aria-controls': dropdownId,
             tabIndex: 0,
-          } as any);
-        } else if ((child.type as any).displayName === 'DropdownMenu') {
+          };
+          triggerContent = React.cloneElement(child, triggerProps);
+        } else if (component.displayName === 'DropdownMenu') {
           menuContentNode = child;
         }
       }

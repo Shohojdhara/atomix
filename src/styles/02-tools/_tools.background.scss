@@ -1,14 +1,75 @@
-@use 'sass:meta';
-@use 'sass:string';
 @use 'sass:math';
 @use 'sass:color';
 @use 'sass:map';
 @use 'sass:list';
 @use '../01-settings/settings.background' as *;
-@use '../01-settings/settings.config' as *;
 @use '../01-settings/settings.colors' as *;
-@use '../02-tools/tools.to-rgb' as *;
+/* Background utility simplification
+ * - Consolidates duplicated glass, mesh, shadow, border, and noise patterns into private helpers.
+ * - Replaces magic values with local token aliases backed by existing background settings.
+ * - Flattens variant and interaction branching, keeps public mixin signatures intact, and removes old backdrop prefixes.
+ */
 
+$_bg-highlight: $white !default;
+$_bg-shadow: $black !default;
+$_bg-filters: ('glass': blur(12px) saturate(1.4), 'solid': blur(8px), 'mesh': blur(16px)) !default;
+$_bg-motion: ('base': 0.3s, 'press': 0.2s, 'easing': cubic-bezier(0.4, 0, 0.2, 1), 'scale': 0.98) !default;
+$_bg-glass: ('angle': 110deg, 'edge-angle': 180deg, 'edge-stop': 30%, 'ambient-stop': 60%, 'ambient-size': ellipse 120% 80% at 50% 120%) !default;
+$_bg-states: ('base': ('shimmer': (0.08, 0.12, 0.08), 'edge': (0.15, 0.05), 'mix': (0.13, 0, -0.1, 0.03), 'ambient': 0.4), 'hover': ('shimmer': (0.1, 0.15, 0.1), 'edge': (0.18, 0.08), 'mix': (0.16, 0, -0.12, 0.04), 'ambient': 0.5), 'active': ('edge': (0.12, 0.05), 'mix': (0.18, 0, -0.09))) !default;
+$_bg-shadow-ambient: ('base': 0 2px 4px rgba($_bg-shadow, 0.05), 'hover': 0 2px 4px rgba($_bg-shadow, 0.08)) !default;
+
+// Changelog: Added a shared color-mix helper so all variants use the same tokenized transparency math.
+@function _bg-mix($color, $weight) { @return color-mix(in srgb, #{$color} #{math.percentage($weight)}, transparent); }
+
+// Changelog: Added compact token readers to remove repeated literal lookups from the public mixin.
+@function _bg-state($state, $group) { @return map.get($_bg-states, $state, $group); }
+@function _bg-surface($state, $transparency) { @return if($state == 'hover', $background-transparency-hover, if($state == 'active', $background-transparency-active, $transparency)); }
+@function _bg-noise-image() { @return url("data:image/svg+xml,%3Csvg viewBox='0 0 #{$background-noise-scale} #{$background-noise-scale}' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' /%3E%3C/svg%3E"); }
+
+// Changelog: Extracted glass background generation so base, hover, and active states reuse one recipe.
+@function _bg-glass($color, $transparency, $state: 'base') {
+  $surface: _bg-surface($state, $transparency);
+  $edge: _bg-state($state, 'edge');
+  $mix: _bg-state($state, 'mix');
+  @if $state == 'active' {
+    @return linear-gradient(map.get($_bg-glass, 'edge-angle'), rgba($_bg-highlight, list.nth($edge, 1)) 0%, rgba($_bg-highlight, list.nth($edge, 2)) 20%, transparent 40%), linear-gradient($background-gradient-angle, _bg-mix($color, $surface + list.nth($mix, 1)) 0%, _bg-mix($color, $surface + list.nth($mix, 2)) 50%, _bg-mix($color, $surface + list.nth($mix, 3)) 100%);
+  }
+  $shimmer: _bg-state($state, 'shimmer');
+  @return linear-gradient(map.get($_bg-glass, 'angle'), transparent 0%, rgba($_bg-highlight, list.nth($shimmer, 1)) 45%, rgba($_bg-highlight, list.nth($shimmer, 2)) 50%, rgba($_bg-highlight, list.nth($shimmer, 3)) 55%, transparent 100%), linear-gradient(map.get($_bg-glass, 'edge-angle'), rgba($_bg-highlight, list.nth($edge, 1)) 0%, rgba($_bg-highlight, list.nth($edge, 2)) 15%, transparent map.get($_bg-glass, 'edge-stop')), linear-gradient($background-gradient-angle, _bg-mix($color, $surface + list.nth($mix, 1)) 0%, _bg-mix($color, $surface + list.nth($mix, 2)) 40%, _bg-mix($color, $surface + list.nth($mix, 3)) 70%, _bg-mix($color, $surface + list.nth($mix, 4)) 100%), radial-gradient(map.get($_bg-glass, 'ambient-size'), _bg-mix($color, $surface * map.get($_bg-states, $state, 'ambient')) 0%, transparent map.get($_bg-glass, 'ambient-stop'));
+}
+
+// Changelog: Extracted shadow composition so base and hover shadows share one loop and corrected opacity scaling.
+@function _bg-shadows($color, $hover: false) {
+  $shadows: (inset 0 1px 0 rgba($_bg-highlight, if($hover, 0.15, 0.1)));
+  $multiplier: if($hover, 1.5, 1);
+  @for $i from 1 through $background-shadow-layers {
+    $blur: $background-shadow-blur-base * $i * $multiplier;
+    $opacity: math.div($background-shadow-intensity, $i) * $multiplier;
+    $shadows: list.append($shadows, 0 $blur ($blur * 2) if($i == 1, $background-shadow-spread, 0) _bg-mix($color, $opacity), comma);
+  }
+  @return list.append($shadows, map.get($_bg-shadow-ambient, if($hover, 'hover', 'base')), comma);
+}
+
+// Changelog: Extracted a shared overlay scaffold so border, noise, and shimmer pseudo-elements stay aligned.
+@mixin _bg-overlay($z) { content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: $z; }
+
+// Changelog: Moved the glass border effect into a private helper to remove duplicate pseudo-element declarations.
+@mixin _bg-border() {
+  &::before { @include _bg-overlay(1); padding: $background-border-width; background: linear-gradient($background-gradient-angle, rgba($_bg-highlight, $background-border-opacity * 1.2) 0%, rgba($_bg-highlight, $background-border-opacity * 0.6) 50%, rgba($_bg-highlight, $background-border-opacity * 0.3) 100%); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; }
+}
+
+// Changelog: Moved the noise overlay into a helper so the SVG asset and sizing are defined once.
+@mixin _bg-noise() {
+  &::after { @include _bg-overlay(2); opacity: $background-noise-opacity; background-image: _bg-noise-image(); background-size: #{$background-noise-scale}px; mix-blend-mode: overlay; }
+}
+
+// Changelog: Moved the shimmer overlay into a helper so the variant branch only selects the effect.
+@mixin _bg-shimmer() {
+  overflow: hidden;
+  &::before { @include _bg-overlay(1); background: linear-gradient(map.get($_bg-glass, 'angle'), transparent 0%, rgba($_bg-highlight, $background-shimmer-intensity) 50%, transparent 100%); transform: translateX(-100%); animation: shimmer $background-shimmer-duration infinite; }
+}
+
+// Changelog: Rebuilt the main utility mixin around private helpers to preserve the API while removing nesting and redundancy.
 /// Dynamic background mixin with glass morphism effects
 /// @param {Color} $color - Base color for the background
 /// @param {Number} $transparency [0.65] - Transparency level (0-1)
@@ -28,326 +89,70 @@
   $enable-noise: $background-enable-noise-texture,
   $variant: 'glass'
 ) {
-  // Base positioning for pseudo-elements
   position: relative;
   isolation: isolate;
-
-  // ─── Glass Variant (Default) ────────────────────────────────────────────────
   @if $variant == 'glass' {
-    @if $enable-transparency {
-      @if $enable-gradient {
-        background:
-          // Shimmer highlight
-          linear-gradient(
-            110deg,
-            transparent 0%,
-            rgba(255, 255, 255, 0.08) 45%,
-            rgba(255, 255, 255, 0.12) 50%,
-            rgba(255, 255, 255, 0.08) 55%,
-            transparent 100%
-          ),
-          // Top edge highlight
-          linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.15) 0%,
-            rgba(255, 255, 255, 0.05) 15%,
-            transparent 30%
-          ),
-          // Main glass layer with depth
-          linear-gradient(
-            $background-gradient-angle,
-            color-mix(in srgb, #{$color} 78%, transparent) 0%,
-            color-mix(in srgb, #{$color} 65%, transparent) 40%,
-            color-mix(in srgb, #{$color} 55%, transparent) 70%,
-            color-mix(in srgb, #{$color} 68%, transparent) 100%
-          ),
-          // Bottom ambient shadow
-          radial-gradient(
-            ellipse 120% 80% at 50% 120%,
-            color-mix(in srgb, #{$color} 26%, transparent) 0%,
-            transparent 60%
-          );
-        backdrop-filter: blur(12px) saturate(1.4);
-        -webkit-backdrop-filter: blur(12px) saturate(1.4);
-      } @else {
-        background-color: color-mix(
-          in srgb,
-          #{$color} 65%,
-          transparent
-        );
-        backdrop-filter: blur(8px);
-        -webkit-backdrop-filter: blur(8px);
-      }
+    @if $enable-transparency and $enable-gradient {
+      background: _bg-glass($color, $transparency);
+      backdrop-filter: map.get($_bg-filters, 'glass');
+    } @else if $enable-transparency {
+      background-color: _bg-mix($color, $transparency);
+      backdrop-filter: map.get($_bg-filters, 'solid');
     } @else {
       background-color: $color;
     }
-
-    // Glass border gradient
-    @if $enable-border {
-      &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        padding: $background-border-width;
-        background: linear-gradient(
-          $background-gradient-angle,
-          rgba(255, 255, 255, $background-border-opacity * 1.2) 0%,
-          rgba(255, 255, 255, $background-border-opacity * 0.6) 50%,
-          rgba(255, 255, 255, $background-border-opacity * 0.3) 100%
-        );
-        -webkit-mask:
-          linear-gradient(#fff 0 0) content-box,
-          linear-gradient(#fff 0 0);
-        -webkit-mask-composite: xor;
-        mask-composite: exclude;
-        pointer-events: none;
-        z-index: 1;
-      }
-    }
-
-    // Noise texture overlay
-    @if $enable-noise {
-      &::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        border-radius: inherit;
-        opacity: $background-noise-opacity;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 #{$background-noise-scale} #{$background-noise-scale}' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' /%3E%3C/svg%3E");
-        background-size: #{$background-noise-scale}px;
-        pointer-events: none;
-        mix-blend-mode: overlay;
-        z-index: 2;
-      }
-    }
+    @if $enable-border { @include _bg-border(); }
+    @if $enable-noise { @include _bg-noise(); }
+  } @else if $variant == 'solid' {
+    background: if($enable-gradient, linear-gradient($background-gradient-angle, color.adjust($color, $lightness: 5%) 0%, $color 50%, color.adjust($color, $lightness: -5%) 100%), $color);
+  } @else if $variant == 'mesh' {
+    background: radial-gradient(circle at 20% 30%, _bg-mix($color, 0.4) 0%, transparent 50%), radial-gradient(circle at 80% 70%, _bg-mix($color, 0.35) 0%, transparent 50%), radial-gradient(circle at 50% 50%, _bg-mix($color, $transparency) 0%, _bg-mix($color, 0.39) 100%);
+    backdrop-filter: map.get($_bg-filters, 'mesh');
+  } @else if $variant == 'shimmer' {
+    background: _bg-mix($color, 0.75);
+    @include _bg-shimmer();
   }
-
-  // ─── Solid Variant ──────────────────────────────────────────────────────────
-  @else if $variant == 'solid' {
-    background-color: $color;
-    @if $enable-gradient {
-      background: linear-gradient(
-        $background-gradient-angle,
-        color.adjust($color, $lightness: 5%) 0%,
-        $color 50%,
-        color.adjust($color, $lightness: -5%) 100%
-      );
-    }
-  }
-
-  // ─── Mesh Gradient Variant ──────────────────────────────────────────────────
-  @else if $variant == 'mesh' {
-    background:
-      radial-gradient(
-        circle at 20% 30%,
-        color-mix(in srgb, #{$color} 40%, transparent) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        circle at 80% 70%,
-        color-mix(in srgb, #{$color} 35%, transparent) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        circle at 50% 50%,
-        color-mix(in srgb, #{$color} 65%, transparent) 0%,
-        color-mix(in srgb, #{$color} 39%, transparent) 100%
-      );
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-  }
-
-  // ─── Shimmer Variant ────────────────────────────────────────────────────────
-  @else if $variant == 'shimmer' {
-    background: color-mix(
-      in srgb,
-      #{$color} 75%,
-      transparent
-    );
-    overflow: hidden;
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        110deg,
-        transparent 0%,
-        rgba(255, 255, 255, $background-shimmer-intensity) 50%,
-        transparent 100%
-      );
-      transform: translateX(-100%);
-      animation: shimmer $background-shimmer-duration infinite;
-      pointer-events: none;
-    }
-  }
-
-  // ─── Shadow Layers ──────────────────────────────────────────────────────────
-  @if $enable-shadow {
-    $shadow-list: ();
-    
-    // Inner glow
-    $shadow-list: list.append(
-      $shadow-list,
-      inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      comma
-    );
-    
-    // Layered outer shadows
-    @for $i from 1 through $background-shadow-layers {
-      $blur: $background-shadow-blur-base * $i;
-      $spread: if($i == 1, $background-shadow-spread, 0);
-      $opacity: math.div($background-shadow-intensity, $i);
-      
-      $shadow-list: list.append(
-        $shadow-list,
-        0 #{$blur} #{$blur * 2} #{$spread} color-mix(in srgb, #{$color} #{math.percentage($opacity * 100)}, transparent),
-        comma
-      );
-    }
-    
-    // Ambient shadow
-    $shadow-list: list.append(
-      $shadow-list,
-      0 2px 4px rgba(0, 0, 0, 0.05),
-      comma
-    );
-    
-    box-shadow: $shadow-list;
-  }
-
-  // ─── Hover & Active States ──────────────────────────────────────────────────
-  transition:
-    background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-
+  @if $enable-shadow { box-shadow: _bg-shadows($color); }
+  transition: background map.get($_bg-motion, 'base') map.get($_bg-motion, 'easing'), box-shadow map.get($_bg-motion, 'base') map.get($_bg-motion, 'easing'), transform map.get($_bg-motion, 'press') map.get($_bg-motion, 'easing');
   @media (hover: hover) {
     &:hover {
-      @if $variant == 'glass' and $enable-transparency {
-        & {
-          background:
-            linear-gradient(
-              110deg,
-              transparent 0%,
-              rgba(255, 255, 255, 0.1) 45%,
-              rgba(255, 255, 255, 0.15) 50%,
-              rgba(255, 255, 255, 0.1) 55%,
-              transparent 100%
-            ),
-            linear-gradient(
-              180deg,
-              rgba(255, 255, 255, 0.18) 0%,
-              rgba(255, 255, 255, 0.08) 15%,
-              transparent 30%
-            ),
-            linear-gradient(
-              $background-gradient-angle,
-              color-mix(in srgb, #{$color} 96%, transparent) 0%,
-              color-mix(in srgb, #{$color} 80%, transparent) 40%,
-              color-mix(in srgb, #{$color} 68%, transparent) 70%,
-              color-mix(in srgb, #{$color} 84%, transparent) 100%
-            ),
-            radial-gradient(
-              ellipse 120% 80% at 50% 120%,
-              color-mix(in srgb, #{$color} 40%, transparent) 0%,
-              transparent 60%
-            );
-        }
-      }
-      
-      @if $enable-shadow {
-        & {
-          box-shadow:
-            inset 0 1px 0 rgba(255, 255, 255, 0.15),
-            0 #{$background-shadow-blur-base * 1.5} #{$background-shadow-blur-base * 3} #{$background-shadow-spread} color-mix(in srgb, #{$color} #{math.percentage($background-shadow-intensity * 150)}, transparent),
-            0 #{$background-shadow-blur-base * 2.5} #{$background-shadow-blur-base * 5} 0 color-mix(in srgb, #{$color} #{math.percentage($background-shadow-intensity * 100)}, transparent),
-            0 2px 4px rgba(0, 0, 0, 0.08);
-        }
-      }
+      @if $variant == 'glass' and $enable-transparency { background: _bg-glass($color, $transparency, 'hover'); }
+      @if $enable-shadow { box-shadow: _bg-shadows($color, true); }
     }
   }
-
   &:active {
-    @if $variant == 'glass' and $enable-transparency {
-      & {
-        background:
-          linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.12) 0%,
-            rgba(255, 255, 255, 0.05) 20%,
-            transparent 40%
-          ),
-          linear-gradient(
-            $background-gradient-angle,
-            color-mix(in srgb, #{$color} 108%, transparent) 0%,
-            color-mix(in srgb, #{$color} 90%, transparent) 50%,
-            color-mix(in srgb, #{$color} 81%, transparent) 100%
-          );
-      }
-    }
-    & {
-      transform: scale(0.98);
-    }
+    @if $variant == 'glass' and $enable-transparency { background: _bg-glass($color, $transparency, 'active'); }
+    transform: scale(map.get($_bg-motion, 'scale'));
   }
 }
 
-// ─── Shimmer Animation ──────────────────────────────────────────────────────
+// Changelog: Kept the public animation name intact while trimming it to the minimal required transform states.
 @keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-  100% {
-    transform: translateX(200%);
-  }
+  from { transform: translateX(-100%); }
+  to { transform: translateX(200%); }
 }
 
+// Changelog: Preserved the public glass wrapper and routed it through the simplified core mixin.
 /// Simplified dynamic background for quick usage
 /// @param {Color} $color - Base color
 /// @param {Number} $transparency [0.65] - Transparency level
 @mixin glass-background($color, $transparency: $background-transparency) {
-  @include dynamic-background(
-    $color: $color,
-    $transparency: $transparency,
-    $enable-transparency: true,
-    $enable-gradient: true,
-    $enable-shadow: true,
-    $variant: 'glass'
-  );
+  @include dynamic-background($color, $transparency, true, true, true, false, $background-enable-noise-texture, 'glass');
 }
 
+// Changelog: Preserved the solid wrapper while delegating the implementation to the shared utility mixin.
 /// Solid background with subtle gradient
 /// @param {Color} $color - Base color
-@mixin solid-background($color) {
-  @include dynamic-background(
-    $color: $color,
-    $variant: 'solid',
-    $enable-gradient: true,
-    $enable-shadow: false
-  );
-}
+@mixin solid-background($color) { @include dynamic-background($color, $background-transparency, false, true, false, false, false, 'solid'); }
 
+// Changelog: Preserved the mesh wrapper and kept the same defaults through the refactored core mixin.
 /// Mesh gradient background
 /// @param {Color} $color - Base color
 /// @param {Number} $transparency [0.65] - Transparency level
-@mixin mesh-background($color, $transparency: $background-transparency) {
-  @include dynamic-background(
-    $color: $color,
-    $transparency: $transparency,
-    $variant: 'mesh',
-    $enable-shadow: true
-  );
-}
+@mixin mesh-background($color, $transparency: $background-transparency) { @include dynamic-background($color, $transparency, true, true, true, false, false, 'mesh'); }
 
+// Changelog: Preserved the shimmer wrapper while delegating effect composition to the shared helpers.
 /// Shimmer effect background
 /// @param {Color} $color - Base color
 /// @param {Number} $transparency [0.65] - Transparency level
-@mixin shimmer-background($color, $transparency: $background-transparency) {
-  @include dynamic-background(
-    $color: $color,
-    $transparency: $transparency,
-    $variant: 'shimmer',
-    $enable-shadow: false
-  );
-}
+@mixin shimmer-background($color, $transparency: $background-transparency) { @include dynamic-background($color, $transparency, true, true, false, false, false, 'shimmer'); }

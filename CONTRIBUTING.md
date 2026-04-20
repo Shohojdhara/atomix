@@ -1,4 +1,3 @@
-
 # Contributing to Atomix
 
 We're excited that you're interested in contributing to Atomix! This document outlines the guidelines for contributing to the project. By participating in this project, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
@@ -66,6 +65,89 @@ When submitting a pull request, please ensure that:
 ## Code of Conduct
 
 We have a [Code of Conduct](CODE_OF_CONDUCT.md) that we expect all contributors to follow. Please read it before contributing to the project.
+
+## Component Implementation Guidelines
+
+### Overview
+
+This section provides comprehensive guidelines for implementing consistent, high-quality components in the Atomix design system.
+
+### Component Architecture Patterns
+
+#### File Structure Pattern
+
+```
+src/components/ComponentName/
+├── ComponentName.tsx              # React component (primary)
+├── ComponentName.stories.tsx      # Storybook stories
+├── index.ts                       # Exports
+└── README.md                      # Component documentation (optional)
+```
+
+#### Component Wrapper Pattern
+
+All interactive components must implement `forwardRef` for DOM access:
+
+```typescript
+import React, { forwardRef, memo } from 'react';
+import { ComponentProps } from '../../lib/types/components';
+
+export const ComponentName = React.memo(
+  forwardRef<HTMLDivElement, ComponentProps>(({ variant = 'primary', ...props }, ref) => {
+    // Component logic
+  })
+);
+ComponentName.displayName = 'ComponentName';
+export default ComponentName;
+```
+
+### Prop Interface Standards
+
+- Use TypeScript for strict prop definitions
+- Avoid loose typing patterns (`[key: string]: any`)
+- Include JSDoc comments for all public props
+- Provide sensible default values
+
+### Accessibility Requirements
+
+- Support keyboard navigation and focus management
+- Include proper ARIA attributes
+- Test with screen readers
+- Follow WCAG 2.1 AA standards
+
+### Export Patterns
+
+Use consistent export patterns for compound components:
+
+```typescript
+// Standard pattern for compound components
+const ComponentWithSubcomponents = Component as unknown as ComponentType & {
+  Header: typeof ComponentHeader;
+  Body: typeof ComponentBody;
+  Footer: typeof ComponentFooter;
+};
+ComponentWithSubcomponents.Header = ComponentHeader;
+// ...
+export const Component = ComponentWithSubcomponents;
+```
+
+### Performance Guidelines
+
+- Use `React.memo` for components with complex props
+- Implement `useCallback` for event handlers
+- Optimize re-renders through proper dependency arrays
+
+### Testing Requirements
+
+- Unit tests for all component variants
+- Integration tests for user interactions
+- Accessibility compliance testing
+
+### Example Implementation
+
+See existing components like `Button.tsx` and `Modal.tsx` for implementation patterns. New components should maintain consistency with these established patterns.
+
+---
 
 ## License
 

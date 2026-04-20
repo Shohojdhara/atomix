@@ -12,7 +12,6 @@ export type ButtonAsProp = {
   to?: string;
   href?: string;
   linkComponent?: React.ElementType;
-  [key: string]: any;
 };
 
 export const Button = React.memo(
@@ -177,8 +176,8 @@ export const Button = React.memo(
                       ? 'primary'
                       : variant === 'danger'
                         ? 'error'
-                        : (variant as any),
-                } as any,
+                        : variant,
+                },
                 <Spinner
                   size={spinnerSize}
                   variant={
@@ -187,7 +186,7 @@ export const Button = React.memo(
                       ? 'primary'
                       : variant === 'danger'
                         ? 'error'
-                        : (variant as any)
+                        : variant
                   }
                 />
               )}

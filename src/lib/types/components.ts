@@ -2184,6 +2184,90 @@ export interface TodoProps extends BaseComponentProps {
 }
 
 /**
+ * Spinner component properties
+ */
+export interface SpinnerProps extends BaseComponentProps {
+  /**
+   * Spinner color variant
+   * @default 'primary'
+   */
+  variant?: ThemeColor;
+
+  /**
+   * Spinner size
+   * @default 'md'
+   */
+  size?: Size;
+
+  /**
+   * Whether the spinner should be displayed fullscreen
+   */
+  fullscreen?: boolean;
+
+  /**
+   * Accessible label for screen readers
+   * @default 'Loading'
+   */
+  'aria-label'?: string;
+
+  /**
+   * ARIA live property to control how updates are announced
+   * @default 'polite'
+   */
+  'aria-live'?: 'off' | 'polite' | 'assertive';
+
+  /**
+   * ARIA descriptor property for additional description
+   */
+  'aria-describe'?: string;
+
+  /**
+   * ARIA role for the spinner
+   * @default 'status'
+   */
+  role?: 'status' | 'alert';
+
+  /**
+   * Glass morphism effect for the spinner
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
+}
+
+/**
+ * Icon size options
+ */
+export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+
+/**
+ * Icon component properties
+ */
+export interface IconProps extends BaseComponentProps {
+  /**
+   * Icon name
+   */
+  name: string;
+
+  /**
+   * Icon size
+   * @default 'md'
+   */
+  size?: IconSize;
+
+  /**
+   * Icon color variant
+   * @default 'inherit'
+   */
+  variant?: ThemeColor;
+
+  /**
+   * Glass morphism effect for the icon
+   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
+   */
+  glass?: AtomixGlassProps | boolean;
+}
+
+/**
  * Form component properties
  */
 export interface FormProps extends BaseComponentProps {

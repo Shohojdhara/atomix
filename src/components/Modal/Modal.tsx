@@ -1,6 +1,21 @@
-import React, { useEffect, useRef, useState, useCallback, memo, forwardRef, ReactNode, useId } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+  useCallback,
+  memo,
+  forwardRef,
+  ReactNode,
+  useId,
+  ComponentType,
+} from 'react';
 import { ModalProps } from '../../lib/types/components';
 import { MODAL } from '../../lib/constants/components';
+
+// Define ExtendedComponentType as a type alias instead of an interface to avoid TS2312 error
+type ExtendedComponentType<P = {}> = ComponentType<P> & {
+  displayName?: string;
+}
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { useFocusTrap } from '../../lib/composables/useFocusTrap';
 
@@ -225,9 +240,12 @@ const ModalImpl = memo(
       .join(' ');
 
     // Check for compound components usage
-    const hasCompoundComponents = React.Children.toArray(children).some((child) =>
-      React.isValidElement(child) &&
-      ['ModalHeader', 'ModalBody', 'ModalFooter'].includes((child.type as any).displayName)
+    const hasCompoundComponents = React.Children.toArray(children).some(
+      child =>
+        React.isValidElement(child) &&
+        ['ModalHeader', 'ModalBody', 'ModalFooter'].includes(
+          (child.type as ExtendedComponentType).displayName || ''
+        )
     );
 
     const modalContent = (
@@ -236,12 +254,12 @@ const ModalImpl = memo(
           React.Children.map(children, child => {
             if (
               React.isValidElement(child) &&
-              (child.type as any).displayName === 'ModalHeader'
+              (child.type as ExtendedComponentType).displayName === 'ModalHeader'
             ) {
               return React.cloneElement(child, {
-                onClose: (child.props as any).onClose || close,
+                onClose: (child.props as ModalHeaderProps).onClose || close,
                 id: titleId,
-              } as any);
+              });
             }
             return child;
           })

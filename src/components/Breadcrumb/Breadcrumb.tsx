@@ -6,6 +6,9 @@ import React, {
   cloneElement,
   isValidElement,
   ElementType,
+  ComponentType,
+  MouseEvent,
+  AnchorHTMLAttributes,
 } from 'react';
 import { BREADCRUMB } from '../../lib/constants/components';
 
@@ -50,6 +53,13 @@ export interface BreadcrumbItemData {
 // Rename exported type to avoid conflict with the component constant
 export type BreadcrumbItemType = BreadcrumbItemData;
 
+// Link component props interface
+interface LinkComponentProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
+  href?: string;
+  to?: string;
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
+}
+
 // Compound Component Props
 export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement> {
   /**
@@ -70,17 +80,17 @@ export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement>
   /**
    * Optional click handler for the link
    */
-  onClick?: (event: React.MouseEvent<any>) => void;
+  onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
 
   /**
    * Optional custom link component
    */
-  linkAs?: React.ElementType<any>;
+  linkAs?: ComponentType<LinkComponentProps>;
 
   /**
    * Link props to pass to the underlying anchor or linkComponent
    */
-  linkProps?: Record<string, any>;
+  linkProps?: Partial<LinkComponentProps>;
 }
 
 export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
@@ -114,14 +124,14 @@ export const BreadcrumbItem = forwardRef<HTMLLIElement, BreadcrumbItemProps>(
       </>
     );
 
-    const commonLinkProps = {
+    const commonLinkProps: LinkComponentProps = {
       className: BREADCRUMB.CLASSES.LINK,
-      onClick: onClick as any,
+      onClick: onClick,
       style, // Apply style to the link as per legacy behavior
       ...linkProps,
     };
 
-    const LinkComponent = linkAs as React.ComponentType<any>;
+    const LinkComponent = linkAs;
 
     return (
       <li ref={ref} className={itemClasses} style={style} {...props}>
@@ -206,7 +216,7 @@ const BreadcrumbComponent: React.FC<BreadcrumbProps> = memo(function BreadcrumbB
           href={item.href}
           active={item.active || isLast}
           icon={item.icon}
-          onClick={item.onClick as any}
+          onClick={item.onClick as (event: MouseEvent<HTMLAnchorElement>) => void}
           className={item.className}
           style={item.style}
           linkAs={linkComponent}
@@ -219,19 +229,18 @@ const BreadcrumbComponent: React.FC<BreadcrumbProps> = memo(function BreadcrumbB
     // Compound rendering
     const childrenCount = Children.count(children);
     content = Children.map(children, (child, index) => {
-      if (isValidElement(child)) {
+      if (isValidElement<BreadcrumbItemProps>(child)) {
         const isLast = index === childrenCount - 1;
-        const childProps = child.props as any;
 
-        // Extract props from the child element
-        const { active, linkAs, ...otherProps } = childProps;
+        // Extract props from the child element with proper typing
+        const { active, linkAs, ...otherProps } = child.props;
 
-        const newProps = {
+        const newProps: Partial<BreadcrumbItemProps> = {
           active: active ?? (isLast ? true : undefined),
           linkAs: linkAs ?? linkComponent,
         };
 
-        return cloneElement(child, newProps as any);
+        return cloneElement(child, newProps);
       }
       return child;
     });

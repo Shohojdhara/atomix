@@ -1,4 +1,4 @@
-import React, { ReactNode, useId, memo, forwardRef } from 'react';
+import React, { ReactNode, useId, memo, forwardRef, ComponentType } from 'react';
 import { ACCORDION } from '../../lib/constants/components';
 import { useAccordion } from '../../lib/composables/useAccordion';
 import type {
@@ -8,6 +8,18 @@ import type {
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 export type AccordionProps = AccordionPropsType;
+
+// Type aliases for compound component detection
+type ExtendedComponentType<P = {}> = ComponentType<P> & {
+  displayName?: string;
+}
+
+// Props interface for type-safe props access
+interface AccordionChildProps {
+  className?: string;
+  onClick?: React.MouseEventHandler<HTMLElement>;
+  iconPosition?: 'left' | 'right';
+}
 
 // Default icon
 const DefaultIcon = () => (
@@ -30,7 +42,8 @@ const DefaultIcon = () => (
   </i>
 );
 
-export interface AccordionHeaderProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'title'> {
+export interface AccordionHeaderProps
+  extends Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'title'> {
   title?: ReactNode;
   icon?: ReactNode;
   iconPosition?: 'left' | 'right';
@@ -38,10 +51,7 @@ export interface AccordionHeaderProps extends Omit<React.ButtonHTMLAttributes<HT
 }
 
 export const AccordionHeader = forwardRef<HTMLButtonElement, AccordionHeaderProps>(
-  (
-    { title, icon, iconPosition = 'right', isOpen, children, className = '', ...props },
-    ref
-  ) => {
+  ({ title, icon, iconPosition = 'right', isOpen, children, className = '', ...props }, ref) => {
     // Determine icon to render. Explicit check for undefined to allow null/false to hide icon.
     const iconElement = icon === undefined ? <DefaultIcon /> : icon;
 
@@ -67,9 +77,11 @@ export interface AccordionBodyProps extends React.HTMLAttributes<HTMLDivElement>
 }
 
 // Helper to merge refs
-function mergeRefs<T = any>(...refs: (React.MutableRefObject<T> | React.LegacyRef<T> | undefined | null)[]) {
+function mergeRefs<T = any>(
+  ...refs: (React.MutableRefObject<T> | React.LegacyRef<T> | undefined | null)[]
+) {
   return (node: T) => {
-    refs.forEach((ref) => {
+    refs.forEach(ref => {
       if (typeof ref === 'function') {
         ref(node);
       } else if (ref != null) {
@@ -90,10 +102,7 @@ export const AccordionBody = forwardRef<HTMLDivElement, AccordionBodyProps>(
         role="region"
         {...props}
       >
-        <div
-          className={ACCORDION.SELECTORS.BODY.replace('.', '')}
-          ref={contentRef}
-        >
+        <div className={ACCORDION.SELECTORS.BODY.replace('.', '')} ref={contentRef}>
           {children}
         </div>
       </div>
@@ -147,9 +156,12 @@ const AccordionImpl = memo(
     const panelClassNames = ACCORDION.SELECTORS.PANEL.replace('.', '');
 
     // Check for compound usage
-    const hasCompoundComponents = React.Children.toArray(children).some((child) =>
-      React.isValidElement(child) &&
-      ['AccordionHeader', 'AccordionBody'].includes((child.type as any).displayName)
+    const hasCompoundComponents = React.Children.toArray(children).some(
+      child =>
+        React.isValidElement(child) &&
+        ['AccordionHeader', 'AccordionBody'].includes(
+          (child.type as ExtendedComponentType).displayName || ''
+        )
     );
 
     const content = (
@@ -160,29 +172,31 @@ const AccordionImpl = memo(
         {hasCompoundComponents ? (
           React.Children.map(children, child => {
             if (React.isValidElement(child)) {
-              if ((child.type as any).displayName === 'AccordionHeader') {
+              const childProps = child.props as AccordionChildProps;
+
+              if ((child.type as ExtendedComponentType).displayName === 'AccordionHeader') {
                 return React.cloneElement(child, {
                   id: buttonId,
-                  className: `${headerClassNames} ${(child.props as any).className || ''}`.trim(),
+                  className: `${headerClassNames} ${childProps.className || ''}`.trim(),
                   onClick: (e: React.MouseEvent) => {
                     toggle();
-                    (child.props as any).onClick?.(e);
+                    childProps?.onClick?.(e);
                   },
                   'aria-expanded': state.isOpen,
                   'aria-controls': panelId,
                   'aria-disabled': disabled,
                   disabled: disabled,
-                  iconPosition: (child.props as any).iconPosition || iconPosition,
-                } as any);
+                  iconPosition: childProps.iconPosition || iconPosition,
+                });
               }
-              if ((child.type as any).displayName === 'AccordionBody') {
+              if ((child.type as ExtendedComponentType).displayName === 'AccordionBody') {
                 return React.cloneElement(child, {
                   id: panelId,
-                  className: `${panelClassNames} ${(child.props as any).className || ''}`.trim(),
+                  className: `${panelClassNames} ${childProps.className || ''}`.trim(),
                   'aria-labelledby': buttonId,
                   panelRef: panelRef,
                   contentRef: contentRef,
-                } as any);
+                });
               }
             }
             return child;

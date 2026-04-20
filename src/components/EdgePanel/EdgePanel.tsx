@@ -1,9 +1,14 @@
-import React, { useRef, useEffect, memo, forwardRef } from 'react';
+import React, { useRef, useEffect, memo, forwardRef, ComponentType } from 'react';
 import { EdgePanelProps } from '../../lib/types/components';
 import { useEdgePanel } from '../../lib/composables/useEdgePanel';
 import { EDGE_PANEL } from '../../lib/constants/components';
 import { Icon } from '../Icon/Icon';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+
+// Type-safe type alias for compound component detection
+type ExtendedComponentType<P = {}> = ComponentType<P> & {
+  displayName?: string;
+}
 
 // Subcomponents
 export const EdgePanelHeader = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
@@ -146,7 +151,7 @@ const EdgePanelComponentBase = ({
     child =>
       React.isValidElement(child) &&
       ['EdgePanelHeader', 'EdgePanelBody', 'EdgePanelFooter'].includes(
-        (child.type as any).displayName
+        (child.type as ExtendedComponentType).displayName || ''
       )
   );
 
