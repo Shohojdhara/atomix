@@ -307,7 +307,7 @@
     }
 
     &:active:not(&--disabled) {
-      transform: translateY(0);
+      transform: translateY(-2px); // Keep the same transform as hover state to prevent scale down effect
     }
   }
 
@@ -320,7 +320,7 @@
     }
 
     &:active:not(&--disabled) {
-      transform: translateY(0);
+      transform: translateY(-2px); // Keep the same transform as hover state to prevent scale down effect
     }
 
     // Hover elevation modifiers

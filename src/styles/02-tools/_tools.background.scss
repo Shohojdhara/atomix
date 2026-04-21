@@ -113,16 +113,17 @@ $_bg-shadow-ambient: ('base': 0 2px 4px rgba($_bg-shadow, 0.05), 'hover': 0 2px 
     @include _bg-shimmer();
   }
   @if $enable-shadow { box-shadow: _bg-shadows($color); }
-  transition: background map.get($_bg-motion, 'base') map.get($_bg-motion, 'easing'), box-shadow map.get($_bg-motion, 'base') map.get($_bg-motion, 'easing'), transform map.get($_bg-motion, 'press') map.get($_bg-motion, 'easing');
-  @media (hover: hover) {
-    &:hover {
-      @if $variant == 'glass' and $enable-transparency { background: _bg-glass($color, $transparency, 'hover'); }
-      @if $enable-shadow { box-shadow: _bg-shadows($color, true); }
+  transition: background map.get($_bg-motion, 'base') map.get($_bg-motion, 'easing'), box-shadow map.get($_bg-motion, 'base') map.get($_bg-motion, 'easing');
+  @if $background-enable-hover-effects {
+    @media (hover: hover) {
+      &:hover {
+        @if $variant == 'glass' and $enable-transparency { background: _bg-glass($color, $transparency, 'hover'); }
+        @if $enable-shadow { box-shadow: _bg-shadows($color, true); }
+      }
     }
   }
   &:active {
     @if $variant == 'glass' and $enable-transparency { background: _bg-glass($color, $transparency, 'active'); }
-    transform: scale(map.get($_bg-motion, 'scale'));
   }
 }
 

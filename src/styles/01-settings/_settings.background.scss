@@ -5,6 +5,7 @@ $background-enable-with-shadow: true !default;
 $background-enable-mesh-gradient: false !default;
 $background-enable-noise-texture: false !default;
 $background-enable-shimmer: false !default;
+$background-enable-hover-effects: true !default; // Variable to control hover effects
 
 // Core transparency levels
 $background-transparency: 0.65 !default;
