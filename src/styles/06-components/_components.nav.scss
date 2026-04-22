@@ -135,14 +135,11 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 1000;
-    @include dynamic-background(var(--#{$prefix}body-bg));
     border: 1px solid var(--#{$prefix}border-color);
     border-radius: $border-radius-pill;
     box-shadow: var(--#{$prefix}box-shadow-lg);
     padding: rem(8px) rem(16px);
     backdrop-filter: blur(10px);
-
-    // Add subtle background transparency
     @include dynamic-background(rgba(var(--#{$prefix}body-bg-rgb), 0.95));
 
     // Ensure items are properly spaced in float mode

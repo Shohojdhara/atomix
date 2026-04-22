@@ -38,19 +38,19 @@
     flex-direction: column;
     gap: var(--#{$prefix}popover-inner-gap-y) var(--#{$prefix}popover-inner-gap-x);
     padding: var(--#{$prefix}popover-padding-y) var(--#{$prefix}popover-padding-x);
-    @include dynamic-background(var(--#{$prefix}popover-bg));
     border-radius: var(--#{$prefix}popover-border-radius);
     box-shadow: var(--#{$prefix}popover-box-shadow);
+    @include dynamic-background(var(--#{$prefix}popover-bg));
   }
 
   &__arrow {
     position: absolute;
     width: var(--#{$prefix}popover-arrow-size);
     height: var(--#{$prefix}popover-arrow-size);
-    @include dynamic-background(var(--#{$prefix}popover-bg));
     box-shadow: var(--#{$prefix}popover-box-shadow);
     z-index: 1;
     transform-origin: center;
+    @include dynamic-background(var(--#{$prefix}popover-bg));
   }
 
   &.is-open {
@@ -94,11 +94,11 @@
 
   &--glass {
     #{$root}__content-inner {
+      box-shadow: none;
       @include dynamic-background(
         var(--#{$prefix}popover-bg),
         $enable-transparency: true
       );
-      box-shadow: none;
     }
   }
 

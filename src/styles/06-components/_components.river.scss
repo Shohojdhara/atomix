@@ -60,9 +60,9 @@
   &__overlay {
     position: absolute;
     inset: 0;
-    @include dynamic-background(var(--#{config.$prefix}river-overlay));
     opacity: var(--#{config.$prefix}river-overlay-opacity);
     border-radius: var(--#{config.$prefix}river-border-radius);
+    @include dynamic-background(var(--#{config.$prefix}river-overlay));
   }
 
   &__container {

@@ -26,11 +26,11 @@
 
 // Modern panel styles
 %panel-base {
-  @include dynamic-background($photoviewer-component-background-color);
   border: 1px solid $photoviewer-component-border-color;
   border-radius: $photoviewer-image-container-border-radius;
   box-shadow: $photoviewer-info-panel-shadow;
   backdrop-filter: blur(8px);
+  @include dynamic-background($photoviewer-component-background-color);
 }
 
 // Custom scrollbar styling
@@ -102,11 +102,11 @@
   border: 2px solid transparent;
   border-radius: $photoviewer-thumbnail-border-radius;
   padding: 0;
-  @include dynamic-background(transparent);
   cursor: pointer;
   overflow: hidden;
   position: relative;
   box-shadow: $photoviewer-thumbnail-shadow;
+  @include dynamic-background(transparent);
 
   &:hover {
     transform: translateY(-2px);
@@ -175,9 +175,9 @@ body.is-open-photoviewer {
   width: 100vw;
   height: 100vh;
   z-index: 1000;
-  @include dynamic-background(transparent);
   opacity: 1;
   transition-property: opacity;
+  @include dynamic-background(transparent);
 
   &__backdrop {
     @extend %standard-transition;

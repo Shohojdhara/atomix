@@ -106,10 +106,10 @@
     z-index: map.get($z-layers, 5);
     width: var(--#{$prefix}datepicker-width);
     padding: var(--#{$prefix}datepicker-padding-y) var(--#{$prefix}datepicker-padding-x);
-    @include dynamic-background(var(--#{$prefix}datepicker-bg));
     border-radius: var(--#{$prefix}datepicker-border-radius);
     box-shadow: var(--#{$prefix}datepicker-box-shadow);
     margin-top: rem(4px);
+    @include dynamic-background(var(--#{$prefix}datepicker-bg));
 
     // Calendar placements
     &--top-start,

@@ -41,10 +41,10 @@
   display: inline-block;
   min-width: var(--#{config.$prefix}menu-min-width);
   padding: var(--#{config.$prefix}menu-item-padding-y) var(--#{config.$prefix}menu-item-padding-x);
-  @include dynamic-background(var(--#{config.$prefix}menu-bg));
   border-radius: var(--#{config.$prefix}menu-border-radius);
   box-shadow: var(--#{config.$prefix}menu-box-shadow);
   z-index: 5;
+  @include dynamic-background(var(--#{config.$prefix}menu-bg));
 
   &__container {
     width: 100%;
@@ -96,10 +96,10 @@
     color: var(--#{config.$prefix}menu-item-color);
     font-size: var(--#{config.$prefix}menu-item-font-size);
     font-weight: var(--#{config.$prefix}menu-item-font-weight);
-    @include dynamic-background(var(--#{config.$prefix}menu-item-bg));
     border-radius: var(--#{config.$prefix}menu-border-radius);
     cursor: pointer;
     @include animations.basic-transition();
+    @include dynamic-background(var(--#{config.$prefix}menu-item-bg));
 
     &:hover {
       color: var(--#{config.$prefix}menu-item-color);

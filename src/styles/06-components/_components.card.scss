@@ -42,14 +42,11 @@
   padding: var(--#{$prefix}card-spacer-y) var(--#{$prefix}card-spacer-x);
   border: var(--#{$prefix}card-border-width) solid var(--#{$prefix}card-border-color);
   border-radius: var(--#{$prefix}card-border-radius);
-  @include basic-transition();
-
-  @include dynamic-background(var(--#{$prefix}card-bg));
-
-  // Link card support - ensure anchor elements behave like block elements
   display: block;
   text-decoration: none;
   color: inherit;
+  @include basic-transition();
+  @include dynamic-background(var(--#{$prefix}card-bg));
 
   // Reset anchor element default styles when card is used as a link
   // This needs higher specificity to override global link styles

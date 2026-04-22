@@ -36,10 +36,10 @@
 
   position: relative;
   width: 100%;
-  @include dynamic-background(var(--#{$prefix}-video-player-bg, #000));
   border-radius: var(--#{$prefix}-video-player-border-radius, 0.5rem);
   overflow: hidden;
   font-family: var(--#{$prefix}-font-family-base);
+  @include dynamic-background(var(--#{$prefix}-video-player-bg, #000));
 
   // &:focus-within,
   // &:focus {
@@ -352,11 +352,11 @@
     bottom: 3.125rem;
     right: 0;
     min-width: 12.5rem;
-    @include dynamic-background(rgba(var(--#{$prefix}primary-rgb), 0.7));
     border-radius: 0.5rem;
     padding: 0.5rem;
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    @include dynamic-background(rgba(var(--#{$prefix}primary-rgb), 0.7));
   }
 
   &__settings-tabs {

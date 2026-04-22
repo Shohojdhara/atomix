@@ -22,18 +22,18 @@
   width: 100%;
   max-width: var(--#{config.$prefix}progress-width);
   height: var(--#{config.$prefix}progress-bar-height);
-  @include dynamic-background(var(--#{config.$prefix}progress-bg));
   border-radius: var(--#{config.$prefix}progress-border-radius);
   overflow: hidden;
+  @include dynamic-background(var(--#{config.$prefix}progress-bg));
 
   &__bar {
     width: var(--#{config.$prefix}progress-bar-width);
     height: var(--#{config.$prefix}progress-bar-height);
     color: var(--#{config.$prefix}progress-bar-color);
-    @include dynamic-background(var(--#{config.$prefix}progress-bar-bg));
     border-radius: var(--#{config.$prefix}progress-border-radius);
     transition: var(--#{config.$prefix}progress-bar-transition)
       var(--#{config.$prefix}progress-bar-easing);
+    @include dynamic-background(var(--#{config.$prefix}progress-bar-bg));
   }
 
   @each $color, $value in maps.$theme-colors {

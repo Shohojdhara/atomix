@@ -26,8 +26,8 @@
   line-height: 1;
   padding: var(--#{$prefix}tag-padding-y) var(--#{$prefix}tag-padding-x);
   border-radius: var(--#{$prefix}tag-border-radius);
-  @include dynamic-background(var(--#{$prefix}tag-bg-color));
   user-select: none;
+  @include dynamic-background(var(--#{$prefix}tag-bg-color));
 
   &__icon {
     font-size: var(--#{$prefix}tag-icon-size);
@@ -44,12 +44,12 @@
   }
 
   &--glass {
+    border: 1px solid color-mix(in srgb, var(--#{$prefix}tag-color) 50%, transparent);
     @include dynamic-background(
       var(--#{$prefix}tag-bg-color),
       $enable-transparency: true,
       $transparency: 0.2
     );
-    border: 1px solid color-mix(in srgb, var(--#{$prefix}tag-color) 50%, transparent);
 
     // // Outer depth and glass effect
     // 0 1px 3px rgba(0, 0, 0, 0.2),

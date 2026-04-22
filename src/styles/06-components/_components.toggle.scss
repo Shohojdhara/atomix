@@ -35,12 +35,11 @@
     flex: 0 0 var(--#{$prefix}toggle-switch-width);
     width: var(--#{$prefix}toggle-switch-width);
     height: var(--#{$prefix}toggle-switch-height);
-    @include dynamic-background(var(--#{$prefix}toggle-switch-bg));
     border-radius: var(--#{$prefix}toggle-switch-border-radius);
     user-select: none;
     cursor: pointer;
-
     @include transition.basic-transition();
+    @include dynamic-background(var(--#{$prefix}toggle-switch-bg));
 
     &::before {
       content: '';
@@ -48,10 +47,9 @@
       width: var(--#{$prefix}toggle-switch-handle-width);
       height: var(--#{$prefix}toggle-switch-handle-height);
       margin: var(--#{$prefix}toggle-switch-handle-margin);
-      @include dynamic-background(var(--#{$prefix}toggle-switch-handle-bg));
       border-radius: var(--#{$prefix}toggle-switch-handle-border-radius);
-
       @include transition.basic-transition();
+      @include dynamic-background(var(--#{$prefix}toggle-switch-handle-bg));
     }
   }
 
@@ -93,8 +91,8 @@
         content: '';
         position: absolute;
         inset: 0;
-        @include dynamic-background(colors.$overlay-2);
         border-radius: var(--#{$prefix}toggle-switch-handle-border-radius);
+        @include dynamic-background(colors.$overlay-2);
       }
     }
   }

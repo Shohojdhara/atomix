@@ -36,21 +36,19 @@
     font-size: var(--#{$prefix}tooltip-font-size);
     font-weight: var(--#{$prefix}tooltip-font-weight);
     padding: var(--#{$prefix}tooltip-padding-y) var(--#{$prefix}tooltip-padding-x);
-    @include dynamic-background(var(--#{$prefix}tooltip-bg));
     border-radius: var(--#{$prefix}tooltip-border-radius);
     box-shadow: var(--#{$prefix}tooltip-box-shadow);
     z-index: 2;
     opacity: 0;
     pointer-events: auto; // Allow interaction with tooltip content
-
     // Animation
     transition:
       opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
       transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-
     // Initial states for animation based on position would be complex to do purely generically here without separate classes
     // So we stick to a simple scale/fade
     transform: scale(0.95);
+    @include dynamic-background(var(--#{$prefix}tooltip-bg));
 
     &.is-active {
       opacity: 1;
@@ -65,9 +63,9 @@
     border-radius: calc(
       (var(--#{$prefix}tooltip-arrow-size) - var(--#{$prefix}tooltip-border-radius)) / 2
     );
-    @include dynamic-background(var(--#{$prefix}tooltip-bg));
     z-index: 1;
     transform: rotate(45deg);
+    @include dynamic-background(var(--#{$prefix}tooltip-bg));
   }
 
   &--left &__arrow,

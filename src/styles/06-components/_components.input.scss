@@ -31,8 +31,8 @@
   border: var(--#{$prefix}input-border-width) solid var(--#{$prefix}input-border-color);
   border-radius: var(--#{$prefix}input-border-radius);
   outline: none;
-  @include dynamic-background(var(--#{$prefix}input-bg));
   @include basic-transition();
+  @include dynamic-background(var(--#{$prefix}input-bg));
 
   &:focus,
   &:hover {
@@ -108,11 +108,11 @@
 
   // Glass morphism effect styles
   &--glass {
-    @include dynamic-background(var(--#{$prefix}input-bg), $enable-transparency: true);
     box-shadow:
       0 8px 32px rgba(0, 0, 0, 0.1),
       0 0 0 1px rgba(255, 255, 255, 0.1) inset;
     border-color: color-mix(in srgb, var(--#{$prefix}input-border-color) 50%, transparent);
+    @include dynamic-background(var(--#{$prefix}input-bg), $enable-transparency: true);
 
     &:focus,
     &:hover {
@@ -130,8 +130,8 @@
     // Glass disabled state
     &:disabled,
     &.is-disabled {
-      @include dynamic-background(var(--#{$prefix}input-bg), $enable-transparency: true);
       opacity: 0.6;
+      @include dynamic-background(var(--#{$prefix}input-bg), $enable-transparency: true);
     }
   }
 }

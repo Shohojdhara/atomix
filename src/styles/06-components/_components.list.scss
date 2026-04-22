@@ -43,8 +43,8 @@
         left: 0;
         width: var(--#{config.$prefix}list-item-dash-width);
         height: var(--#{config.$prefix}list-item-dash-height);
-        @include dynamic-background(var(--#{config.$prefix}list-color));
         transform: translateY(-50%);
+        @include dynamic-background(var(--#{config.$prefix}list-color));
       }
     }
   }

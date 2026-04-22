@@ -186,17 +186,17 @@
     list-style: none;
     @include mb(0);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    @include dynamic-background(var(--#{$prefix}dropdown-bg));
     border-radius: var(--#{$prefix}dropdown-border-radius);
     box-shadow: var(--#{$prefix}dropdown-box-shadow);
     overflow: hidden;
+    @include dynamic-background(var(--#{$prefix}dropdown-bg));
 
     &--glass {
+      box-shadow: var(--#{$prefix}dropdown-box-shadow);
       @include dynamic-background(
         var(--#{$prefix}dropdown-bg),
         $enable-transparency: true
       );
-      box-shadow: var(--#{$prefix}dropdown-box-shadow);
     }
   }
 
@@ -217,9 +217,9 @@
     &:hover,
     &:focus {
       color: var(--#{$prefix}dropdown-link-hover-color);
-      @include dynamic-background(var(--#{$prefix}dropdown-link-hover-bg));
       outline: none;
       padding-left: calc(var(--#{$prefix}dropdown-item-padding-x) + 3px);
+      @include dynamic-background(var(--#{$prefix}dropdown-link-hover-bg));
     }
 
     &.is-active {

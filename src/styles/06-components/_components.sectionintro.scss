@@ -117,8 +117,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    @include dynamic-background(var(--#{$prefix}sectionintro-overlay-bg-color));
     opacity: var(--#{$prefix}sectionintro-overlay-opacity);
+    @include dynamic-background(var(--#{$prefix}sectionintro-overlay-bg-color));
   }
 
   &--has-bg {

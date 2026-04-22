@@ -36,8 +36,8 @@
   display: grid;
   place-items: center;
   padding: var(--#{$prefix}hero-padding-y) var(--#{$prefix}hero-padding-x);
-  @include dynamic-background(var(--#{$prefix}hero-bg));
   overflow: hidden;
+  @include dynamic-background(var(--#{$prefix}hero-bg));
 
   &__bg {
     position: absolute;
@@ -58,9 +58,9 @@
   &__overlay {
     position: absolute;
     inset: 0;
-    @include dynamic-background(var(--#{$prefix}hero-overlay));
     opacity: var(--#{$prefix}hero-overlay-opacity);
     z-index: 1;
+    @include dynamic-background(var(--#{$prefix}hero-overlay));
   }
 
   &__container {

@@ -72,9 +72,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    @include dynamic-background(slider.$slider-empty-background);
     border: slider.$slider-empty-border;
     border-radius: slider.$slider-empty-border-radius;
+    @include dynamic-background(slider.$slider-empty-background);
   }
 }
 
@@ -117,7 +117,6 @@
   height: var(--#{config.$prefix}slider-nav-size);
   border: none;
   border-radius: slider.$slider-nav-border-radius;
-  @include dynamic-background(slider.$slider-nav-background);
   color: slider.$slider-nav-color;
   cursor: pointer;
   pointer-events: auto;
@@ -127,11 +126,12 @@
   justify-content: center;
   transition: slider.$slider-nav-transition;
   box-shadow: slider.$slider-nav-shadow;
+  @include dynamic-background(slider.$slider-nav-background);
 
   &:hover {
-    @include dynamic-background(slider.$slider-nav-background-hover);
     transform: translateY(-50%) scale(1.05);
     box-shadow: slider.$slider-nav-shadow-hover;
+    @include dynamic-background(slider.$slider-nav-background-hover);
   }
 
   &:active {
@@ -188,14 +188,14 @@
   height: slider.$slider-pagination-bullet-size;
   border-radius: slider.$slider-pagination-bullet-border-radius;
   border: none;
-  @include dynamic-background(slider.$slider-pagination-bullet-background);
   cursor: pointer;
   pointer-events: auto;
   transition: slider.$slider-pagination-transition;
+  @include dynamic-background(slider.$slider-pagination-bullet-background);
 
   &:hover {
-    @include dynamic-background(slider.$slider-pagination-bullet-background-hover);
     transform: scale(1.2);
+    @include dynamic-background(slider.$slider-pagination-bullet-background-hover);
   }
 
   &:active {
@@ -203,8 +203,8 @@
   }
 
   &--active {
-    @include dynamic-background(slider.$slider-pagination-bullet-background-active);
     transform: scale(1.2);
+    @include dynamic-background(slider.$slider-pagination-bullet-background-active);
   }
 }
 

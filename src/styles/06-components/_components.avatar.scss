@@ -32,12 +32,12 @@
   justify-content: center;
   @include square(var(--#{$prefix}avatar-size));
   border-radius: var(--#{$prefix}avatar-border-radius);
-  @include dynamic-background(var(--#{$prefix}avatar-bg));
   color: var(--#{$prefix}avatar-color);
   border: var(--#{$prefix}avatar-border-width) solid var(--#{$prefix}avatar-border-color);
   overflow: hidden;
   user-select: none;
   @include basic-transition(opacity);
+  @include dynamic-background(var(--#{$prefix}avatar-bg));
 
   // Size variants
   @each $size, $value in $avatar-size {

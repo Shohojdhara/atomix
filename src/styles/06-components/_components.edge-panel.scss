@@ -35,10 +35,10 @@
   &__backdrop {
     position: absolute;
     inset: 0;
-    @include dynamic-background(var(--#{$prefix}edge-panel-backdrop-bg));
     opacity: 0;
     z-index: map.get($z-layers, 1);
     transition: opacity var(--#{$prefix}edge-panel-animation-duration) ease;
+    @include dynamic-background(var(--#{$prefix}edge-panel-backdrop-bg));
 
     &.is-animating {
       animation: fadeIn 0.3s ease forwards;
@@ -55,12 +55,12 @@
     color: var(--#{$prefix}edge-panel-color);
     width: var(--#{$prefix}edge-panel-width);
     height: 100%;
-    @include dynamic-background(var(--#{$prefix}edge-panel-bg));
     box-shadow: var(--#{$prefix}edge-panel-shadow);
     z-index: map.get($z-layers, 2);
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    @include dynamic-background(var(--#{$prefix}edge-panel-bg));
 
     &.is-animating {
       animation: slideIn var(--#{$prefix}edge-panel-animation-duration)
@@ -371,10 +371,7 @@
     padding: 0;
     border-radius: inherit;
     transition: opacity 0.3s ease;
-    @include dynamic-background(
-      var(--#{$prefix}edge-panel-bg),
-      $enable-transparency: true
-    );
+    @include dynamic-background(var(--#{$prefix}edge-panel-bg), $enable-transparency: true);
   }
 
   .c-edge-panel__header {
@@ -404,13 +401,12 @@
   }
 
   .c-edge-panel__backdrop {
+    animation: fadeIn 0.3s ease forwards;
+    z-index: map.get($z-layers, 1);
     @include dynamic-background(
       var(--#{$prefix}edge-panel-backdrop-bg),
       $enable-transparency: true
     );
-    animation: fadeIn 0.3s ease forwards;
-    z-index: map.get($z-layers, 1);
-
     &.is-animating-out {
       animation: fadeOut 0.3s ease forwards;
     }

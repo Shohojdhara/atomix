@@ -33,11 +33,11 @@
   --#{$prefix}disabled-opacity: 0.6;
 
   // Base Styles
-  @include dynamic-background(var(--#{$prefix}footer-bg));
   color: var(--#{$prefix}footer-color);
   border-top: var(--#{$prefix}footer-border-width) solid var(--#{$prefix}footer-border-color);
   padding: var(--#{$prefix}footer-padding-y) 0;
   position: relative;
+  @include dynamic-background(var(--#{$prefix}footer-bg));
 
   &--glass {
     padding: 0;
@@ -47,10 +47,10 @@
     background: transparent;
 
     #{$root}__glass {
-      @include dynamic-background(rgba(var(--#{$prefix}footer-bg-rgb), 0.5, true));
       color: var(--#{$prefix}footer-color);
       border-top: var(--#{$prefix}footer-border-width) solid var(--#{$prefix}footer-border-color);
       padding: var(--#{$prefix}footer-padding-y) 0;
+      @include dynamic-background(rgba(var(--#{$prefix}footer-bg-rgb), 0.5, true));
     }
   }
 
@@ -333,13 +333,13 @@
       justify-content: center;
       width: #{$footer-social-link-size};
       height: #{$footer-social-link-size};
-      @include dynamic-background(#{$footer-social-link-bg});
       color: #{$footer-social-link-color};
       border-radius: #{$footer-social-link-border-radius};
       text-decoration: none;
       transition: #{$footer-social-link-transition};
       position: relative;
       overflow: hidden;
+      @include dynamic-background(#{$footer-social-link-bg});
 
       &::before {
         content: '';
@@ -357,10 +357,10 @@
 
       &:hover,
       &:focus {
-        @include dynamic-background(#{$footer-social-link-hover-bg});
         color: #{$footer-social-link-hover-color};
         transform: translateY(-3px) scale(1.05);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        @include dynamic-background(#{$footer-social-link-hover-bg});
 
         &::before {
           transform: translateX(100%);
@@ -438,15 +438,14 @@
 
   // Newsletter
   &__newsletter {
-    @include dynamic-background(
-      linear-gradient(135deg, #{$footer-newsletter-bg}, rgba(#{$footer-newsletter-bg}, 0.8))
-    );
     padding: #{$footer-newsletter-padding};
     border-radius: #{$footer-newsletter-border-radius};
     border: 1px solid var(--#{$prefix}border-subtle);
     position: relative;
     overflow: hidden;
-
+    @include dynamic-background(
+      linear-gradient(135deg, #{$footer-newsletter-bg}, rgba(#{$footer-newsletter-bg}, 0.8))
+    );
     &::before {
       content: '';
       position: absolute;
@@ -503,13 +502,13 @@
       flex: 1;
       padding: #{$footer-newsletter-input-padding};
       font-size: #{$footer-newsletter-input-font-size};
-      @include dynamic-background(#{$footer-newsletter-input-bg});
       color: #{$footer-newsletter-input-color};
       border: #{$footer-newsletter-input-border};
       border-radius: #{$footer-newsletter-input-border-radius};
       outline: none;
       transition: all 0.3s ease;
       box-sizing: border-box;
+      @include dynamic-background(#{$footer-newsletter-input-bg});
 
       &:focus {
         border-color: #{$footer-newsletter-input-focus-border-color};
@@ -529,7 +528,6 @@
 
     &-button {
       padding: #{$footer-newsletter-button-padding};
-      @include dynamic-background(#{$footer-newsletter-button-bg});
       color: #{$footer-newsletter-button-color};
       border: none;
       border-radius: #{$footer-newsletter-button-border-radius};
@@ -539,6 +537,7 @@
       white-space: nowrap;
       position: relative;
       overflow: hidden;
+      @include dynamic-background(#{$footer-newsletter-button-bg});
 
       &::before {
         content: '';
@@ -556,9 +555,9 @@
 
       &:hover,
       &:focus {
-        @include dynamic-background(#{$footer-newsletter-button-hover-bg});
         transform: translateY(-2px);
         box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        @include dynamic-background(#{$footer-newsletter-button-hover-bg});
 
         &::before {
           transform: translateX(100%);
@@ -611,7 +610,6 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.25rem;
-    @include dynamic-background(var(--#{$prefix}secondary-bg));
     border: 1px solid var(--#{$prefix}border-subtle);
     color: #{$footer-back-to-top-color};
     font-size: #{$footer-back-to-top-font-size};
@@ -623,6 +621,7 @@
     overflow: hidden;
     text-decoration: none;
     outline: none;
+    @include dynamic-background(var(--#{$prefix}secondary-bg));
 
     &::before {
       content: '';
@@ -641,10 +640,10 @@
     &:hover,
     &:focus {
       color: #{$footer-back-to-top-hover-color};
-      @include dynamic-background(var(--#{$prefix}primary));
       border-color: var(--#{$prefix}primary);
       transform: translateY(-3px);
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+      @include dynamic-background(var(--#{$prefix}primary));
 
       &::before {
         transform: translateX(100%);

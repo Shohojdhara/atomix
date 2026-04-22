@@ -65,10 +65,9 @@
   width: 100%;
   max-width: var(--#{$prefix}upload-width);
   padding: var(--#{$prefix}upload-padding-y) var(--#{$prefix}upload-padding-x);
-  @include dynamic-background(var(--#{$prefix}upload-bg));
   border-radius: var(--#{$prefix}upload-border-radius);
-
   @include basic-transition();
+  @include dynamic-background(var(--#{$prefix}upload-bg));
 
   &:hover {
     @include dynamic-background(var(--#{$prefix}upload-hover-bg));

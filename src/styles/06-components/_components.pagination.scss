@@ -82,11 +82,11 @@
     font-size: var(--#{config.$prefix}pagination-font-size);
     padding: var(--#{config.$prefix}pagination-padding-y)
       var(--#{config.$prefix}pagination-padding-x);
-    @include dynamic-background(var(--#{config.$prefix}pagination-bg));
     border-radius: var(--#{config.$prefix}pagination-border-radius);
     border: none;
     cursor: pointer;
     user-select: none;
+    @include dynamic-background(var(--#{config.$prefix}pagination-bg));
 
     &:hover {
       --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-hover-color);
@@ -189,9 +189,9 @@
     text-align: center;
     border: 1px solid var(--#{config.$prefix}pagination-color);
     border-radius: var(--#{config.$prefix}pagination-border-radius);
-    @include dynamic-background(var(--#{config.$prefix}pagination-bg));
     color: var(--#{config.$prefix}pagination-color);
     transition: all 0.2s ease-in-out;
+    @include dynamic-background(var(--#{config.$prefix}pagination-bg));
 
     &:focus {
       outline: none;
@@ -212,12 +212,12 @@
     @include size.square(var(--#{config.$prefix}pagination-size));
     padding: var(--#{config.$prefix}pagination-padding-y)
       var(--#{config.$prefix}pagination-padding-x);
-    @include dynamic-background(var(--#{config.$prefix}pagination-bg));
     border: 1px solid var(--#{config.$prefix}pagination-color);
     border-radius: var(--#{config.$prefix}pagination-border-radius);
     color: var(--#{config.$prefix}pagination-color);
     cursor: pointer;
     transition: all 0.2s ease-in-out;
+    @include dynamic-background(var(--#{config.$prefix}pagination-bg));
 
     &:hover {
       --#{config.$prefix}pagination-color: var(--#{config.$prefix}pagination-hover-color);

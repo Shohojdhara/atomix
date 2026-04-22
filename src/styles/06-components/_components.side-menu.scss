@@ -51,11 +51,11 @@
   // 2. Base Component Styles
   width: 100%;
   padding: var(--#{config.$prefix}side-menu-padding-y) var(--#{config.$prefix}side-menu-padding-x);
-  @include dynamic-background(var(--#{config.$prefix}side-menu-bg));
   border-radius: var(--#{config.$prefix}side-menu-border-radius);
   border: var(--#{config.$prefix}side-menu-border-width) solid
     var(--#{config.$prefix}side-menu-border-color);
   box-shadow: var(--#{config.$prefix}side-menu-box-shadow);
+  @include dynamic-background(var(--#{config.$prefix}side-menu-bg));
 
   // 3. Responsive Styles
   @include media-breakpoint-down(md) {
@@ -96,7 +96,6 @@
     width: 100%;
     padding: var(--#{config.$prefix}side-menu-toggler-padding-y)
       var(--#{config.$prefix}side-menu-toggler-padding-x);
-    @include dynamic-background(var(--#{config.$prefix}side-menu-toggler-bg));
     border: none;
     border-radius: var(--#{config.$prefix}side-menu-toggler-border-radius);
     cursor: pointer;
@@ -104,6 +103,7 @@
     transition: var(--#{config.$prefix}side-menu-toggler-transition);
     text-align: left;
     margin: 0;
+    @include dynamic-background(var(--#{config.$prefix}side-menu-toggler-bg));
 
     &:hover {
       @include dynamic-background(var(--#{config.$prefix}side-menu-toggler-hover-bg));
@@ -184,18 +184,18 @@
     color: var(--#{config.$prefix}side-menu-item-color);
     font-size: var(--#{config.$prefix}side-menu-item-font-size);
     font-weight: var(--#{config.$prefix}side-menu-item-font-weight);
-    @include dynamic-background(var(--#{config.$prefix}side-menu-item-bg));
     border: none;
     border-radius: var(--#{config.$prefix}side-menu-item-border-radius);
     text-decoration: none;
     cursor: pointer;
     transition: var(--#{config.$prefix}side-menu-item-transition);
     position: relative;
+    @include dynamic-background(var(--#{config.$prefix}side-menu-item-bg));
 
     &:hover {
       color: var(--#{config.$prefix}side-menu-item-hover-color);
-      @include dynamic-background(var(--#{config.$prefix}side-menu-item-hover-bg));
       text-decoration: none;
+      @include dynamic-background(var(--#{config.$prefix}side-menu-item-hover-bg));
     }
 
     &:focus-visible {
@@ -214,17 +214,17 @@
     // 5. State Classes
     &.is-active {
       color: var(--#{config.$prefix}side-menu-item-active-color);
-      @include dynamic-background(var(--#{config.$prefix}side-menu-item-active-bg));
       font-weight: typography.$font-weight-medium;
+      @include dynamic-background(var(--#{config.$prefix}side-menu-item-active-bg));
     }
 
     &.is-disabled,
     &[aria-disabled='true'] {
       color: var(--#{config.$prefix}side-menu-item-disabled-color);
-      @include dynamic-background(var(--#{config.$prefix}side-menu-item-disabled-bg));
       cursor: not-allowed;
       pointer-events: none;
       opacity: 0.6;
+      @include dynamic-background(var(--#{config.$prefix}side-menu-item-disabled-bg));
     }
   }
 

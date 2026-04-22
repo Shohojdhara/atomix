@@ -27,9 +27,9 @@
   margin-bottom: todo.$todo-margin-bottom;
   border: 1px solid var(--#{config.$prefix}todo-border-color);
   border-radius: var(--#{config.$prefix}todo-border-radius);
-  @include dynamic-background(var(--#{config.$prefix}todo-bg));
   color: var(--#{config.$prefix}todo-color);
   padding: todo.$todo-padding;
+  @include dynamic-background(var(--#{config.$prefix}todo-bg));
 
   // Title
   &__title {

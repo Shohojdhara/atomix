@@ -34,7 +34,6 @@
   &__input {
     position: relative;
     appearance: none;
-    @include dynamic-background(var(--#{$prefix}checkbox-bg));
     width: var(--#{$prefix}checkbox-width);
     height: var(--#{$prefix}checkbox-height);
     color: currentColor;
@@ -42,6 +41,7 @@
     border-radius: var(--#{$prefix}checkbox-border-radius);
     overflow: hidden;
     @include basic-transition();
+    @include dynamic-background(var(--#{$prefix}checkbox-bg));
 
     &[type='radio'] {
       border-radius: $border-radius-pill;

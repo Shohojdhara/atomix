@@ -141,9 +141,9 @@
     font-size: var(--#{config.$prefix}messages-text-font-size);
     padding: var(--#{config.$prefix}messages-text-padding-y)
       var(--#{config.$prefix}messages-text-padding-x);
-    @include dynamic-background(var(--#{config.$prefix}messages-text-bg));
     border-radius: border.$border-radius-sm var(--#{config.$prefix}messages-text-border-radius)
       var(--#{config.$prefix}messages-text-border-radius) border.$border-radius-sm;
+    @include dynamic-background(var(--#{config.$prefix}messages-text-bg));
   }
 
   &__file {
@@ -163,8 +163,8 @@
     @include square(var(--#{config.$prefix}messages-file-icon-size));
     color: var(--#{config.$prefix}tertiary-text-emphasis);
     margin-right: var(--#{config.$prefix}messages-file-icon-margin-right);
-    @include dynamic-background(var(--#{config.$prefix}body-bg));
     border-radius: border.$border-radius-pill;
+    @include dynamic-background(var(--#{config.$prefix}body-bg));
   }
 
   &__file-name {
@@ -294,8 +294,8 @@
     border: var(--#{config.$prefix}messages-input-border-width) solid
       var(--#{config.$prefix}messages-input-border-color);
     border-radius: var(--#{config.$prefix}messages-input-border-radius);
-    @include dynamic-background(var(--#{config.$prefix}messages-bg));
     resize: none;
+    @include dynamic-background(var(--#{config.$prefix}messages-bg));
 
     &::placeholder {
       color: var(--#{config.$prefix}messages-input-placeholder-color);
@@ -313,12 +313,13 @@
     place-items: center;
     align-self: flex-end;
     padding: rem.rem(10px);
-    @include dynamic-background(var(--#{config.$prefix}brand-bg-subtle));
     color: var(--#{config.$prefix}invert-text-emphasis);
     border-radius: border.$border-radius-pill;
     cursor: pointer;
     appearance: none;
     border: 0;
+    @include dynamic-background(var(--#{config.$prefix}brand-bg-subtle));
+
 
     .c-icon {
       width: var(--#{config.$prefix}messages-form-submit-icon-size);
@@ -355,55 +356,52 @@
 
     // Text messages styling
     #{$root}__text {
-      @include dynamic-background(
-        var(--#{config.$prefix}body-bg),
-        $enable-transparency: true
-      );
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      @include dynamic-background(var(--#{config.$prefix}body-bg), $enable-transparency: true);
     }
 
     // Self message text styling
     #{$root}__content--self {
       #{$root}__text {
+        border: 1px solid rgba(var(--#{config.$prefix}primary-rgb), 0.3);
+        backdrop-filter: blur(8px);
         @include dynamic-background(
           var(--#{config.$prefix}brand-bg-subtle),
           $enable-transparency: true
         );
-        border: 1px solid rgba(var(--#{config.$prefix}primary-rgb), 0.3);
-        backdrop-filter: blur(8px);
       }
 
       #{$root}__file {
+        border: 1px solid rgba(var(--#{config.$prefix}primary-rgb), 0.3);
+        backdrop-filter: blur(8px);
         @include dynamic-background(
           var(--#{config.$prefix}brand-bg-subtle),
           $enable-transparency: true
         );
-        border: 1px solid rgba(var(--#{config.$prefix}primary-rgb), 0.3);
-        backdrop-filter: blur(8px);
       }
     }
 
     // File attachment styling
     #{$root}__file {
-      @include dynamic-background(
-        var(--#{config.$prefix}brand-bg-subtle),
-        $enable-transparency: true
-      );
       border: 1px solid rgba(var(--#{config.$prefix}primary-rgb), 0.3);
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.2);
       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    }
-
-    #{$root}__file-icon {
       @include dynamic-background(
         var(--#{config.$prefix}brand-bg-subtle),
         $enable-transparency: true
       );
+    }
+
+    #{$root}__file-icon {
       backdrop-filter: blur(8px);
       border: 1px solid rgba(255, 255, 255, 0.15);
+      @include dynamic-background(
+        var(--#{config.$prefix}brand-bg-subtle),
+        $enable-transparency: true
+      );
     }
 
     // Image styling

@@ -54,8 +54,8 @@
   &__line {
     width: var(--#{$prefix}steps-line-width);
     height: var(--#{$prefix}steps-line-height);
-    @include dynamic-background(var(--#{$prefix}steps-item-bg));
     transition: 1s;
+    @include dynamic-background(var(--#{$prefix}steps-item-bg));
   }
 
   &__content {
@@ -71,8 +71,8 @@
     @include square(var(--#{$prefix}steps-item-number-size));
     color: var(--#{$prefix}steps-item-number-color);
     font-size: var(--#{$prefix}steps-item-number-font-size);
-    @include dynamic-background(var(--#{$prefix}steps-item-number-bg));
     border-radius: var(--#{$prefix}steps-item-number-border-radius);
+    @include dynamic-background(var(--#{$prefix}steps-item-number-bg));
   }
 
   &__text {

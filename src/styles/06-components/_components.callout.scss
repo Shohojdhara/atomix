@@ -41,7 +41,6 @@
   max-width: var(--#{config.$prefix}callout-width);
   gap: var(--#{config.$prefix}callout-actions-spacer);
   padding: var(--#{config.$prefix}callout-padding-y) var(--#{config.$prefix}callout-padding-x);
-  @include dynamic-background(var(--#{config.$prefix}callout-bg));
   border-radius: var(--#{config.$prefix}callout-border-radius);
   border: var(--#{config.$prefix}callout-border-witdh) solid
     var(--#{config.$prefix}callout-border-color);
@@ -50,6 +49,7 @@
       var(--#{config.$prefix}callout-transition-timing),
     transform var(--#{config.$prefix}callout-transition-duration)
       var(--#{config.$prefix}callout-transition-timing);
+  @include dynamic-background(var(--#{config.$prefix}callout-bg));
 
   &__content {
     width: 100%;
@@ -145,9 +145,9 @@
     align-items: flex-start;
     justify-content: flex-start;
     border: none;
-    @include dynamic-background(var(--#{config.$prefix}callout-toast-bg));
     box-shadow: var(--#{config.$prefix}callout-box-shadow);
     animation: calloutToastIn 0.3s var(--#{config.$prefix}callout-transition-timing) forwards;
+    @include dynamic-background(var(--#{config.$prefix}callout-toast-bg));
 
     #{$root} {
       &__content {
@@ -235,13 +235,13 @@
 
     // Glass effect for toast variant
     &#{$root}--toast {
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
       @include dynamic-background(
         var(--#{config.$prefix}callout-bg),
         $enable-transparency: true
       );
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.1),
-        0 0 0 1px rgba(255, 255, 255, 0.1) inset;
     }
   }
 
