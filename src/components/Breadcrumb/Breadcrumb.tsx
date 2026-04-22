@@ -6,7 +6,6 @@ import React, {
   cloneElement,
   isValidElement,
   ElementType,
-  ComponentType,
   MouseEvent,
   AnchorHTMLAttributes,
 } from 'react';
@@ -58,10 +57,11 @@ interface LinkComponentProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   href?: string;
   to?: string;
   onClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
+  [key: string]: any;
 }
 
 // Compound Component Props
-export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement> {
+export interface BreadcrumbItemProps extends Omit<React.HTMLAttributes<HTMLLIElement>, 'onClick'> {
   /**
    * URL for the breadcrumb item
    */
@@ -85,7 +85,7 @@ export interface BreadcrumbItemProps extends React.HTMLAttributes<HTMLLIElement>
   /**
    * Optional custom link component
    */
-  linkAs?: ComponentType<LinkComponentProps>;
+  linkAs?: ElementType;
 
   /**
    * Link props to pass to the underlying anchor or linkComponent
