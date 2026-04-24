@@ -1,24 +1,22 @@
 name: Publish Package
 
 on:
-  release:
-    types: [published]
+  push:
+    branches:
+      - main
   workflow_dispatch:
-    inputs:
-      tag:
-        description: 'Release tag (next, latest)'
-        required: true
-        default: 'latest'
-        type: choice
-        options:
-          - latest
-          - next
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the right commits
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -30,18 +28,17 @@ jobs:
         run: npm install --legacy-peer-deps
 
       - name: Build package
-        run: |
-          npm run build || { echo "Build failed"; exit 1; }
-          echo "Build completed successfully"
+        run: npm run build
 
-      - name: Publish to npm
-        run: |
-          set -e
-          if [ "${{ github.event.inputs.tag }}" = "next" ]; then
-            npm publish --tag next || { echo "Failed to publish with next tag"; exit 1; }
-          else
-            npm publish || { echo "Failed to publish package"; exit 1; }
-          fi
-          echo "Package published successfully"
+      - name: Create Release Pull Request or Publish
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          # This expects you to have a script called release which runs `changeset publish`
+          publish: npm run release
+          commit: "chore(release): version packages"
+          title: "chore(release): version packages"
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
