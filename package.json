@@ -17,7 +17,6 @@
   "sass": "src/styles/index.scss",
   "unpkg": "dist/atomix.umd.min.js",
   "jsdelivr": "dist/atomix.umd.min.js",
-  "browser": "dist/atomix.umd.min.js",
   "bin": {
     "atomix": "scripts/atomix-cli.js"
   },
@@ -233,7 +232,7 @@
     "build:types": "rollup -c rollup.config.types.js",
     "build:styles": "rollup -c rollup.config.styles.js",
     "build:themes": "rollup -c rollup/config/themes.js",
-    "build:parallel": "concurrently \"npm:build:js\" \"npm:build:types\" \"npm:build:styles\"",
+    "build:parallel": "concurrently \"npm:build:js\" \"npm:build:types\" \"npm:build:styles\" \"npm:build:umd\"",
     "build:umd": "rollup -c rollup.config.umd.js",
     "build:cli": "rollup -c rollup.config.cli.js",
     "build:cli:dev": "rollup -c rollup.config.cli.js --environment NODE_ENV:development",

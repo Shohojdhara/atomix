@@ -72,7 +72,8 @@ export function loadThemeConfig(
     // In ESM environments, require might be undefined.
     let nodeRequire: any;
     try {
-      nodeRequire = require;
+      // Use eval('require') or similar to hide from bundlers
+      nodeRequire = typeof require !== 'undefined' ? require : undefined;
     } catch {
       // require is not defined
     }
@@ -94,8 +95,8 @@ export function loadThemeConfig(
     
     // If a specific config path is provided, try to use it
     if (configPath && configPath !== DEFAULT_ATOMIX_CONFIG_PATH) {
-      const path = nodeRequire('path') as typeof import('path');
-      const fs = nodeRequire('fs') as typeof import('fs');
+      const path = nodeRequire(['p', 'a', 't', 'h'].join('')) as typeof import('path');
+      const fs = nodeRequire(['f', 's'].join('')) as typeof import('fs');
       const fullPath = path.resolve(process.cwd(), configPath);
       
       if (fs.existsSync(fullPath)) {
@@ -109,8 +110,8 @@ export function loadThemeConfig(
         'atomix.config.json'
       ];
       
-      const path = nodeRequire('path') as typeof import('path');
-      const fs = nodeRequire('fs') as typeof import('fs');
+      const path = nodeRequire(['p', 'a', 't', 'h'].join('')) as typeof import('path');
+      const fs = nodeRequire(['f', 's'].join('')) as typeof import('fs');
       
       for (const fileName of possiblePaths) {
         const fullPath = path.resolve(process.cwd(), fileName);
@@ -131,7 +132,7 @@ export function loadThemeConfig(
 
     // Handle JSON files differently
     if (resolvedConfigPath.endsWith('.json')) {
-      const fs = nodeRequire('fs') as typeof import('fs');
+      const fs = nodeRequire(['f', 's'].join('')) as typeof import('fs');
       configModule = JSON.parse(fs.readFileSync(resolvedConfigPath, 'utf8'));
     } else {
       // Use require (Node.js/CommonJS) for JS/TS files

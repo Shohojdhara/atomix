@@ -354,8 +354,11 @@ export function loadAtomixConfig(
  */
 function loadConfigAtPath(path: string, required: boolean, defaultConfig: AtomixConfig): AtomixConfig {
     try {
-        // Use dynamic import for ESM compatibility
-        const configModule = require(path);
+        // Use dynamic requirement to hide from bundlers
+        const req = typeof require !== 'undefined' ? require : undefined;
+        if (!req) return defaultConfig;
+        
+        const configModule = req(path);
         const config = configModule.default || configModule;
         
         // Validate it's an AtomixConfig
@@ -391,10 +394,28 @@ export function resolveConfigPath(configPath?: string): string | null {
         return null;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { existsSync } = require('fs') as typeof import('fs');
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { join } = require('path') as typeof import('path');
+    // Use dynamic requirement to hide from bundlers like Turbopack/Webpack
+    let nodeFs: any;
+    let nodePath: any;
+
+    try {
+        // Using a dynamic string and eval-like approach to prevent static analysis
+        // This is safe here because we've already checked for window (browser)
+        const req = typeof require !== 'undefined' ? require : undefined;
+        if (req) {
+            nodeFs = req(['f', 's'].join(''));
+            nodePath = req(['p', 'a', 't', 'h'].join(''));
+        }
+    } catch (e) {
+        return null;
+    }
+
+    if (!nodeFs || !nodePath) {
+        return null;
+    }
+
+    const { existsSync } = nodeFs;
+    const { join } = nodePath;
 
     // If a specific config path is provided, check if it exists
     if (configPath) {

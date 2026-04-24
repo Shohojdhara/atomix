@@ -355,7 +355,7 @@ export const umdBuild = {
     },
     exports: 'named'
   },
-  external: ['react', 'react-dom', '@phosphor-icons/react'],
+  external: ['react', 'react-dom', 'react/jsx-runtime', '@phosphor-icons/react'],
   plugins: [
     ...commonPlugins,
     postcss(jsPostcssConfig),
@@ -384,7 +384,7 @@ export const umdMinBuild = {
     },
     exports: 'named'
   },
-  external: ['react', 'react-dom', '@phosphor-icons/react'],
+  external: ['react', 'react-dom', 'react/jsx-runtime', '@phosphor-icons/react'],
   plugins: [
     ...commonPlugins,
     postcss(jsPostcssConfig),

@@ -29,7 +29,9 @@ export function loadThemeFromConfigSync(options?: { configPath?: string; require
   
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { loadAtomixConfig: loader } = require('../../config/loader');
+    const req = typeof require !== 'undefined' ? require : undefined;
+    if (!req) throw new Error('require is not available');
+    const { loadAtomixConfig: loader } = req('../../config/loader');
     loadAtomixConfig = loader;
   } catch (error) {
     if (options?.required !== false) {
@@ -214,7 +216,10 @@ export async function loadThemeFromConfig(options?: { configPath?: string; requi
   let config: any;
   try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { loadAtomixConfig } = require('../../config/loader');
+    const req = typeof require !== 'undefined' ? require : undefined;
+    if (!req) throw new Error('require is not available');
+    const { loadAtomixConfig: loader } = req('../../config/loader');
+    loadAtomixConfig = loader;
     config = loadAtomixConfig({ configPath: options?.configPath, required: options?.required !== false });
   } catch (error) {
     // If loadAtomixConfig is not available (e.g., in browser bundle), provide helpful error
