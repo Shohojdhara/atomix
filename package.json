@@ -114,6 +114,7 @@
       "default": "./dist/heavy.js"
     },
     "./cdn": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/atomix.umd.min.js",
       "require": "./dist/atomix.umd.min.js",
       "default": "./dist/atomix.umd.min.js"
