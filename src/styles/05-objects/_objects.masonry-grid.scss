@@ -151,11 +151,6 @@
       @supports (property: opacity) and (animation-timeline: view()) {
         opacity: var(--masonry-img-opacity);
         animation: masonry-item-fade-in-advanced masonry.$masonry-grid-item-animation-duration masonry.$masonry-grid-item-animation-timing forwards;
-        @property --masonry-img-opacity {
-          syntax: '<number>';
-          inherits: false;
-          initial-value: 0;
-        }
       }
     }
   }
