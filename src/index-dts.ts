@@ -12,6 +12,8 @@ export * from './layouts';
 
 // Export specific types that need to be named
 export type { MultiAxisChartProps } from './components/Chart/MultiAxisChart';
+// Explicitly export IconProps to resolve conflict
+export type { IconProps } from './components/Icon/Icon';
 
 // Create a properly typed default export
 import * as components from './components';

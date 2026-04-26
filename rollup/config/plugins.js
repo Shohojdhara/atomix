@@ -27,6 +27,10 @@ export const createTypeScriptPlugin = (options = {}) =>
     tsconfig: './tsconfig.build.json',
     declaration: false,
     declarationMap: false,
+    compilerOptions: {
+      ignoreDeprecations: "6.0",
+      ...options.compilerOptions,
+    },
     ...options,
   });
 
