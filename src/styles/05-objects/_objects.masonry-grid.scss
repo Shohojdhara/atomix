@@ -12,28 +12,31 @@
   display: grid;
   gap: masonry.$masonry-grid-gap;
   // Use auto-fit with minmax for responsive columns
-  grid-template-columns: repeat(auto-fit, minmax(var(--atomix-masonry-min-column-width, 250px), 1fr));
-  
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(var(--atomix-masonry-min-column-width, 250px), 1fr)
+  );
+
   // Mobile-first responsive adjustments
   @include mq.media-up('sm') {
     gap: masonry.$masonry-grid-gap-sm;
   }
-  
+
   @include mq.media-up('md') {
     gap: masonry.$masonry-grid-gap;
   }
-  
+
   @include mq.media-up('lg') {
     gap: masonry.$masonry-grid-gap-lg;
   }
-  
+
   .o-masonry-grid__item {
     // CSS Grid items don't need position: absolute
     position: static;
     opacity: 1;
     visibility: visible;
     width: 100%;
-    
+
     // Enhanced accessibility for CSS Grid
     &:focus {
       outline: masonry.$masonry-grid-focus-ring-width solid masonry.$masonry-grid-focus-ring-color;
@@ -64,10 +67,6 @@
   &--animate {
     .o-masonry-grid__item {
       transition: masonry.$masonry-grid-item-transition;
-      // Modern CSS custom property for fine-grained animation control
-      @supports (transition-behavior: allow-discrete) {
-        transition-behavior: allow-discrete;
-      }
     }
   }
 
@@ -77,16 +76,17 @@
     width: 100%;
     // Design system color tokens for background
     background-color: var(--#{config.$prefix}body-bg);
-    
+
     // Enhanced focus states with design system tokens
     &:focus {
       outline: masonry.$masonry-grid-focus-ring-width solid masonry.$masonry-grid-focus-ring-color;
       outline-offset: masonry.$masonry-grid-focus-ring-offset;
       z-index: masonry.$masonry-grid-z-index-focus;
-      
+
       // Subtle scale effect for better visual feedback
       transform: scale(1.02);
-      transition: transform var(--#{config.$prefix}transition-duration-fast) var(--#{config.$prefix}transition-timing-base);
+      transition: transform var(--#{config.$prefix}transition-duration-fast)
+        var(--#{config.$prefix}transition-timing-base);
     }
 
     // High contrast mode support
@@ -100,17 +100,13 @@
     &:not([style*='position: absolute']) {
       opacity: 0;
       visibility: hidden;
-      // Use CSS Custom Property for progressive enhancement
-      @supports (view-transition-name: masonry-item) {
-        view-transition-name: masonry-item;
-      }
     }
   }
 
   // Loading states with modern design system colors
   &__item-loading {
     position: relative;
-    
+
     &::before {
       content: '';
       position: absolute;
@@ -122,40 +118,24 @@
       background: var(--#{config.$prefix}gray-10);
       z-index: masonry.$masonry-grid-z-index-loading;
       border-radius: var(--#{config.$prefix}border-radius-sm);
-      
-      // Smooth fade-in animation
-      animation: masonry-loading-fade-in 0.5s ease-out forwards;
+
+      // Simple fade-in
+      opacity: 0;
     }
 
     img {
       opacity: 0;
-      // CSS @property for smoother opacity transitions
-      @supports (property: opacity) and (animation-timeline: view()) {
-        opacity: var(--masonry-img-opacity);
-        @property --masonry-img-opacity {
-          syntax: '<number>';
-          inherits: false;
-          initial-value: 0;
-        }
-      }
     }
   }
 
-  // Enhanced loaded state with modern CSS features
+  // Loaded state
   &__item-loaded {
     img {
-      // Modern CSS animation with design system tokens
-      animation: masonry-item-fade-in masonry.$masonry-grid-item-animation-duration masonry.$masonry-grid-item-animation-timing forwards;
-      
-      // CSS @property for precise opacity control
-      @supports (property: opacity) and (animation-timeline: view()) {
-        opacity: var(--masonry-img-opacity);
-        animation: masonry-item-fade-in-advanced masonry.$masonry-grid-item-animation-duration masonry.$masonry-grid-item-animation-timing forwards;
-      }
+      opacity: 1;
     }
   }
 
-  // Modern progressive loading indicator
+  // Simple loading indicator
   &--loading-images {
     position: relative;
 
@@ -172,7 +152,7 @@
       animation: masonry-spinner 0.8s linear infinite;
       z-index: masonry.$masonry-grid-z-index-loading;
       pointer-events: none;
-      
+
       // Dark mode support
       @media (prefers-color-scheme: dark) {
         border-color: rgba(255, 255, 255, 0.1);
@@ -185,45 +165,11 @@
   @include mq.media-up('md') {
     min-height: masonry.$masonry-grid-min-height-desktop;
   }
+}
 
-  // Modern animations with CSS custom properties
-  @keyframes masonry-spinner {
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  @keyframes masonry-loading-fade-in {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  @keyframes masonry-item-fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  // Advanced animation with CSS @property for smooth transitions
-  @keyframes masonry-item-fade-in-advanced {
-    from {
-      --masonry-img-opacity: 0;
-      transform: translateY(20px) scale(0.95);
-    }
-    to {
-      --masonry-img-opacity: 1;
-      transform: translateY(0) scale(1);
-    }
+// Simple spinner animation
+@keyframes masonry-spinner {
+  to {
+    transform: rotate(360deg);
   }
 }
