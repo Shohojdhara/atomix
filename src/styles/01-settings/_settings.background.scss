@@ -1,11 +1,11 @@
 // Global effect toggles
-$background-enable-gradient-overlay: true !default;
-$background-transparency-enable: true !default;
-$background-enable-with-shadow: true !default;
+$background-enable-gradient-overlay: false !default;
+$background-transparency-enable: false !default;
+$background-enable-with-shadow: false !default;
 $background-enable-mesh-gradient: false !default;
 $background-enable-noise-texture: false !default;
 $background-enable-shimmer: false !default;
-$background-enable-hover-effects: true !default; // Variable to control hover effects
+$background-enable-hover-effects: false !default; // Variable to control hover effects
 
 // Core transparency levels
 $background-transparency: 0.65 !default;
@@ -26,7 +26,7 @@ $background-shadow-spread: 2px !default;
 // Border configuration
 $background-border-width: 1px !default;
 $background-border-opacity: 0.2 !default;
-$background-border-gradient-enable: true !default;
+$background-border-gradient-enable: false !default;
 
 // Noise texture (for glass-like grain)
 $background-noise-opacity: 0.03 !default;
