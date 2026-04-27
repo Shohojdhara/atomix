@@ -351,7 +351,7 @@ export const AllOutlineVariants: Story = {
       <Button label="Outline Success" variant="outline-success" />
       <Button label="Outline Info" variant="outline-info" />
       <Button label="Outline Warning" variant="outline-warning" />
-      <Button label="Outline Danger" variant="outline-danger" />
+      <Button label="Outline Danger" variant="outline-error" />
       <Button label="Outline Light" variant="outline-light" />
       <Button label="Outline Dark" variant="outline-dark" />
     </div>
