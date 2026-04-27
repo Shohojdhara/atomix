@@ -252,6 +252,8 @@
   &--glass {
     position: relative;
     background-color: transparent;
+    display: flex;
+    height: 100%;
     @include dynamic-background(var(--#{$prefix}navbar-bg), $enable-transparency: true);
   }
 
