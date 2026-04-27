@@ -321,6 +321,16 @@ export interface AtomixGlassProps extends React.HTMLAttributes<HTMLDivElement> {
    * @default false
    */
   disableResponsiveBreakpoints?: boolean;
+
+  /**
+   * Priority level for rendering and performance scheduling
+   * 
+   * Controls the rendering priority of the glass effect, allowing for performance
+   * optimization in complex scenes. Higher priority elements are rendered first.
+   * 
+   * @default undefined
+   */
+  priority?: number;
 }
 
 /**
@@ -1207,10 +1217,6 @@ export interface SpinnerProps extends BaseComponentProps {
   glass?: AtomixGlassProps | boolean;
 }
 
-/**
- * Icon size options
- */
-export type IconSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 
 /**
  * Icon weight/style options

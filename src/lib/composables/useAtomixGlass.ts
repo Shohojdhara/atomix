@@ -158,6 +158,7 @@ interface UseAtomixGlassOptions extends Omit<AtomixGlassProps, 'children'> {
   wrapperRef?: React.RefObject<HTMLDivElement | null>;
   children?: React.ReactNode;
   isFixedOrSticky?: boolean;
+  priority?: number; // Priority for z-index ordering
   // Phase 1: Time-Based Animation System
   withLiquidBlur?: boolean;
   animationQuality?: 'low' | 'medium' | 'high';
@@ -226,7 +227,7 @@ export function useAtomixGlass({
   reducedMotion = false,
   highContrast = false,
   withoutEffects = false,
-  elasticity = 0.05,
+  elasticity = ATOMIX_GLASS.DEFAULTS.ELASTICITY,
   onClick,
   debugBorderRadius = false,
   debugOverLight = false,
@@ -236,6 +237,7 @@ export function useAtomixGlass({
   padding,
   withLiquidBlur,
   isFixedOrSticky = false,
+  priority = 1, // Default priority
   // Phase 1: Animation System Props
   withTimeAnimation = ATOMIX_GLASS.DEFAULTS.WITH_TIME_ANIMATION,
   animationSpeed = ATOMIX_GLASS.DEFAULTS.ANIMATION_SPEED,
@@ -965,7 +967,7 @@ export function useAtomixGlass({
       return undefined;
     }
 
-    const unsubscribe = globalMouseTracker.subscribe(handleGlobalMousePosition);
+    const unsubscribe = globalMouseTracker.subscribe(handleGlobalMousePosition, glassRef.current || undefined, 300); // 300px max distance for full effect
     
     // Initial start
     startLerpLoop();

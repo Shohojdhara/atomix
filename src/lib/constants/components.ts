@@ -1689,6 +1689,10 @@ export const ATOMIX_GLASS = {
     MIN_BLUR: 0.1,
     MOUSE_INFLUENCE_DIVISOR: 100,
     EDGE_FADE_PIXELS: 2,
+    // Elasticity physics constants
+    ELASTICITY_TRANSLATION_FACTOR: 0.1,
+    ELASTICITY_DISTANCE_THRESHOLD: 200,
+    ELASTICITY_COMPRESSION_FACTOR: 0.3,
     // Note: This default must match the SCSS variable --atomix-radius-md
     // @see src/styles/01-settings/_settings.global.scss
     DEFAULT_CORNER_RADIUS: 16,
