@@ -299,35 +299,35 @@ export interface AtomixGlassProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
    * Phase 3: Responsive & Performance Optimization props
    */
-  
+
   /**
    * Device preset for responsive optimization
-   * 
+   *
    * Pre-configured presets that adjust glass parameters based on device capabilities
    * - 'performance': Optimized for low-end devices (reduced octaves, lower quality)
    * - 'balanced': Balanced quality and performance (default)
    * - 'quality': Maximum visual quality (high octaves, ultra quality)
-   * 
+   *
    * @default 'balanced'
    */
   devicePreset?: 'performance' | 'balanced' | 'quality';
-  
+
   /**
    * Disable responsive breakpoint system
-   * 
+   *
    * When true, disables automatic parameter adjustment based on viewport size
    * Use this when you want full manual control over all parameters
-   * 
+   *
    * @default false
    */
   disableResponsiveBreakpoints?: boolean;
 
   /**
    * Priority level for rendering and performance scheduling
-   * 
+   *
    * Controls the rendering priority of the glass effect, allowing for performance
    * optimization in complex scenes. Higher priority elements are rendered first.
-   * 
+   *
    * @default undefined
    */
   priority?: number;
@@ -361,6 +361,7 @@ export type ThemeColor =
   | 'invert'
   | 'brand'
   | 'error'
+  | 'danger'
   | 'success'
   | 'warning'
   | 'info'
@@ -370,7 +371,7 @@ export type ThemeColor =
 /**
  * Component variant including theme colors and outline variants
  */
-export type Variant = ThemeColor | `outline-${ThemeColor}` | 'link';
+export type Variant = ThemeColor | `outline-${ThemeColor}` | 'link' | 'ghost';
 
 /**
  * Base component properties interface
@@ -1205,6 +1206,17 @@ export interface SpinnerProps extends BaseComponentProps {
   'aria-label'?: string;
 
   /**
+   * ARIA live region setting
+   * @default 'polite'
+   */
+  'aria-live'?: 'off' | 'assertive' | 'polite';
+
+  /**
+   * ARIA description
+   */
+  'aria-describe'?: string;
+
+  /**
    * ARIA role for the spinner
    * @default 'status'
    */
@@ -1216,7 +1228,6 @@ export interface SpinnerProps extends BaseComponentProps {
    */
   glass?: AtomixGlassProps | boolean;
 }
-
 
 /**
  * Icon weight/style options
@@ -1526,8 +1537,6 @@ export interface MegaMenuLinkProps extends BaseComponentProps {
    * Optional custom link component
    */
   linkComponent?: React.ElementType;
-
-
 
   /**
    * Link content
@@ -2184,57 +2193,6 @@ export interface TodoProps extends BaseComponentProps {
 
   /**
    * Glass morphism effect for the todo component
-   * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
-   */
-  glass?: AtomixGlassProps | boolean;
-}
-
-/**
- * Spinner component properties
- */
-export interface SpinnerProps extends BaseComponentProps {
-  /**
-   * Spinner color variant
-   * @default 'primary'
-   */
-  variant?: ThemeColor;
-
-  /**
-   * Spinner size
-   * @default 'md'
-   */
-  size?: Size;
-
-  /**
-   * Whether the spinner should be displayed fullscreen
-   */
-  fullscreen?: boolean;
-
-  /**
-   * Accessible label for screen readers
-   * @default 'Loading'
-   */
-  'aria-label'?: string;
-
-  /**
-   * ARIA live property to control how updates are announced
-   * @default 'polite'
-   */
-  'aria-live'?: 'off' | 'polite' | 'assertive';
-
-  /**
-   * ARIA descriptor property for additional description
-   */
-  'aria-describe'?: string;
-
-  /**
-   * ARIA role for the spinner
-   * @default 'status'
-   */
-  role?: 'status' | 'alert';
-
-  /**
-   * Glass morphism effect for the spinner
    * Can be a boolean to enable with default settings, or an object with AtomixGlassProps to customize the effect
    */
   glass?: AtomixGlassProps | boolean;

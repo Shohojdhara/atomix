@@ -3,7 +3,7 @@
  * Generates Universal Module Definition bundles for browser usage
  */
 
-import { umdBuild, umdMinBuild } from './rollup/index.js';
+import { umdBuild, umdMinBuild } from '../index.js';
 
 // Export UMD builds for CDN distribution
 export default [umdBuild, umdMinBuild];

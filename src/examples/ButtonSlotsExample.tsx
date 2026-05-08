@@ -38,8 +38,9 @@ const CustomButtonWrapper = React.forwardRef<
     />
   </button>
 ));
+CustomButtonWrapper.displayName = 'CustomButtonWrapper';
 
-const CustomSpinner = ({ size, variant }: { size: string; variant: string }) => (
+const CustomSpinner = ({ size, variant }: { size?: string; variant?: string }) => (
   <div
     style={{
       display: 'inline-block',
@@ -59,6 +60,7 @@ const CustomSpinner = ({ size, variant }: { size: string; variant: string }) => 
     `}</style>
   </div>
 );
+CustomSpinner.displayName = 'CustomSpinner';
 
 const ButtonSlotsExample = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -178,5 +180,6 @@ const ButtonSlotsExample = () => {
     </div>
   );
 };
+ButtonSlotsExample.displayName = 'ButtonSlotsExample';
 
 export default ButtonSlotsExample;

@@ -13,6 +13,8 @@ import type { DesignTokens } from '../tokens';
 import type { SpacingFunction, SpacingOptions } from '../types';
 import { injectCSS, removeCSS } from '../utils/injectCSS';
 import { deepMerge } from '../core/composeTheme';
+import { getSystemTheme } from './domUtils';
+export { getSystemTheme };
 
 // ============================================================================
 // Type Definitions
@@ -139,17 +141,7 @@ export function getCurrentTheme(storageKey: string = 'atomix-theme'): ThemeMode 
   return (stored as ThemeMode) || 'light';
 }
 
-/**
- * Get system theme preference
- * 
- * @returns 'dark' if system prefers dark mode, 'light' otherwise
- */
-export function getSystemTheme(): ThemeMode {
-  if (typeof window === 'undefined') return 'light';
-  
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return prefersDark ? 'dark' : 'light';
-}
+
 
 /**
  * Initialize theme based on saved preference or system preference

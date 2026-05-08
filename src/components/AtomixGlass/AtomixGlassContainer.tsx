@@ -89,6 +89,7 @@ interface AtomixGlassContainerProps
   shaderVariant?: FragmentShaderType;
   withLiquidBlur?: boolean;
   isFixedOrSticky?: boolean;
+  elasticity?: number;
 
   // Phase 1: Animation System props
   shaderTime?: number;

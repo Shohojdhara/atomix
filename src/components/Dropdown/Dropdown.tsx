@@ -36,6 +36,7 @@ type ExtendedComponentType<P = {}> = ComponentType<P> & {
 interface DropdownTriggerProps extends React.HTMLAttributes<HTMLDivElement> {
   onClick?: (e: React.MouseEvent) => void;
   onKeyDown?: (e: React.KeyboardEvent) => void;
+  ref?: React.Ref<HTMLDivElement>;
 }
 
 interface DropdownMenuProps extends React.HTMLAttributes<HTMLUListElement> {}

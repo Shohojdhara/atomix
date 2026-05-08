@@ -219,7 +219,7 @@ export async function loadThemeFromConfig(options?: { configPath?: string; requi
     const req = typeof require !== 'undefined' ? require : undefined;
     if (!req) throw new Error('require is not available');
     const { loadAtomixConfig: loader } = req('../../config/loader');
-    loadAtomixConfig = loader;
+    const loadAtomixConfig: any = loader;
     config = loadAtomixConfig({ configPath: options?.configPath, required: options?.required !== false });
   } catch (error) {
     // If loadAtomixConfig is not available (e.g., in browser bundle), provide helpful error

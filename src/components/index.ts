@@ -89,7 +89,7 @@ export { default as Radio, type RadioProps } from './Form/Radio';
 export { default as Select, type SelectProps } from './Form/Select';
 export { default as Textarea, type TextareaProps } from './Form/Textarea';
 export { default as Hero, type HeroProps } from './Hero/Hero';
-export { default as Icon, type IconProps } from './Icon/Icon';
+export { default as Icon } from './Icon/Icon';
 export { default as List, type ListProps } from './List/List';
 // List sub-components
 export { ListGroup } from './List/ListGroup';

@@ -388,7 +388,7 @@ export const umdMinBuild = {
   plugins: [
     ...commonPlugins,
     postcss(jsPostcssConfig),
-    createTypeScriptPlugin(),
+    createTypeScriptPlugin({ sourceMap: false }),
     createBabelPlugin('production'),
     terser(terserConfigMinified),
   ],

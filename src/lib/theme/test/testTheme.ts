@@ -9,7 +9,7 @@ import type { DesignTokens } from '../tokens/tokens';
 import type { Theme, ThemeOptions } from '../types';
 import { createTheme } from '../core/createTheme';
 import { createThemeObject } from '../core/createThemeObject';
-import { themeToDesignTokens, createDesignTokensFromTheme } from '../adapters/themeAdapter';
+import { themeToDesignTokens } from '../adapters/themeAdapter';
 
 // ============================================================================
 // Test Theme 1: Using DesignTokens (Recommended - Flat Structure)
@@ -311,7 +311,7 @@ export function testThemeAdapter(): {
 } {
   const theme = createTestThemeObject();
   const tokens = themeToDesignTokens(theme);
-  const fullTokens = createDesignTokensFromTheme(theme);
+  const fullTokens = themeToDesignTokens(theme);
 
   return {
     theme,

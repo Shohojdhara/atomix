@@ -3,7 +3,7 @@
  * Used for parallel builds
  */
 
-import { stylesBuilds } from './rollup/index.js';
+import { stylesBuilds } from '../index.js';
 
 // Export CSS builds
 export default stylesBuilds;

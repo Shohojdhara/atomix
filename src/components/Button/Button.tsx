@@ -172,21 +172,23 @@ export const Button = React.memo(
                   size: spinnerSize,
                   variant:
                     variant === 'link' ||
+                    variant === 'ghost' ||
                     (typeof variant === 'string' && variant.startsWith('outline-'))
                       ? 'primary'
                       : variant === 'danger'
-                        ? 'error'
-                        : variant,
+                        ? 'danger'
+                        : variant as any,
                 },
                 <Spinner
                   size={spinnerSize}
                   variant={
                     variant === 'link' ||
+                    variant === 'ghost' ||
                     (typeof variant === 'string' && variant.startsWith('outline-'))
                       ? 'primary'
                       : variant === 'danger'
-                        ? 'error'
-                        : variant
+                        ? 'danger'
+                        : variant as any
                   }
                 />
               )}
