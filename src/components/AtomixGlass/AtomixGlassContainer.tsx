@@ -593,7 +593,14 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             <div className={ATOMIX_GLASS.FILTER_SHADOW_CLASS} />
           </div>
 
-          <div ref={contentRef} className={ATOMIX_GLASS.CONTENT_CLASS}>
+          <div
+            ref={contentRef}
+            className={ATOMIX_GLASS.CONTENT_CLASS}
+            style={{
+              transform: 'var(--atomix-glass-child-parallax, none)',
+              willChange: 'transform',
+            }}
+          >
             {children}
           </div>
         </div>

@@ -252,6 +252,35 @@ export const softClamp = (value: number, max: number): number => {
 };
 
 /**
+ * Spring-damper integration helper
+ * Calculates the next value based on velocity, stiffness, and damping.
+ */
+export const calculateSpring = (
+  current: number,
+  target: number,
+  velocity: number,
+  stiffness: number = 0.1,
+  damping: number = 0.8
+): { value: number; velocity: number } => {
+  const force = (target - current) * stiffness;
+  const newVelocity = (velocity + force) * damping;
+  const newValue = current + newVelocity;
+  return { value: newValue, velocity: newVelocity };
+};
+
+/**
+ * Calculate velocity from position delta and time
+ */
+export const calculateVelocity = (
+  current: number,
+  previous: number,
+  deltaTime: number
+): number => {
+  if (deltaTime <= 0) return 0;
+  return (current - previous) / deltaTime;
+};
+
+/**
  * Get displacement map URL based on mode
  */
 export const getDisplacementMap = (

@@ -28,7 +28,9 @@ export const updateAtomixGlassStyles = (
     effectiveWithoutEffects: boolean;
     effectiveReducedMotion: boolean;
     elasticity: number;
-    directionalScale: string;
+    elasticTranslation: MousePosition;
+    directionalScale: { x: number; y: number };
+    scaleBase: number;
     onClick?: () => void;
     withLiquidBlur?: boolean;
     blurAmount?: number;
@@ -51,7 +53,9 @@ export const updateAtomixGlassStyles = (
     effectiveWithoutEffects,
     effectiveReducedMotion,
     elasticity,
+    elasticTranslation,
     directionalScale,
+    scaleBase,
     onClick,
     withLiquidBlur,
     blurAmount = ATOMIX_GLASS.DEFAULTS.BLUR_AMOUNT,
@@ -75,53 +79,20 @@ export const updateAtomixGlassStyles = (
       saturationBoost: baseOverLightConfig.saturationBoost
   };
 
-    let computedDirectionalScale = directionalScale;
-
-    // Calculate elastic translation and directional scale
-    let elasticTranslation = { x: 0, y: 0 };
-    if (!effectiveWithoutEffects && wrapperElement) {
-      const rect = wrapperElement.getBoundingClientRect();
-      const center = calculateElementCenter(rect);
-
-      // Mouse presence and edge distance logic
-      if (globalMousePosition.x && globalMousePosition.y && validateGlassSize(glassSize)) {
-        const deltaX = globalMousePosition.x - center.x;
-        const deltaY = globalMousePosition.y - center.y;
-        const edgeDistanceX = Math.max(0, Math.abs(deltaX) - glassSize.width / 2);
-        const edgeDistanceY = Math.max(0, Math.abs(deltaY) - glassSize.height / 2);
-        const edgeDistance = calculateDistance({ x: edgeDistanceX, y: edgeDistanceY }, { x: 0, y: 0 });
-        
-        // Elastic translation
-        const rawT = edgeDistance > ATOMIX_GLASS.CONSTANTS.ACTIVATION_ZONE ? 0 : 1 - edgeDistance / ATOMIX_GLASS.CONSTANTS.ACTIVATION_ZONE;
-        const fadeInFactor = smoothstep(rawT);
-        elasticTranslation = {
-            x: deltaX * elasticity * 0.1 * fadeInFactor,
-            y: deltaY * elasticity * 0.1 * fadeInFactor,
-        };
-
-        // Directional scale
-        if (!isOverLight && edgeDistance <= ATOMIX_GLASS.CONSTANTS.ACTIVATION_ZONE) {
-          const centerDistance = calculateDistance(globalMousePosition, center);
-          if (centerDistance > 0) {
-            const normalizedX = deltaX / centerDistance;
-            const normalizedY = deltaY / centerDistance;
-            const stretchIntensity = Math.min(centerDistance / 300, 1) * elasticity * rawT;
-            
-            const scaleX = 1 + Math.abs(normalizedX) * stretchIntensity * 0.3 - Math.abs(normalizedY) * stretchIntensity * 0.15;
-            const scaleY = 1 + Math.abs(normalizedY) * stretchIntensity * 0.3 - Math.abs(normalizedX) * stretchIntensity * 0.15;
-            
-            const softScaleX = 1 - softClamp(Math.max(0, 1 - scaleX), 0.2);
-            const softScaleY = 1 - softClamp(Math.max(0, 1 - scaleY), 0.2);
-            
-            computedDirectionalScale = `scaleX(${Math.max(0.85, softScaleX)}) scaleY(${Math.max(0.85, softScaleY)})`;
-          }
-        }
-      }
-    }
+    const scaleX = directionalScale.x * scaleBase;
+    const scaleY = directionalScale.y * scaleBase;
 
     const transformStyle = effectiveWithoutEffects
-        ? isActive && Boolean(onClick) ? 'scale(0.98)' : 'scale(1)'
-        : `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) ${isActive && Boolean(onClick) ? 'scale(0.96)' : computedDirectionalScale}`;
+        ? `scale(${scaleBase})`
+        : `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) scaleX(${scaleX}) scaleY(${scaleY})`;
+
+  // ── Apple Liquid Depth Refinements ───────────────────────────────
+  const stretchMagnitude = Math.sqrt(elasticTranslation.x ** 2 + elasticTranslation.y ** 2);
+  const tensionFactor = Math.min(stretchMagnitude / 80, 1);
+  
+  // Subtle lighting boost on stretch
+  const lightingContrast = Math.min(1.8, overLightConfig.contrast + tensionFactor * 0.2);
+  const lightingBrightness = Math.min(1.2, overLightConfig.brightness + tensionFactor * 0.1);
 
   // Update Wrapper Styles (glassVars)
   if (wrapperElement) {
@@ -180,8 +151,15 @@ export const updateAtomixGlassStyles = (
     };
 
     const style = wrapperElement.style;
-
     style.setProperty('--atomix-glass-transform', transformStyle || 'none');
+    
+    // Parallax for content (liquid refraction feel)
+    // Non-linear parallax based on tension for organic depth
+    const parallaxFactor = 0.38 + (tensionFactor * 0.12);
+    style.setProperty('--atomix-glass-child-parallax', `translate(${elasticTranslation.x * -parallaxFactor}px, ${elasticTranslation.y * -parallaxFactor}px)`);
+
+    style.setProperty('--atomix-glass-contrast', lightingContrast.toString());
+    style.setProperty('--atomix-glass-brightness', lightingBrightness.toString());
 
     // Gradients
     style.setProperty('--atomix-glass-border-gradient-1', `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[0] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[1] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`);
@@ -267,9 +245,9 @@ export const updateAtomixGlassStyles = (
     }
 
     // Backdrop filter
-    let backdropFilterString = `blur(${blurAmount}px) saturate(${saturation}%) contrast(1.05) brightness(1.05)`;
-
-    const dynamicSaturation = saturation + (liquidBlur.baseBlur || 0) * 20;
+    const tensionSaturation = tensionFactor * 40;
+    const dynamicSaturation = saturation + tensionSaturation + (liquidBlur.baseBlur || 0) * 15;
+    let backdropFilterString = '';
     const area = rect ? rect.width * rect.height : 0;
     const areaIsLarge = area > 180000;
     const devicePrefersPerformance = effectiveReducedMotion || effectiveWithoutEffects;
@@ -282,7 +260,7 @@ export const updateAtomixGlassStyles = (
             liquidBlur.centerBlur * 0.15 +
             liquidBlur.flowBlur * 0.2
         );
-        backdropFilterString = `blur(${weightedBlur}px) saturate(${Math.min(dynamicSaturation, 200)}%) contrast(${overLightConfig.contrast}) brightness(${overLightConfig.brightness})`;
+        backdropFilterString = `blur(${weightedBlur}px) saturate(${Math.min(dynamicSaturation, 250)}%) contrast(${lightingContrast}) brightness(${lightingBrightness})`;
     } else {
         const effectiveBlur = clampBlur(
           Math.max(
@@ -292,7 +270,7 @@ export const updateAtomixGlassStyles = (
             liquidBlur.flowBlur * 0.9
           )
         );
-        backdropFilterString = `blur(${effectiveBlur}px) saturate(${Math.min(dynamicSaturation, 200)}%) contrast(${overLightConfig.contrast}) brightness(${overLightConfig.brightness})`;
+        backdropFilterString = `blur(${effectiveBlur}px) saturate(${Math.min(dynamicSaturation, 250)}%) contrast(${lightingContrast}) brightness(${lightingBrightness})`;
     }
 
     // Container variables

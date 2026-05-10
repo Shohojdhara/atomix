@@ -21,6 +21,9 @@ import {
   extractBorderRadiusFromDOMElement,
   validateGlassSize,
   lerp,
+  calculateSpring,
+  calculateVelocity,
+  smoothstep,
 } from '../../components/AtomixGlass/glass-utils';
 import { updateAtomixGlassStyles } from './useAtomixGlassStyles';
 // Phase 1: Time-Based Animation System
@@ -267,6 +270,15 @@ export function useAtomixGlass({
   const [dynamicBorderRadius, setDynamicCornerRadius] = useState<number>(
     CONSTANTS.DEFAULT_CORNER_RADIUS
   );
+  
+  // ── Physics state refs ────────────────────────────────────────────────
+  const elasticTranslationRef = useRef<MousePosition>({ x: 0, y: 0 });
+  const elasticVelocityRef = useRef<MousePosition>({ x: 0, y: 0 });
+  const directionalScaleRef = useRef<{ x: number; y: number }>({ x: 1, y: 1 });
+  const scaleVelocityRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const lastMouseTimeRef = useRef<number>(0);
+  const mouseVelocityRef = useRef<MousePosition>({ x: 0, y: 0 });
+
   const [userPrefersReducedMotion, setUserPrefersReducedMotion] = useState(false);
   const [userPrefersHighContrast, setUserPrefersHighContrast] = useState(false);
   const [detectedOverLight, setDetectedOverLight] = useState(false);
@@ -806,56 +818,107 @@ export function useAtomixGlass({
 
       const cur = internalMouseOffsetRef.current;
       const tgt = targetMouseOffsetRef.current;
-      const dx = tgt.x - cur.x;
-      const dy = tgt.y - cur.y;
-
-      // If we're close enough, snap and park
-      if (Math.abs(dx) < EPSILON && Math.abs(dy) < EPSILON) {
-        internalMouseOffsetRef.current = { ...tgt };
-        internalGlobalMousePositionRef.current = { ...targetGlobalMousePositionRef.current };
-        
-        // Final update and stop
-        updateAtomixGlassStyles(
-          wrapperRef?.current || null,
-          glassRef.current,
-          {
-            mouseOffset: internalMouseOffsetRef.current,
-            globalMousePosition: internalGlobalMousePositionRef.current,
-            glassSize,
-            isHovered,
-            isActive,
-            isOverLight: overLightConfig.isOverLight,
-            baseOverLightConfig: overLightConfig,
-            effectiveBorderRadius,
-            effectiveWithoutEffects,
-            effectiveReducedMotion,
-            elasticity,
-            directionalScale: isActive && Boolean(onClick) ? 'scale(0.96)' : 'scale(1)',
-            onClick,
-            withLiquidBlur,
-            blurAmount,
-            saturation,
-            padding,
-            isFixedOrSticky,
-          }
-        );
-        
-        stopLerpLoop();
-        return;
-      }
-
-      // Smooth step
-      internalMouseOffsetRef.current = {
-        x: lerp(cur.x, tgt.x, LERP_T),
-        y: lerp(cur.y, tgt.y, LERP_T),
-      };
+      
+      // Calculate spring-based mouse offset (keeps the liquid tracking feel)
+      const springX = calculateSpring(cur.x, tgt.x, mouseVelocityRef.current.x, CONSTANTS.LERP_FACTOR, CONSTANTS.ELASTICITY_DAMPING);
+      const springY = calculateSpring(cur.y, tgt.y, mouseVelocityRef.current.y, CONSTANTS.LERP_FACTOR, CONSTANTS.ELASTICITY_DAMPING);
+      
+      internalMouseOffsetRef.current = { x: springX.value, y: springY.value };
+      mouseVelocityRef.current = { x: springX.velocity, y: springY.velocity };
       
       const curG = internalGlobalMousePositionRef.current;
       const tgtG = targetGlobalMousePositionRef.current;
       internalGlobalMousePositionRef.current = {
-        x: lerp(curG.x, tgtG.x, LERP_T),
-        y: lerp(curG.y, tgtG.y, LERP_T),
+        x: lerp(curG.x, tgtG.x, CONSTANTS.LERP_FACTOR),
+        y: lerp(curG.y, tgtG.y, CONSTANTS.LERP_FACTOR),
       };
+
+      // ── Calculate Elastic Physics ─────────────────────────────────────
+      let targetElasticTranslation = { x: 0, y: 0 };
+      let targetScale = { x: 1, y: 1 };
+      
+      if (!effectiveWithoutEffects && glassRef.current) {
+        const rect = cachedRectRef.current || glassRef.current.getBoundingClientRect();
+        const center = calculateElementCenter(rect);
+        const globalPos = internalGlobalMousePositionRef.current;
+        
+        if (globalPos.x && globalPos.y) {
+          const deltaX = globalPos.x - center.x;
+          const deltaY = globalPos.y - center.y;
+          const edgeDistanceX = Math.max(0, Math.abs(deltaX) - rect.width / 2);
+          const edgeDistanceY = Math.max(0, Math.abs(deltaY) - rect.height / 2);
+          const edgeDistance = Math.sqrt(edgeDistanceX * edgeDistanceX + edgeDistanceY * edgeDistanceY);
+          
+          const activationZone = CONSTANTS.ACTIVATION_ZONE;
+          const rawT = edgeDistance > activationZone ? 0 : 1 - edgeDistance / activationZone;
+          const fadeInFactor = smoothstep(rawT);
+          
+          targetElasticTranslation = {
+            x: deltaX * elasticity * CONSTANTS.ELASTICITY_TRANSLATION_FACTOR * fadeInFactor,
+            y: deltaY * elasticity * CONSTANTS.ELASTICITY_TRANSLATION_FACTOR * fadeInFactor,
+          };
+          
+          // Scale stretch logic (liquid surface tension)
+          if (edgeDistance <= activationZone) {
+            const centerDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            if (centerDistance > 0) {
+              const nx = deltaX / centerDistance;
+              const ny = deltaY / centerDistance;
+              const stretchIntensity = Math.min(centerDistance / 350, 1) * elasticity * rawT;
+              
+              // Liquid magnification (lens effect)
+              const mag = 1 + (stretchIntensity * 0.06);
+              
+              targetScale = {
+                x: mag + Math.abs(nx) * stretchIntensity * CONSTANTS.ELASTICITY_STRETCH_RATIO,
+                y: mag + Math.abs(ny) * stretchIntensity * CONSTANTS.ELASTICITY_STRETCH_RATIO,
+              };
+              
+              // Maintain liquid volume by compressing the perpendicular axis
+              targetScale.x -= Math.abs(ny) * stretchIntensity * 0.15;
+              targetScale.y -= Math.abs(nx) * stretchIntensity * 0.15;
+            }
+          }
+        }
+      }
+      
+      // Integrate Elastic Translation Spring
+      const springTX = calculateSpring(
+        elasticTranslationRef.current.x,
+        targetElasticTranslation.x,
+        elasticVelocityRef.current.x,
+        CONSTANTS.ELASTICITY_STIFFNESS,
+        CONSTANTS.ELASTICITY_DAMPING
+      );
+      const springTY = calculateSpring(
+        elasticTranslationRef.current.y,
+        targetElasticTranslation.y,
+        elasticVelocityRef.current.y,
+        CONSTANTS.ELASTICITY_STIFFNESS,
+        CONSTANTS.ELASTICITY_DAMPING
+      );
+      
+      elasticTranslationRef.current = { x: springTX.value, y: springTY.value };
+      elasticVelocityRef.current = { x: springTX.velocity, y: springTY.velocity };
+      
+      // Integrate Scale Spring
+      const springSX = calculateSpring(
+        directionalScaleRef.current.x,
+        targetScale.x,
+        scaleVelocityRef.current.x,
+        CONSTANTS.ELASTICITY_STIFFNESS,
+        CONSTANTS.ELASTICITY_DAMPING
+      );
+      const springSY = calculateSpring(
+        directionalScaleRef.current.y,
+        targetScale.y,
+        scaleVelocityRef.current.y,
+        CONSTANTS.ELASTICITY_STIFFNESS,
+        CONSTANTS.ELASTICITY_DAMPING
+      );
+      
+      directionalScaleRef.current = { x: springSX.value, y: springSY.value };
+      scaleVelocityRef.current = { x: springSX.velocity, y: springSY.velocity };
 
       // Imperative style update
       updateAtomixGlassStyles(
@@ -864,6 +927,8 @@ export function useAtomixGlass({
         {
           mouseOffset: internalMouseOffsetRef.current,
           globalMousePosition: internalGlobalMousePositionRef.current,
+          elasticTranslation: elasticTranslationRef.current,
+          directionalScale: directionalScaleRef.current,
           glassSize,
           isHovered,
           isActive,
@@ -873,7 +938,7 @@ export function useAtomixGlass({
           effectiveWithoutEffects,
           effectiveReducedMotion,
           elasticity,
-          directionalScale: isActive && Boolean(onClick) ? 'scale(0.96)' : 'scale(1)',
+          scaleBase: isActive && Boolean(onClick) ? 0.96 : 1,
           onClick,
           withLiquidBlur,
           blurAmount,
@@ -882,6 +947,22 @@ export function useAtomixGlass({
           isFixedOrSticky,
         }
       );
+
+      // ── Stop check ──────────────────────────────────────────────────
+      const VEL_EPS = 0.001;
+      const POS_EPS = 0.001;
+      
+      const isAtRest = 
+        Math.abs(mouseVelocityRef.current.x) < VEL_EPS && Math.abs(mouseVelocityRef.current.y) < VEL_EPS &&
+        Math.abs(elasticVelocityRef.current.x) < VEL_EPS && Math.abs(elasticVelocityRef.current.y) < VEL_EPS &&
+        Math.abs(scaleVelocityRef.current.x) < VEL_EPS && Math.abs(scaleVelocityRef.current.y) < VEL_EPS &&
+        Math.abs(internalMouseOffsetRef.current.x - targetMouseOffsetRef.current.x) < POS_EPS &&
+        Math.abs(internalMouseOffsetRef.current.y - targetMouseOffsetRef.current.y) < POS_EPS;
+
+      if (isAtRest) {
+        stopLerpLoop();
+        return;
+      }
 
       lerpRafRef.current = requestAnimationFrame(tick);
     };
@@ -1023,6 +1104,9 @@ export function useAtomixGlass({
         {
             mouseOffset: externalMouseOffset || internalMouseOffsetRef.current,
             globalMousePosition: externalGlobalMousePosition || internalGlobalMousePositionRef.current,
+            elasticTranslation: elasticTranslationRef.current,
+            directionalScale: directionalScaleRef.current,
+            scaleBase: isActive && Boolean(onClick) ? 0.96 : 1,
             glassSize,
             isHovered,
             isActive,
@@ -1032,7 +1116,6 @@ export function useAtomixGlass({
             effectiveWithoutEffects,
             effectiveReducedMotion,
             elasticity,
-            directionalScale: isActive && Boolean(onClick) ? 'scale(0.96)' : 'scale(1)',
             onClick,
             withLiquidBlur,
             blurAmount,
