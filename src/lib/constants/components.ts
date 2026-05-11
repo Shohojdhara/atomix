@@ -1713,6 +1713,8 @@ export const ATOMIX_GLASS = {
     GRADIENT: {
       BASE_ANGLE: 135, // Base angle for border gradients (degrees)
       ANGLE_MULTIPLIER: 1.2, // Multiplier for mouse influence on angle
+      VELOCITY_ANGLE_MULTIPLIER: 2.5, // How much velocity affects gradient rotation
+      CHROMATIC_OFFSET: 1.5, // Degree offset for chromatic rim layers
       BORDER_STOP_1: {
         MIN: 10, // Minimum percentage for border stop 1
         BASE: 33, // Base percentage for border stop 1

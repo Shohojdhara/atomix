@@ -377,7 +377,7 @@ const CardImpl = React.memo(
 
         if (glass) {
           const glassProps = glass === true ? {} : glass;
-          return <AtomixGlass {...{ ...glassProps, elasticity: 0 }}>{anchorElement}</AtomixGlass>;
+          return <AtomixGlass {...glassProps}>{anchorElement}</AtomixGlass>;
         }
 
         return anchorElement;
@@ -392,7 +392,7 @@ const CardImpl = React.memo(
 
       if (glass) {
         const glassProps = glass === true ? {} : glass;
-        return <AtomixGlass {...{ ...glassProps, elasticity: 0 }}>{divElement}</AtomixGlass>;
+        return <AtomixGlass {...glassProps}>{divElement}</AtomixGlass>;
       }
 
       return divElement;

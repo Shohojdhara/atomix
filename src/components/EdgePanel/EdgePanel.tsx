@@ -140,9 +140,7 @@ const EdgePanelComponentBase = ({
     return null;
   }
 
-  const defaultGlassProps = {
-    elasticity: 0,
-  };
+  const defaultGlassProps = {};
 
   const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

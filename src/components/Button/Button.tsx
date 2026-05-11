@@ -325,7 +325,6 @@ export const Button = React.memo(
           displacementScale: 20,
           blurAmount: 0,
           saturation: 200,
-          elasticity: 0,
         };
         const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
         return <AtomixGlass {...glassProps}>{buttonChildren}</AtomixGlass>;

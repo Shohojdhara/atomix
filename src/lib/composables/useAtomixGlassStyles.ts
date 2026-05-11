@@ -30,6 +30,8 @@ export const updateAtomixGlassStyles = (
     elasticity: number;
     elasticTranslation: MousePosition;
     directionalScale: { x: number; y: number };
+    elasticVelocity: MousePosition;
+    mouseVelocity: MousePosition;
     scaleBase: number;
     onClick?: () => void;
     withLiquidBlur?: boolean;
@@ -54,6 +56,8 @@ export const updateAtomixGlassStyles = (
     effectiveReducedMotion,
     elasticity,
     elasticTranslation,
+    elasticVelocity,
+    mouseVelocity,
     directionalScale,
     scaleBase,
     onClick,
@@ -102,7 +106,16 @@ export const updateAtomixGlassStyles = (
     const absMy = Math.abs(my);
     const GRADIENT = ATOMIX_GLASS.CONSTANTS.GRADIENT;
 
-    const borderGradientAngle = GRADIENT.BASE_ANGLE + mx * GRADIENT.ANGLE_MULTIPLIER;
+    // ── Velocity-Based Rotation ─────────────────────────────────────
+    // Combine mouse offset with velocity for dynamic rotation
+    const velocityRotation = (mouseVelocity.x + elasticVelocity.x) * (GRADIENT.VELOCITY_ANGLE_MULTIPLIER || 2.5);
+    const borderGradientAngle = GRADIENT.BASE_ANGLE + (mx * GRADIENT.ANGLE_MULTIPLIER) + velocityRotation;
+    
+    // Chromatic offsets for depth
+    const chromaticOffset = GRADIENT.CHROMATIC_OFFSET || 1.5;
+    const angleR = borderGradientAngle - chromaticOffset;
+    const angleB = borderGradientAngle + chromaticOffset;
+
     const borderStop1 = Math.max(
       GRADIENT.BORDER_STOP_1.MIN,
       GRADIENT.BORDER_STOP_1.BASE + my * GRADIENT.BORDER_STOP_1.MULTIPLIER
@@ -111,11 +124,14 @@ export const updateAtomixGlassStyles = (
       GRADIENT.BORDER_STOP_2.MAX,
       GRADIENT.BORDER_STOP_2.BASE + my * GRADIENT.BORDER_STOP_2.MULTIPLIER
     );
+    
+    // Modulate border opacity by tension (glow on stretch)
+    const tensionGlow = 1 + tensionFactor * 0.5;
     const borderOpacities = [
-      GRADIENT.BORDER_OPACITY.BASE_1 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW,
-      GRADIENT.BORDER_OPACITY.BASE_2 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH,
-      GRADIENT.BORDER_OPACITY.BASE_3 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW,
-      GRADIENT.BORDER_OPACITY.BASE_4 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH,
+      (GRADIENT.BORDER_OPACITY.BASE_1 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW) * tensionGlow,
+      (GRADIENT.BORDER_OPACITY.BASE_2 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH) * tensionGlow,
+      (GRADIENT.BORDER_OPACITY.BASE_3 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW) * tensionGlow,
+      (GRADIENT.BORDER_OPACITY.BASE_4 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH) * tensionGlow,
     ];
 
     const configBorderOpacity = overLightConfig.borderOpacity;
@@ -154,16 +170,17 @@ export const updateAtomixGlassStyles = (
     style.setProperty('--atomix-glass-transform', transformStyle || 'none');
     
     // Parallax for content (liquid refraction feel)
-    // Non-linear parallax based on tension for organic depth
     const parallaxFactor = 0.38 + (tensionFactor * 0.12);
     style.setProperty('--atomix-glass-child-parallax', `translate(${elasticTranslation.x * -parallaxFactor}px, ${elasticTranslation.y * -parallaxFactor}px)`);
 
     style.setProperty('--atomix-glass-contrast', lightingContrast.toString());
     style.setProperty('--atomix-glass-brightness', lightingBrightness.toString());
 
-    // Gradients
-    style.setProperty('--atomix-glass-border-gradient-1', `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[0] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[1] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`);
-    style.setProperty('--atomix-glass-border-gradient-2', `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[2] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[3] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`);
+    // ── Chromatic Rim Lighting ──────────────────────────────────────
+    // Layer 1: Core White/Blue highlight
+    style.setProperty('--atomix-glass-border-gradient-1', `linear-gradient(${angleB}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[0] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[1] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`);
+    // Layer 2: Subtle Red/Warm highlight (offset angle)
+    style.setProperty('--atomix-glass-border-gradient-2', `linear-gradient(${angleR}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[2] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[3] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`);
 
     // Hover gradients
     style.setProperty('--atomix-glass-hover-1-gradient', isOverLight
