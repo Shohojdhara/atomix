@@ -1,10 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type {
   AtomixGlassProps,
   GlassSize,
@@ -51,10 +45,7 @@ const backgroundDetectionCache = new WeakMap<HTMLElement, BackgroundDetectionCac
  * Compare two OverLightConfig values for equality
  * Handles primitives (boolean, 'auto') and objects with deep comparison
  */
-const compareOverLightConfig = (
-  config1: OverLightConfig,
-  config2: OverLightConfig
-): boolean => {
+const compareOverLightConfig = (config1: OverLightConfig, config2: OverLightConfig): boolean => {
   // Primitive comparison for boolean and 'auto'
   if (typeof config1 !== 'object' || config1 === null) {
     return config1 === config2;
@@ -270,7 +261,7 @@ export function useAtomixGlass({
   const [dynamicBorderRadius, setDynamicCornerRadius] = useState<number>(
     CONSTANTS.DEFAULT_CORNER_RADIUS
   );
-  
+
   // ── Physics state refs ────────────────────────────────────────────────
   const elasticTranslationRef = useRef<MousePosition>({ x: 0, y: 0 });
   const elasticVelocityRef = useRef<MousePosition>({ x: 0, y: 0 });
@@ -299,7 +290,7 @@ export function useAtomixGlass({
   const fbmConfig = useMemo(() => {
     // If quality preset is provided, use it as base
     const preset = getFBMConfigForQuality(distortionQuality);
-    
+
     // Override with custom values if provided
     return {
       octaves: distortionOctaves ?? preset.octaves,
@@ -385,7 +376,7 @@ export function useAtomixGlass({
       }
 
       const time = shaderTimeRef.current;
-      
+
       // Apply liquid glass distortion with time
       return liquidGlassWithTime(uv, time, fbmConfig);
     },
@@ -402,12 +393,11 @@ export function useAtomixGlass({
     return result;
   }, [borderRadius, dynamicBorderRadius]);
 
-  const { glassSize } = useGlassSize({ 
-    glassRef, 
-    effectiveBorderRadius, 
-    cachedRectRef 
+  const { glassSize } = useGlassSize({
+    glassRef,
+    effectiveBorderRadius,
+    cachedRectRef,
   });
-
 
   const effectiveHighContrast = useMemo(
     () => highContrast || userPrefersHighContrast,
@@ -450,7 +440,10 @@ export function useAtomixGlass({
           setDynamicCornerRadius(extractedRadius);
         }
       } catch (error) {
-        if ((typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') && debugBorderRadius) {
+        if (
+          (typeof process === 'undefined' || process.env?.NODE_ENV !== 'production') &&
+          debugBorderRadius
+        ) {
           console.error('[AtomixGlass] Error extracting corner radius:', error);
         }
       }
@@ -493,7 +486,8 @@ export function useAtomixGlass({
   // Background detection for overLight auto-detect
   useEffect(() => {
     // Only run auto-detection for 'auto' mode or object config (which uses auto-detection)
-    const shouldDetect = (overLight === 'auto' || (typeof overLight === 'object' && overLight !== null));
+    const shouldDetect =
+      overLight === 'auto' || (typeof overLight === 'object' && overLight !== null);
 
     if (shouldDetect && glassRef.current) {
       const element = glassRef.current;
@@ -542,7 +536,13 @@ export function useAtomixGlass({
               const bgImage = computedStyle.backgroundImage;
 
               // Check for solid color backgrounds
-              if (bgColor && bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent' && bgColor !== 'initial' && bgColor !== 'none') {
+              if (
+                bgColor &&
+                bgColor !== 'rgba(0, 0, 0, 0)' &&
+                bgColor !== 'transparent' &&
+                bgColor !== 'initial' &&
+                bgColor !== 'none'
+              ) {
                 const rgb = bgColor.match(/\d+/g);
                 if (rgb && rgb.length >= 3) {
                   const r = Number(rgb[0]);
@@ -568,7 +568,7 @@ export function useAtomixGlass({
                 hasValidBackground = true;
               }
             } catch (styleError) {
-                // Silently continue
+              // Silently continue
             }
 
             if (currentElement) {
@@ -587,27 +587,37 @@ export function useAtomixGlass({
               if (typeof overLight === 'object' && overLight !== null) {
                 const objConfig = overLight as OverLightObjectConfig;
                 if (objConfig.threshold !== undefined) {
-                    const configThreshold = typeof objConfig.threshold === 'number' && !isNaN(objConfig.threshold) ? objConfig.threshold : 0.7;
+                  const configThreshold =
+                    typeof objConfig.threshold === 'number' && !isNaN(objConfig.threshold)
+                      ? objConfig.threshold
+                      : 0.7;
                   threshold = Math.min(0.9, Math.max(0.1, configThreshold));
                 }
               }
 
               const isOverLightDetected = avgLuminance > threshold;
-              setCachedBackgroundDetection(element.parentElement, overLight, isOverLightDetected, threshold);
+              setCachedBackgroundDetection(
+                element.parentElement,
+                overLight,
+                isOverLightDetected,
+                threshold
+              );
               setDetectedOverLight(isOverLightDetected);
             } else {
               const result = false;
-              const threshold = typeof overLight === 'object' && overLight !== null
-                ? (overLight as OverLightObjectConfig).threshold || 0.7
-                : 0.7;
+              const threshold =
+                typeof overLight === 'object' && overLight !== null
+                  ? (overLight as OverLightObjectConfig).threshold || 0.7
+                  : 0.7;
               setCachedBackgroundDetection(element.parentElement, overLight, result, threshold);
               setDetectedOverLight(result);
             }
           } else {
             const result = false;
-            const threshold = typeof overLight === 'object' && overLight !== null
-              ? (overLight as OverLightObjectConfig).threshold || 0.7
-              : 0.7;
+            const threshold =
+              typeof overLight === 'object' && overLight !== null
+                ? (overLight as OverLightObjectConfig).threshold || 0.7
+                : 0.7;
             setCachedBackgroundDetection(element.parentElement, overLight, result, threshold);
             setDetectedOverLight(result);
           }
@@ -763,19 +773,12 @@ export function useAtomixGlass({
     }
 
     return baseConfig;
-  }, [
-    overLight,
-    getEffectiveOverLight,
-    isHovered,
-    isActive,
-    validateConfigValue,
-    debugOverLight,
-  ]);
+  }, [overLight, getEffectiveOverLight, isHovered, isActive, validateConfigValue, debugOverLight]);
 
   // Transform calculation (static base for React render)
   // Mouse interactions are purely handled by imperative updates in the RAF lerp loop to prevent re-renders
   const transformStyle = useMemo(() => {
-    return effectiveWithoutEffects || (isActive && Boolean(onClick)) ? 'scale(0.98)' : 'scale(1)';
+    return effectiveWithoutEffects || (isActive && Boolean(onClick)) ? 'scale(0.99)' : 'scale(1)';
   }, [effectiveWithoutEffects, isActive, onClick]);
 
   // Mouse tracking
@@ -783,7 +786,6 @@ export function useAtomixGlass({
 
   // Derived values for imperative updates (we can use memoized ones or re-calculate)
   // Since updateAtomixGlassStyles is called imperatively, we pass current refs and state
-
 
   // Handle mouse position updates
   // ── Raw mouse handler — writes to TARGET refs only ──────────────────
@@ -818,14 +820,26 @@ export function useAtomixGlass({
 
       const cur = internalMouseOffsetRef.current;
       const tgt = targetMouseOffsetRef.current;
-      
+
       // Calculate spring-based mouse offset (keeps the liquid tracking feel)
-      const springX = calculateSpring(cur.x, tgt.x, mouseVelocityRef.current.x, CONSTANTS.LERP_FACTOR, CONSTANTS.ELASTICITY_DAMPING);
-      const springY = calculateSpring(cur.y, tgt.y, mouseVelocityRef.current.y, CONSTANTS.LERP_FACTOR, CONSTANTS.ELASTICITY_DAMPING);
-      
+      const springX = calculateSpring(
+        cur.x,
+        tgt.x,
+        mouseVelocityRef.current.x,
+        CONSTANTS.LERP_FACTOR,
+        CONSTANTS.ELASTICITY_DAMPING
+      );
+      const springY = calculateSpring(
+        cur.y,
+        tgt.y,
+        mouseVelocityRef.current.y,
+        CONSTANTS.LERP_FACTOR,
+        CONSTANTS.ELASTICITY_DAMPING
+      );
+
       internalMouseOffsetRef.current = { x: springX.value, y: springY.value };
       mouseVelocityRef.current = { x: springX.velocity, y: springY.velocity };
-      
+
       const curG = internalGlobalMousePositionRef.current;
       const tgtG = targetGlobalMousePositionRef.current;
       internalGlobalMousePositionRef.current = {
@@ -836,28 +850,30 @@ export function useAtomixGlass({
       // ── Calculate Elastic Physics ─────────────────────────────────────
       let targetElasticTranslation = { x: 0, y: 0 };
       let targetScale = { x: 1, y: 1 };
-      
+
       if (!effectiveWithoutEffects && glassRef.current) {
         const rect = cachedRectRef.current || glassRef.current.getBoundingClientRect();
         const center = calculateElementCenter(rect);
         const globalPos = internalGlobalMousePositionRef.current;
-        
+
         if (globalPos.x && globalPos.y) {
           const deltaX = globalPos.x - center.x;
           const deltaY = globalPos.y - center.y;
           const edgeDistanceX = Math.max(0, Math.abs(deltaX) - rect.width / 2);
           const edgeDistanceY = Math.max(0, Math.abs(deltaY) - rect.height / 2);
-          const edgeDistance = Math.sqrt(edgeDistanceX * edgeDistanceX + edgeDistanceY * edgeDistanceY);
-          
+          const edgeDistance = Math.sqrt(
+            edgeDistanceX * edgeDistanceX + edgeDistanceY * edgeDistanceY
+          );
+
           const activationZone = CONSTANTS.ACTIVATION_ZONE;
           const rawT = edgeDistance > activationZone ? 0 : 1 - edgeDistance / activationZone;
           const fadeInFactor = smoothstep(rawT);
-          
+
           targetElasticTranslation = {
             x: deltaX * elasticity * CONSTANTS.ELASTICITY_TRANSLATION_FACTOR * fadeInFactor,
             y: deltaY * elasticity * CONSTANTS.ELASTICITY_TRANSLATION_FACTOR * fadeInFactor,
           };
-          
+
           // Scale stretch logic (liquid surface tension)
           if (edgeDistance <= activationZone) {
             const centerDistance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -865,15 +881,15 @@ export function useAtomixGlass({
               const nx = deltaX / centerDistance;
               const ny = deltaY / centerDistance;
               const stretchIntensity = Math.min(centerDistance / 350, 1) * elasticity * rawT;
-              
+
               // Liquid magnification (lens effect)
-              const mag = 1 + (stretchIntensity * 0.06);
-              
+              const mag = 1 + stretchIntensity * 0.06;
+
               targetScale = {
                 x: mag + Math.abs(nx) * stretchIntensity * CONSTANTS.ELASTICITY_STRETCH_RATIO,
                 y: mag + Math.abs(ny) * stretchIntensity * CONSTANTS.ELASTICITY_STRETCH_RATIO,
               };
-              
+
               // Maintain liquid volume by compressing the perpendicular axis
               targetScale.x -= Math.abs(ny) * stretchIntensity * 0.15;
               targetScale.y -= Math.abs(nx) * stretchIntensity * 0.15;
@@ -881,7 +897,7 @@ export function useAtomixGlass({
           }
         }
       }
-      
+
       // Integrate Elastic Translation Spring
       const springTX = calculateSpring(
         elasticTranslationRef.current.x,
@@ -897,10 +913,10 @@ export function useAtomixGlass({
         CONSTANTS.ELASTICITY_STIFFNESS,
         CONSTANTS.ELASTICITY_DAMPING
       );
-      
+
       elasticTranslationRef.current = { x: springTX.value, y: springTY.value };
       elasticVelocityRef.current = { x: springTX.velocity, y: springTY.velocity };
-      
+
       // Integrate Scale Spring
       const springSX = calculateSpring(
         directionalScaleRef.current.x,
@@ -916,48 +932,47 @@ export function useAtomixGlass({
         CONSTANTS.ELASTICITY_STIFFNESS,
         CONSTANTS.ELASTICITY_DAMPING
       );
-      
+
       directionalScaleRef.current = { x: springSX.value, y: springSY.value };
       scaleVelocityRef.current = { x: springSX.velocity, y: springSY.velocity };
 
       // Imperative style update
-      updateAtomixGlassStyles(
-        wrapperRef?.current || null,
-        glassRef.current,
-        {
-          mouseOffset: internalMouseOffsetRef.current,
-          globalMousePosition: internalGlobalMousePositionRef.current,
-          elasticTranslation: elasticTranslationRef.current,
-          elasticVelocity: elasticVelocityRef.current,
-          mouseVelocity: mouseVelocityRef.current,
-          directionalScale: directionalScaleRef.current,
-          glassSize,
-          isHovered,
-          isActive,
-          isOverLight: overLightConfig.isOverLight,
-          baseOverLightConfig: overLightConfig,
-          effectiveBorderRadius,
-          effectiveWithoutEffects,
-          effectiveReducedMotion,
-          elasticity,
-          scaleBase: isActive && Boolean(onClick) ? 0.96 : 1,
-          onClick,
-          withLiquidBlur,
-          blurAmount,
-          saturation,
-          padding,
-          isFixedOrSticky,
-        }
-      );
+      updateAtomixGlassStyles(wrapperRef?.current || null, glassRef.current, {
+        mouseOffset: internalMouseOffsetRef.current,
+        globalMousePosition: internalGlobalMousePositionRef.current,
+        elasticTranslation: elasticTranslationRef.current,
+        elasticVelocity: elasticVelocityRef.current,
+        mouseVelocity: mouseVelocityRef.current,
+        directionalScale: directionalScaleRef.current,
+        glassSize,
+        isHovered,
+        isActive,
+        isOverLight: overLightConfig.isOverLight,
+        baseOverLightConfig: overLightConfig,
+        effectiveBorderRadius,
+        effectiveWithoutEffects,
+        effectiveReducedMotion,
+        elasticity,
+        scaleBase: isActive && Boolean(onClick) ? 0.99 : 1,
+        onClick,
+        withLiquidBlur,
+        blurAmount,
+        saturation,
+        padding,
+        isFixedOrSticky,
+      });
 
       // ── Stop check ──────────────────────────────────────────────────
       const VEL_EPS = 0.001;
       const POS_EPS = 0.001;
-      
-      const isAtRest = 
-        Math.abs(mouseVelocityRef.current.x) < VEL_EPS && Math.abs(mouseVelocityRef.current.y) < VEL_EPS &&
-        Math.abs(elasticVelocityRef.current.x) < VEL_EPS && Math.abs(elasticVelocityRef.current.y) < VEL_EPS &&
-        Math.abs(scaleVelocityRef.current.x) < VEL_EPS && Math.abs(scaleVelocityRef.current.y) < VEL_EPS &&
+
+      const isAtRest =
+        Math.abs(mouseVelocityRef.current.x) < VEL_EPS &&
+        Math.abs(mouseVelocityRef.current.y) < VEL_EPS &&
+        Math.abs(elasticVelocityRef.current.x) < VEL_EPS &&
+        Math.abs(elasticVelocityRef.current.y) < VEL_EPS &&
+        Math.abs(scaleVelocityRef.current.x) < VEL_EPS &&
+        Math.abs(scaleVelocityRef.current.y) < VEL_EPS &&
         Math.abs(internalMouseOffsetRef.current.x - targetMouseOffsetRef.current.x) < POS_EPS &&
         Math.abs(internalMouseOffsetRef.current.y - targetMouseOffsetRef.current.y) < POS_EPS;
 
@@ -1050,8 +1065,12 @@ export function useAtomixGlass({
       return undefined;
     }
 
-    const unsubscribe = globalMouseTracker.subscribe(handleGlobalMousePosition, glassRef.current || undefined, 300); // 300px max distance for full effect
-    
+    const unsubscribe = globalMouseTracker.subscribe(
+      handleGlobalMousePosition,
+      glassRef.current || undefined,
+      300
+    ); // 300px max distance for full effect
+
     // Initial start
     startLerpLoop();
 
@@ -1100,33 +1119,29 @@ export function useAtomixGlass({
 
   // Also call updateStyles on other state changes (hover, active, etc)
   useEffect(() => {
-    updateAtomixGlassStyles(
-        wrapperRef?.current || null,
-        glassRef.current,
-        {
-            mouseOffset: externalMouseOffset || internalMouseOffsetRef.current,
-            globalMousePosition: externalGlobalMousePosition || internalGlobalMousePositionRef.current,
-            elasticTranslation: elasticTranslationRef.current,
-            elasticVelocity: elasticVelocityRef.current,
-            mouseVelocity: mouseVelocityRef.current,
-            directionalScale: directionalScaleRef.current,
-            scaleBase: isActive && Boolean(onClick) ? 0.96 : 1,
-            glassSize,
-            isHovered,
-            isActive,
-            isOverLight: overLightConfig.isOverLight,
-            baseOverLightConfig: overLightConfig,
-            effectiveBorderRadius,
-            effectiveWithoutEffects,
-            effectiveReducedMotion,
-            elasticity,
-            onClick,
-            withLiquidBlur,
-            blurAmount,
-            saturation,
-            padding,
-        }
-      );
+    updateAtomixGlassStyles(wrapperRef?.current || null, glassRef.current, {
+      mouseOffset: externalMouseOffset || internalMouseOffsetRef.current,
+      globalMousePosition: externalGlobalMousePosition || internalGlobalMousePositionRef.current,
+      elasticTranslation: elasticTranslationRef.current,
+      elasticVelocity: elasticVelocityRef.current,
+      mouseVelocity: mouseVelocityRef.current,
+      directionalScale: directionalScaleRef.current,
+      scaleBase: isActive && Boolean(onClick) ? 0.96 : 1,
+      glassSize,
+      isHovered,
+      isActive,
+      isOverLight: overLightConfig.isOverLight,
+      baseOverLightConfig: overLightConfig,
+      effectiveBorderRadius,
+      effectiveWithoutEffects,
+      effectiveReducedMotion,
+      elasticity,
+      onClick,
+      withLiquidBlur,
+      blurAmount,
+      saturation,
+      padding,
+    });
   }, [
     isHovered,
     isActive,
@@ -1144,7 +1159,7 @@ export function useAtomixGlass({
     blurAmount,
     saturation,
     padding,
-    onClick
+    onClick,
   ]);
 
   // Event handlers
@@ -1152,8 +1167,6 @@ export function useAtomixGlass({
   const handleMouseLeave = useCallback(() => setIsHovered(false), []);
   const handleMouseDown = useCallback(() => setIsActive(true), []);
   const handleMouseUp = useCallback(() => setIsActive(false), []);
-
-
 
   const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -1176,7 +1189,7 @@ export function useAtomixGlass({
     effectiveWithoutEffects,
     detectedOverLight,
     globalMousePosition, // This is now static (refs or props) unless prop changes
-    mouseOffset,         // This is now static (refs or props) unless prop changes
+    mouseOffset, // This is now static (refs or props) unless prop changes
     overLightConfig,
     transformStyle,
     getShaderTime,

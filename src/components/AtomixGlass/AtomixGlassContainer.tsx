@@ -598,7 +598,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             className={ATOMIX_GLASS.CONTENT_CLASS}
             style={{
               transform: 'var(--atomix-glass-child-parallax, none)',
-              willChange: 'transform',
             }}
           >
             {children}

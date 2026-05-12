@@ -576,7 +576,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}
       aria-disabled={onClick && effectiveWithoutEffects ? true : onClick ? false : undefined}
-      aria-pressed={undefined}
+      aria-pressed={onClick ? isActive : undefined}
       onKeyDown={onClick ? handleKeyDown : undefined}
     >
       <AtomixGlassContainer
