@@ -3,6 +3,7 @@
 @use '../02-tools/tools.color-functions' as *;
 @use '../02-tools/tools.to-rgb' as *;
 @use '../02-tools/tools.background' as *;
+@use '../02-tools/tools.rem' as *;
 
 // Component: DataTable
 // Description: Styles for the DataTable component
@@ -84,7 +85,7 @@
   }
 
   &__column-filter {
-    width: 120px;
+    width: rem(120px);
     padding: 0.25rem 0.5rem;
     font-size: 0.875rem;
     border: 1px solid var(--#{config.$prefix}border-color);
@@ -102,7 +103,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    width: 4px;
+    width: rem(4px);
     height: 100%;
     cursor: col-resize;
     background-color: transparent;
@@ -159,7 +160,7 @@
 
   // Selection cell
   &__cell--selection {
-    width: 48px;
+    width: rem(48px);
     text-align: center;
     padding: data-table.$data-table-cell-padding-y 0.5rem;
   }
@@ -254,7 +255,7 @@
 
   &__input {
     // Styles are now inherited from c-input class
-    width: 240px;
+    width: rem(240px);
   }
 }
 

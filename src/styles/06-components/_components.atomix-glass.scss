@@ -51,9 +51,9 @@
   --_glass-z-content: calc(var(--atomix-glass-base-z-index) + var(--atomix-z-index-content, 2));
 
   --atomix-glass-border-shadow:
-    0 0 0 0.5px var(--atomix-glass-border-color, rgba(255, 255, 255, 0.45)) inset,
-    0 1px 2px var(--atomix-glass-inner-shadow-color, rgba(255, 255, 255, 0.18)) inset,
-    0 2px 6px var(--atomix-glass-outer-shadow-color, rgba(0, 0, 0, 0.28));
+    0 0 0 0.5px var(--atomix-glass-border-color, #{$glass-border-color}) inset,
+    0 1px 2px var(--atomix-glass-inner-shadow-color, #{$glass-inner-shadow-color}) inset,
+    0 2px 6px var(--atomix-glass-outer-shadow-color, #{$glass-outer-shadow-color});
 
   // Base layer styles for effect layers
   &__hover-1,
@@ -102,8 +102,8 @@
       --atomix-glass-hover-1-gradient,
       radial-gradient(
         60% 60% at 50% 0%,
-        var(--atomix-glass-hover-1-start-color, rgba(255, 255, 255, 0.18)) 0%,
-        var(--atomix-glass-hover-1-end-color, rgba(255, 255, 255, 0)) 60%
+        var(--atomix-glass-hover-1-start-color, #{$glass-hover-1-start-color}) 0%,
+        var(--atomix-glass-hover-1-end-color, #{$glass-hover-1-end-color}) 60%
       )
     );
   }
@@ -118,8 +118,8 @@
       --atomix-glass-hover-2-gradient,
       radial-gradient(
         80% 80% at 50% 100%,
-        var(--atomix-glass-hover-2-start-color, rgba(0, 0, 0, 0.12)) 0%,
-        var(--atomix-glass-hover-2-end-color, rgba(0, 0, 0, 0)) 60%
+        var(--atomix-glass-hover-2-start-color, #{$glass-hover-2-start-color}) 0%,
+        var(--atomix-glass-hover-2-end-color, #{$glass-hover-2-end-color}) 60%
       )
     );
   }
@@ -131,8 +131,8 @@
       --atomix-glass-hover-3-gradient,
       linear-gradient(
         180deg,
-        var(--atomix-glass-hover-3-start-color, rgba(255, 255, 255, 0.06)) 0%,
-        var(--atomix-glass-hover-3-end-color, rgba(255, 255, 255, 0)) 100%
+        var(--atomix-glass-hover-3-start-color, #{$glass-hover-3-start-color}) 0%,
+        var(--atomix-glass-hover-3-end-color, #{$glass-hover-3-end-color}) 100%
       )
     );
   }
@@ -144,8 +144,8 @@
       --atomix-glass-base-gradient,
       linear-gradient(
         180deg,
-        var(--atomix-glass-base-start-color, rgba(255, 255, 255, 0.08)) 0%,
-        var(--atomix-glass-base-end-color, rgba(255, 255, 255, 0.02)) 100%
+        var(--atomix-glass-base-start-color, #{$glass-base-start-color}) 0%,
+        var(--atomix-glass-base-end-color, #{$glass-base-end-color}) 100%
       )
     );
   }
@@ -157,8 +157,8 @@
       --atomix-glass-overlay-gradient,
       radial-gradient(
         120% 120% at 50% -10%,
-        var(--atomix-glass-overlay-start-color, rgba(255, 255, 255, 0.12)) 0%,
-        var(--atomix-glass-overlay-end-color, rgba(255, 255, 255, 0)) 40%
+        var(--atomix-glass-overlay-start-color, #{$glass-overlay-start-color}) 0%,
+        var(--atomix-glass-overlay-end-color, #{$glass-overlay-end-color}) 40%
       )
     );
   }
@@ -178,8 +178,8 @@
       --atomix-glass-overlay-highlight-bg,
       linear-gradient(
         180deg,
-        var(--atomix-glass-highlight-start-color, rgba(255, 255, 255, 0.24)) 0%,
-        var(--atomix-glass-highlight-end-color, rgba(255, 255, 255, 0)) 60%
+        var(--atomix-glass-highlight-start-color, #{$glass-highlight-start-color}) 0%,
+        var(--atomix-glass-highlight-end-color, #{$glass-highlight-end-color}) 60%
       )
     );
   }

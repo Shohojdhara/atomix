@@ -1,11 +1,12 @@
-@use '../../styles/01-settings/settings.colors' as *;
-@use '../../styles/01-settings/settings.background' as *;
-@use '../../styles/02-tools/tools.background' as *;
+@use '../01-settings/settings.colors' as *;
+@use '../01-settings/settings.background' as *;
+@use '../02-tools/tools.background' as *;
+@use '../02-tools/tools.rem' as *;
 
 .c-dynamic-background {
   // Base styles
-  min-height: 200px;
-  border-radius: 16px;
+  min-height: rem(200px);
+  border-radius: rem(16px);
   
   // Glass variant (default)
   &--glass {
@@ -37,9 +38,9 @@
       padding: $background-border-width;
       background: linear-gradient(
         $background-gradient-angle,
-        rgba(255, 255, 255, $background-border-opacity * 1.2) 0%,
-        rgba(255, 255, 255, $background-border-opacity * 0.6) 50%,
-        rgba(255, 255, 255, $background-border-opacity * 0.3) 100%
+        rgba($white, $background-border-opacity * 1.2) 0%,
+        rgba($white, $background-border-opacity * 0.6) 50%,
+        rgba($white, $background-border-opacity * 0.3) 100%
       );
       -webkit-mask:
         linear-gradient(#fff 0 0) content-box,

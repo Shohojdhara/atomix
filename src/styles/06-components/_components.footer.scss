@@ -7,6 +7,7 @@
 @use '../02-tools/tools.animations' as *;
 @use '../02-tools/tools.background' as *;
 @use '../02-tools/tools.to-rgb' as *;
+@use '../01-settings/settings.colors' as *;
 
 .c-footer {
   $root: &;
@@ -85,7 +86,7 @@
       align-items: center;
       text-align: center;
       gap: clamp(1.5rem, 4vw, 2.5rem);
-      max-width: 600px;
+      max-width: rem(600px);
       margin-left: auto;
       margin-right: auto;
     }
@@ -227,7 +228,7 @@
 
         &:not(#{$root}__section--collapsed) {
           #{$root}__section-content {
-            max-height: 500px;
+            max-height: rem(500px);
           }
         }
       }
@@ -348,7 +349,7 @@
         background: linear-gradient(
           45deg,
           transparent 30%,
-          rgba(255, 255, 255, 0.1) 50%,
+          rgba($white, 0.1) 50%,
           transparent 70%
         );
         transform: translateX(-100%);
@@ -546,7 +547,7 @@
         background: linear-gradient(
           45deg,
           transparent 30%,
-          rgba(255, 255, 255, 0.2) 50%,
+          rgba($white, 0.2) 50%,
           transparent 70%
         );
         transform: translateX(-100%);
@@ -630,7 +631,7 @@
       background: linear-gradient(
         45deg,
         transparent 30%,
-        rgba(255, 255, 255, 0.1) 50%,
+        rgba($white, 0.1) 50%,
         transparent 70%
       );
       transform: translateX(-100%);
@@ -729,7 +730,7 @@
       align-items: center;
       text-align: center;
       gap: clamp(1.5rem, 4vw, 2.5rem);
-      max-width: 600px;
+      max-width: rem(600px);
       margin-left: auto;
       margin-right: auto;
     }
@@ -738,7 +739,7 @@
   &--flexible {
     #{$root}__section-col {
       flex: 1 1 auto;
-      min-width: 250px;
+      min-width: rem(250px);
     }
   }
 

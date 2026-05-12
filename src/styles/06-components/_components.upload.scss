@@ -187,7 +187,7 @@
 
   &__loader-progress {
     display: flex;
-    gap: 10px;
+    gap: rem(10px);
     color: var(--#{$prefix}upload-loader-text-color);
     font-size: var(--#{$prefix}upload-loader-text-font-size);
     line-height: 1.43;
@@ -222,8 +222,8 @@
   }
 
   &__loader-bar {
-    width: 22px;
-    height: 22px;
+    width: rem(22px);
+    height: rem(22px);
 
     svg {
       width: 100%;
