@@ -8,12 +8,15 @@ export interface SelectContextType {
   unregisterOption: (value: string) => void;
   selectedValue?: string | string[];
   onSelect: (value: string, label: string) => void;
+  focusedValue?: string;
+  id?: string;
 }
 
 export const SelectContext = createContext<SelectContextType | null>(null);
 
 export interface SelectOptionProps {
   value: string;
+  label?: string;
   children?: ReactNode;
   disabled?: boolean;
   className?: string;
@@ -21,45 +24,48 @@ export interface SelectOptionProps {
 }
 
 export const SelectOption: React.FC<SelectOptionProps> = memo(
-  ({ value, children, disabled = false, className = '', style }) => {
+  ({ value, label, children, disabled = false, className = '', style }) => {
     const context = useContext(SelectContext);
 
-    // We assume children is the label if it's a string, or we need a way to get label.
-    // For simplicity, we use children as label for registration if it's a string.
-    const label = typeof children === 'string' ? children : value;
+    const displayLabel = label || (typeof children === 'string' ? children : value);
 
     useEffect(() => {
       if (context) {
-        context.registerOption({ value, label, disabled });
+        context.registerOption({ value, label: displayLabel, disabled });
         return () => {
           context.unregisterOption(value);
         };
       }
       return undefined;
-    }, [context, value, label, disabled]);
+    }, [context, value, displayLabel, disabled]);
 
     if (!context) {
       console.warn('SelectOption must be used within a Select component');
       return null;
     }
 
-    const { selectedValue, onSelect } = context;
+    const { selectedValue, onSelect, focusedValue, id } = context;
 
     const isSelected = Array.isArray(selectedValue)
       ? selectedValue.includes(value)
       : selectedValue === value;
 
+    const isFocused = focusedValue === value;
+
     const handleClick = (e: React.MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
       if (!disabled) {
-        onSelect(value, label);
+        onSelect(value, displayLabel);
       }
     };
 
     return (
       <li
-        className={`${SELECT.CLASSES.SELECT_ITEM} ${className}`.trim()}
+        id={id ? `${id}-opt-${value}` : undefined}
+        className={`${SELECT.CLASSES.SELECT_ITEM} ${isFocused ? 'is-focused' : ''} ${
+          isSelected ? 'is-selected' : ''
+        } ${className}`.trim()}
         data-value={value}
         onClick={handleClick}
         style={style}
@@ -76,7 +82,7 @@ export const SelectOption: React.FC<SelectOptionProps> = memo(
              disabled={disabled}
              tabIndex={-1}
            />
-           <div className="c-select__item-label">{children}</div>
+           <div className="c-select__item-label">{children || displayLabel}</div>
         </label>
       </li>
     );

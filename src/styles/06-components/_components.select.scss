@@ -71,7 +71,7 @@
     @include transition.basic-transition();
   }
 
-  &__dropdown {
+  &__body {
     position: absolute;
     width: 100%;
     height: 0px;
@@ -80,7 +80,6 @@
     border-radius: var(--#{$prefix}select-panel-border-radius);
     box-shadow: var(--#{$prefix}select-panel-box-shadow);
     overflow: hidden;
-    z-index: 99;
     @include transition.basic-transition;
     @include dynamic-background(var(--#{$prefix}select-panel-bg));
   }
@@ -114,6 +113,20 @@
 
   &--lg {
     --#{$prefix}select-font-size: var(--#{$prefix}select-font-size-lg);
+  }
+
+  &--glass {
+    #{$root}__selected {
+      @include dynamic-background(var(--#{$prefix}select-bg), 0.5, true);
+    }
+
+    #{$root}__body {
+      @include dynamic-background(var(--#{$prefix}select-panel-bg), 0.5, true);
+    }
+
+    #{$root}__item {
+      @include dynamic-background(var(--#{$prefix}select-item-bg), 0.2, true);
+    }
   }
 
   &.is-open {
