@@ -11,7 +11,7 @@
 // ============================================================================
 // Border Radius
 // ============================================================================
-$glass-radius: var(#{config.$prefix}radius-md, 0.75rem) !default;
+$glass-radius: var(--#{config.$prefix}radius-md, 0.75rem) !default;
 
 // ============================================================================
 // Position
@@ -21,7 +21,7 @@ $glass-position: absolute !default;
 // ============================================================================
 // Border Width
 // ============================================================================
-$glass-border-width: var(#{config.$prefix}spacing-0-5, 0.125rem) !default;
+$glass-border-width: var(--#{config.$prefix}spacing-0-5, 0.125rem) !default;
 
 // ============================================================================
 // Z-Index Layers
@@ -145,7 +145,7 @@ $glass-backdrop-filter: blur(30px) saturate(140%) brightness(110%) !default;
 // ============================================================================
 // Transition
 // ============================================================================
-$glass-transition: var(#{config.$prefix}transition-base) !default;
+$glass-transition: var(--#{config.$prefix}transition-base) !default;
 $glass-transition-duration: 0.3s !default;
 $glass-easing: cubic-bezier(0.23, 1, 0.32, 1) !default;
 
@@ -163,8 +163,8 @@ $glass-border-2-blend-mode: overlay !default;
 // ============================================================================
 // Background Layer Colors
 // ============================================================================
-$glass-background-dark-color: var(#{config.$prefix}gray-9, #1f2937) !default;
-$glass-background-black-color: var(#{config.$prefix}black, #000000) !default;
+$glass-background-dark-color: var(--#{config.$prefix}gray-9, #1f2937) !default;
+$glass-background-black-color: var(--#{config.$prefix}black, #000000) !default;
 
 // ============================================================================
 // Border Backdrop
