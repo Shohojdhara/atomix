@@ -1,7 +1,7 @@
 import React, { memo, forwardRef } from 'react';
 import { SpinnerProps } from '../../lib/types/components';
 import { useSpinner } from '../../lib/composables/useSpinner';
-import { SPINNER } from '../../lib/constants/components';
+import { SPINNER, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 export const Spinner = memo(
@@ -51,12 +51,7 @@ export const Spinner = memo(
       );
 
       if (glass) {
-        const defaultGlassProps = {
-          displacementScale: 20,
-          blurAmount: 1,
-          borderRadius: 999,
-          mode: 'shader' as const,
-        };
+        const defaultGlassProps = GLASS_DEFAULTS.SPINNER;
         const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
         return <AtomixGlass {...glassProps}>{spinnerContent}</AtomixGlass>;
       }

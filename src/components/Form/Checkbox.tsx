@@ -1,6 +1,7 @@
 import React, { memo, forwardRef, useRef, useEffect, useImperativeHandle } from 'react';
 import { CheckboxProps } from '../../lib/types/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { GLASS_DEFAULTS } from '../../lib/constants/components';
 
 const CHECKBOX_CLASSES = {
   BASE: 'c-checkbox',
@@ -112,14 +113,7 @@ export const Checkbox = React.memo(
       }
 
       if (glass) {
-        const defaultGlassProps = {
-          displacementScale: 40,
-          blurAmount: 1,
-          saturation: 160,
-          aberrationIntensity: 0.3,
-          borderRadius: 6,
-          mode: 'shader' as const,
-        };
+        const defaultGlassProps = GLASS_DEFAULTS.CHECKBOX;
         const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
         return <AtomixGlass {...glassProps}>{content}</AtomixGlass>;
       }

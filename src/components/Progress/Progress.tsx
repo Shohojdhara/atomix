@@ -1,7 +1,7 @@
 import React, { forwardRef, memo } from 'react';
 import { ProgressProps } from '../../lib/types/components';
 import { useProgress } from '../../lib/composables/useProgress';
-import { PROGRESS } from '../../lib/constants/components';
+import { PROGRESS, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
 export const Progress = memo(
@@ -43,12 +43,7 @@ export const Progress = memo(
       );
 
       if (glass) {
-        const defaultGlassProps = {
-          displacementScale: 30,
-          blurAmount: 0.5,
-          borderRadius: 8,
-          mode: 'shader' as const,
-        };
+        const defaultGlassProps = GLASS_DEFAULTS.PROGRESS;
         const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
         return <AtomixGlass {...glassProps}>{progressContent}</AtomixGlass>;
       }

@@ -1,6 +1,6 @@
 import React, { ReactNode, forwardRef, createContext } from 'react';
 import { createPortal } from 'react-dom';
-import { POPOVER } from '../../lib/constants/components';
+import { POPOVER, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { usePopover } from '../../lib/composables/usePopover';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import type { PopoverProps, PopoverTriggerProps } from '../../lib/types/components';
@@ -81,14 +81,7 @@ export const Popover: React.FC<PopoverProps> = ({
             {glass ? (
               // Default glass settings for popovers
               (() => {
-                const defaultGlassProps = {
-                  displacementScale: 50,
-                  blurAmount: 1,
-                  saturation: 160,
-                  aberrationIntensity: 0.5,
-                  borderRadius: 8,
-                  mode: 'shader' as const,
-                };
+                const defaultGlassProps = GLASS_DEFAULTS.POPOVER;
 
                 const glassProps =
                   glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };

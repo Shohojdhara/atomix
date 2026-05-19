@@ -1,5 +1,5 @@
 import React, { useEffect, useState, ReactNode, forwardRef, Children, cloneElement, isValidElement } from 'react';
-import { STEPS } from '../../lib/constants/components';
+import { STEPS, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { AtomixGlassProps } from '../../lib/types/components';
 
@@ -225,15 +225,7 @@ const StepsComp: React.FC<StepsProps> = ({
   );
 
   if (glass) {
-    // Default glass settings for steps
-    const defaultGlassProps = {
-      displacementScale: 60,
-      blurAmount: 1,
-      saturation: 160,
-      aberrationIntensity: 0.5,
-      borderRadius: 8,
-      mode: 'shader' as const,
-    };
+    const defaultGlassProps = GLASS_DEFAULTS.STEPS;
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

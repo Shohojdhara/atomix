@@ -372,94 +372,8 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     isFixedOrSticky,
   ]);
 
-  // Memoize expensive gradient calculations
-  const gradientValues = useMemo(() => {
-    const mx = mouseOffset.x;
-    const my = mouseOffset.y;
-    const absMx = Math.abs(mx);
-    const absMy = Math.abs(my);
-    const GRADIENT = ATOMIX_GLASS.CONSTANTS.GRADIENT;
-
-    return {
-      borderGradientAngle: GRADIENT.BASE_ANGLE + mx * GRADIENT.ANGLE_MULTIPLIER,
-      borderStop1: Math.max(
-        GRADIENT.BORDER_STOP_1.MIN,
-        GRADIENT.BORDER_STOP_1.BASE + my * GRADIENT.BORDER_STOP_1.MULTIPLIER
-      ),
-      borderStop2: Math.min(
-        GRADIENT.BORDER_STOP_2.MAX,
-        GRADIENT.BORDER_STOP_2.BASE + my * GRADIENT.BORDER_STOP_2.MULTIPLIER
-      ),
-      borderOpacities: [
-        GRADIENT.BORDER_OPACITY.BASE_1 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW,
-        GRADIENT.BORDER_OPACITY.BASE_2 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH,
-        GRADIENT.BORDER_OPACITY.BASE_3 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW,
-        GRADIENT.BORDER_OPACITY.BASE_4 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH,
-      ],
-      hoverPositions: {
-        hover1: {
-          x: GRADIENT.CENTER_POSITION + mx / GRADIENT.HOVER_POSITION.DIVISOR_1,
-          y: GRADIENT.CENTER_POSITION + my / GRADIENT.HOVER_POSITION.DIVISOR_1,
-        },
-        hover2: {
-          x: GRADIENT.CENTER_POSITION + mx / GRADIENT.HOVER_POSITION.DIVISOR_2,
-          y: GRADIENT.CENTER_POSITION + my / GRADIENT.HOVER_POSITION.DIVISOR_2,
-        },
-        hover3: {
-          x: GRADIENT.CENTER_POSITION + mx * GRADIENT.HOVER_POSITION.MULTIPLIER_3,
-          y: GRADIENT.CENTER_POSITION + my * GRADIENT.HOVER_POSITION.MULTIPLIER_3,
-        },
-      },
-      basePosition: {
-        x: GRADIENT.CENTER_POSITION + mx * GRADIENT.BASE_LAYER_MULTIPLIER,
-        y: GRADIENT.CENTER_POSITION + my * GRADIENT.BASE_LAYER_MULTIPLIER,
-      },
-      mx,
-      my,
-      absMx,
-      absMy,
-    };
-  }, [mouseOffset.x, mouseOffset.y]);
-
-  // Clamp overLight opacities to [0,1]
-  const clampedOverLightOpacity = Math.max(0, Math.min(1, overLightConfig?.opacity ?? 0.4));
-  const clampedBorderOpacity = Math.max(0, Math.min(1, overLightConfig?.borderOpacity ?? 1));
-
-  // Memoize opacity calculations
-  const opacityValues = useMemo(() => {
-    // Use clamped opacity value here
-    const overLightOpacity = clampedOverLightOpacity;
-    const BASE_OVER_LIGHT_OPACITY = 0.4;
-    const OVER_OPACITY_MULTIPLIER = 1.1;
-
-    return {
-      hover1: isHovered || isActive ? 0.5 : 0,
-      hover2: isActive ? 0.5 : 0,
-      hover3: isHovered ? 0.4 : isActive ? 0.8 : 0,
-      base: isOverLight ? overLightOpacity || BASE_OVER_LIGHT_OPACITY : 0,
-      over: isOverLight
-        ? (overLightOpacity || BASE_OVER_LIGHT_OPACITY) * OVER_OPACITY_MULTIPLIER
-        : 0,
-    };
-  }, [isHovered, isActive, isOverLight, clampedOverLightOpacity]);
-
   // Memoize CSS variables object
   const glassVars = useMemo(() => {
-    const whiteColor = ATOMIX_GLASS.CONSTANTS.PALETTE.WHITE;
-    const blackColor = ATOMIX_GLASS.CONSTANTS.PALETTE.BLACK;
-    const {
-      borderGradientAngle,
-      borderStop1,
-      borderStop2,
-      borderOpacities,
-      hoverPositions,
-      basePosition,
-      mx,
-      my,
-      absMx,
-      absMy,
-    } = gradientValues;
-
     return {
       ...(customZIndex !== undefined && { '--atomix-glass-base-z-index': customZIndex }),
       '--atomix-glass-radius': `${effectiveBorderRadius}px`,
@@ -474,40 +388,12 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       '--atomix-glass-height': adjustedSize.height,
       '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.125rem)',
       '--atomix-glass-blend-mode': isOverLight ? 'multiply' : 'overlay',
-      '--atomix-glass-border-gradient-1': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[0] ?? 1) * clampedBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[1] ?? 1) * clampedBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
-      '--atomix-glass-border-gradient-2': `linear-gradient(${borderGradientAngle}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[2] ?? 1) * clampedBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[3] ?? 1) * clampedBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`,
-      '--atomix-glass-hover-1-opacity': opacityValues.hover1,
-      '--atomix-glass-hover-1-gradient': isOverLight
-        ? `radial-gradient(circle at ${hoverPositions.hover1.x}% ${hoverPositions.hover1.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_END}%)`
-        : `radial-gradient(circle at ${hoverPositions.hover1.x}% ${hoverPositions.hover1.y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.WHITE_STOP}%)`,
-      '--atomix-glass-hover-2-opacity': opacityValues.hover2,
-      '--atomix-glass-hover-2-gradient': isOverLight
-        ? `radial-gradient(circle at ${hoverPositions.hover2.x}% ${hoverPositions.hover2.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_END}%)`
-        : `radial-gradient(circle at ${hoverPositions.hover2.x}% ${hoverPositions.hover2.y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.WHITE_STOP}%)`,
-      '--atomix-glass-hover-3-opacity': opacityValues.hover3,
-      '--atomix-glass-hover-3-gradient': isOverLight
-        ? `radial-gradient(circle at ${hoverPositions.hover3.x}% ${hoverPositions.hover3.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_END}%)`
-        : `radial-gradient(circle at ${hoverPositions.hover3.x}% ${hoverPositions.hover3.y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.WHITE_STOP}%)`,
-      '--atomix-glass-base-opacity': opacityValues.base,
-      '--atomix-glass-base-gradient': isOverLight
-        ? `linear-gradient(${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.ANGLE}deg, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_START_BASE + mx * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_START_MULTIPLIER}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_BASE + my * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_MULTIPLIER}) ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_STOP}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_END_BASE + absMx * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_END_MULTIPLIER}) 100%)`
-        : `rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.WHITE_OPACITY})`,
-      '--atomix-glass-overlay-opacity': opacityValues.over,
-      '--atomix-glass-overlay-gradient': isOverLight
-        ? `radial-gradient(circle at ${basePosition.x}% ${basePosition.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_BASE + absMx * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_MULTIPLIER}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID_STOP}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_BASE + absMy * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_MULTIPLIER}) 100%)`
-        : `rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.WHITE_OPACITY})`,
-      '--atomix-glass-overlay-highlight-opacity':
-        opacityValues.over * ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.OPACITY_MULTIPLIER,
-      '--atomix-glass-overlay-highlight-bg': `radial-gradient(circle at ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.POSITION_X}% ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.POSITION_Y}%, rgba(255, 255, 255, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.WHITE_OPACITY}) 0%, transparent ${ATOMIX_GLASS.CONSTANTS.OVERLAY_HIGHLIGHT.STOP}%)`,
     } as React.CSSProperties;
   }, [
-    gradientValues,
-    opacityValues,
     effectiveBorderRadius,
     transformStyle,
     adjustedSize,
     isOverLight,
-    clampedBorderOpacity,
     customZIndex,
     isFixedOrSticky,
     positionStyles.position,

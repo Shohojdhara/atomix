@@ -10,7 +10,7 @@ import React, {
   ComponentType,
 } from 'react';
 import { ModalProps } from '../../lib/types/components';
-import { MODAL } from '../../lib/constants/components';
+import { MODAL, GLASS_DEFAULTS } from '../../lib/constants/components';
 
 // Define ExtendedComponentType as a type alias instead of an interface to avoid TS2312 error
 type ExtendedComponentType<P = {}> = ComponentType<P> & {
@@ -299,13 +299,12 @@ const ModalImpl = memo(
           {glass
             ? // Default glass settings for modals
               (() => {
+                // Default glass settings for modals
                 const defaultGlassProps = {
+                  ...GLASS_DEFAULTS.MODAL,
+                  // displacementScale driven by modal content height at runtime
                   displacementScale: document.querySelector('.c-modal---glass .c-modal__content')
                     ?.clientHeight,
-                  blurAmount: 2.2,
-                  elasticity: 0,
-                  mode: 'shader' as const,
-                  shaderMode: 'premiumGlass',
                 };
 
                 const glassProps =

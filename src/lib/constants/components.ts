@@ -1621,6 +1621,264 @@ export const FOOTER = {
 };
 
 /**
+ * Per-component AtomixGlass default configurations.
+ *
+ * These are the canonical glass-effect settings used by each component when
+ * `glass={true}` is passed and no override props are supplied. They follow the
+ * Apple "liquid glass" design language introduced in the AtomixGlass refinement:
+ *
+ * - Displacement is lower than the raw ATOMIX_GLASS.DEFAULTS (55) for tight
+ *   UI elements (Button, Badge, Accordion) and raised for overlay/panel surfaces.
+ * - Elasticity is 0 for all static / overlay components — only interactive
+ *   standalone glass cards should use non-zero elasticity.
+ * - Shader mode is enabled for surfaces ≥ "medium" viewport area (Navbar, Nav,
+ *   Popover, Tabs) where the refraction effect is visible and worth the cost.
+ * - blurAmount is omitted where the SCSS $glass-backdrop-filter token is
+ *   sufficient on its own (Button, Accordion, Dropdown, EdgePanel).
+ */
+export const GLASS_DEFAULTS = {
+  /**
+   * Button — compact interactive element.
+   * Low displacement + no blur override so the backdrop token handles frosting.
+   * Zero elasticity: the button itself handles press/hover feedback.
+   */
+  BUTTON: {
+    displacementScale: 16,
+    saturation: 180,
+    elasticity: 0,
+  },
+
+  /**
+   * Badge — pill-shaped tag. Tiny surface, minimal distortion.
+   * borderRadius is set dynamically at runtime; this serves as a safe fallback.
+   */
+  BADGE: {
+    displacementScale: 14,
+    borderRadius: 16,
+    elasticity: 0,
+  },
+
+  /**
+   * Accordion — block-level content container.
+   * Gentle displacement; zero elasticity so open/close animation isn't jittery.
+   */
+  ACCORDION: {
+    displacementScale: 18,
+    elasticity: 0,
+  },
+
+  /**
+   * Callout — notification / alert banner.
+   * Slightly more frosted than Accordion to give it visual priority.
+   */
+  CALLOUT: {
+    displacementScale: 22,
+    borderRadius: 8,
+    elasticity: 0,
+  },
+
+  /**
+   * Dropdown — floating menu. Small surface, should feel light and airy.
+   * No blur override — rely on the backdrop token.
+   */
+  DROPDOWN: {
+    displacementScale: 16,
+    elasticity: 0,
+  },
+
+  /**
+   * EdgePanel — full-height side drawer.
+   * Empty config: the panel inherits all ATOMIX_GLASS.DEFAULTS.
+   * borderRadius and size are managed by the panel's own SCSS.
+   */
+  EDGE_PANEL: {} as Record<string, never>,
+
+  /**
+   * Modal — full-screen overlay dialog. Shader mode for premium refraction.
+   * displacementScale omitted — set dynamically from modal content height at runtime.
+   * elasticity: 0 — modals should not wobble when the user interacts with them.
+   */
+  MODAL: {
+    blurAmount: 2.2,
+    elasticity: 0,
+    mode: 'shader' as const,
+    shaderMode: 'premiumGlass',
+  },
+
+  /**
+   * Navbar — sticky / fixed navigation bar spanning full width.
+   * Shader gives the top edge a polished lens look.
+   * borderRadius: 0 — navbars run edge-to-edge.
+   * elasticity: 0 — no wobble on a fixed chrome element.
+   */
+  NAVBAR: {
+    displacementScale: 24,
+    blurAmount: 2,
+    borderRadius: 0,
+    elasticity: 0,
+    mode: 'shader' as const,
+    shaderVariant: 'premiumGlass' as const,
+  },
+
+  /**
+   * Nav (inline nav list) — narrower than a full Navbar, standard mode is
+   * enough. Rounded corners to match typical pill / tab nav designs.
+   */
+  NAV: {
+    displacementScale: 48,
+    blurAmount: 1.5,
+    borderRadius: 8,
+    mode: 'shader' as const,
+  },
+
+  /**
+   * SideMenu — persistent sidebar navigation.
+   * Moderate displacement; shader for depth. Zero elasticity.
+   */
+  SIDE_MENU: {
+    displacementScale: 30,
+    blurAmount: 2,
+    borderRadius: 0,
+    elasticity: 0,
+    mode: 'shader' as const,
+  },
+
+  /**
+   * Popover — small floating card above content.
+   * Shader mode + aberration for the characteristic lens fringe.
+   * Low displacement so the content remains readable.
+   */
+  POPOVER: {
+    displacementScale: 40,
+    blurAmount: 1,
+    saturation: 170,
+    aberrationIntensity: 0.4,
+    borderRadius: 8,
+    mode: 'shader' as const,
+  },
+
+  /**
+   * Tooltip — tiny single-line label.
+   * Higher displacement than other small elements because tooltips float
+   * freely and the distortion reads as depth. No shader (too small to matter).
+   */
+  TOOLTIP: {
+    displacementScale: 80,
+    blurAmount: 3,
+  },
+
+  /**
+   * Tabs — tabbed content panel. Shader for the nav strip refraction.
+   */
+  TABS: {
+    displacementScale: 48,
+    blurAmount: 1,
+    saturation: 170,
+    aberrationIntensity: 0.4,
+    borderRadius: 8,
+    mode: 'shader' as const,
+  },
+
+  /**
+   * Toggle — switch control. Compact, pill shape.
+   * Relies on borderRadius from the component's own SCSS.
+   */
+  TOGGLE: {
+    displacementScale: 16,
+    elasticity: 0,
+  },
+
+  /**
+   * Form inputs (Input, Textarea, Select, Checkbox, Radio).
+   * Unified glass feel for all form controls — subtle displacement,
+   * rounded corners matching the $input-border-radius token (≈ 6px).
+   */
+  INPUT: {
+    displacementScale: 18,
+    borderRadius: 6,
+    elasticity: 0,
+  },
+  TEXTAREA: {
+    displacementScale: 18,
+    borderRadius: 6,
+    elasticity: 0,
+  },
+  SELECT: {
+    displacementScale: 18,
+    borderRadius: 6,
+    elasticity: 0,
+  },
+  CHECKBOX: {
+    displacementScale: 14,
+    borderRadius: 4,
+    elasticity: 0,
+  },
+  RADIO: {
+    displacementScale: 14,
+    borderRadius: 99,
+    elasticity: 0,
+  },
+
+  /**
+   * Pagination — row of page buttons.
+   * Thin, horizontal strip; low displacement so numbers stay legible.
+   */
+  PAGINATION: {
+    displacementScale: 18,
+    borderRadius: 8,
+    elasticity: 0,
+  },
+
+  /**
+   * Progress — horizontal bar track.
+   * Very low displacement — the bar should not distort.
+   */
+  PROGRESS: {
+    displacementScale: 10,
+    borderRadius: 99,
+    elasticity: 0,
+  },
+
+  /**
+   * Rating — star picker.
+   * Compact inline element; minimal glass, no shader needed.
+   */
+  RATING: {
+    displacementScale: 16,
+    elasticity: 0,
+  },
+
+  /**
+   * Spinner — loading indicator.
+   * Barely-there glass; the spinner itself provides visual interest.
+   */
+  SPINNER: {
+    displacementScale: 12,
+    elasticity: 0,
+  },
+
+  /**
+   * Steps — horizontal / vertical stepper.
+   * Moderate displacement so the connector lines remain crisp.
+   */
+  STEPS: {
+    displacementScale: 22,
+    borderRadius: 8,
+    elasticity: 0,
+  },
+
+  /**
+   * Messages / chat bubbles.
+   * Rounded pill-like bubbles; gentle glass to aid readability.
+   */
+  MESSAGES: {
+    displacementScale: 20,
+    borderRadius: 16,
+    elasticity: 0,
+  },
+} as const;
+
+/**
  * AtomixGlass-specific constants
  */
 export const ATOMIX_GLASS = {
@@ -1662,17 +1920,17 @@ export const ATOMIX_GLASS = {
     SHADER: 'c-atomix-glass--shader',
   },
   DEFAULTS: {
-    DISPLACEMENT_SCALE: 70,
+    DISPLACEMENT_SCALE: 55,
     get BLUR_AMOUNT() {
       return this.DISPLACEMENT_SCALE * 0.15; // Dynamically computed based on displacement
     },
     get SATURATION() {
-      return 100 + (this.DISPLACEMENT_SCALE * 0.5); // Saturate relative to intensity
+      return 100 + (this.DISPLACEMENT_SCALE * 0.35); // Punchier colours without oversaturation
     },
     get ABERRATION_INTENSITY() {
       return this.DISPLACEMENT_SCALE * 0.03; // Scale aberration with displacement
     },
-    ELASTICITY: 0.15,
+    ELASTICITY: 0.08,
     get CORNER_RADIUS() {
       return 16; // Use 16 to match SCSS design system (was 20)
     },
@@ -1734,7 +1992,7 @@ export const ATOMIX_GLASS = {
         get MULTIPLIER() { return this.BASE * 0.006; }, // Multiplier for mouse Y influence
       },
       BORDER_OPACITY: {
-        BASE_1: 0.12, // Base opacity for border gradient 1
+        BASE_1: 0.06, // Hairline border gradient — barely perceptible physical edge
         get BASE_2() { return this.BASE_1 * 3.33; }, // Base opacity for border gradient 2
         get BASE_3() { return this.BASE_1 * 2.66; }, // Base opacity for border gradient 3
         get BASE_4() { return this.BASE_1 * 5; }, // Base opacity for border gradient 4
@@ -1757,7 +2015,7 @@ export const ATOMIX_GLASS = {
         get BLACK_MID() { return this.BLACK_START / 3; }, // Mid opacity for black hover 1
         BLACK_STOP: 30, // Stop percentage for black hover 1
         get BLACK_END() { return this.BLACK_STOP * 2; }, // End percentage for black hover 1
-        WHITE_START: 0.5, // Start opacity for white hover 1
+        WHITE_START: 0.35, // Gentler hover flash — Apple hover is barely visible
         get WHITE_STOP() { return this.BLACK_END - 10; }, // Stop percentage for white hover 1
       },
       HOVER_2: {
@@ -1765,7 +2023,7 @@ export const ATOMIX_GLASS = {
         get BLACK_MID() { return this.BLACK_START * 0.375; }, // Mid opacity for black hover 2
         BLACK_STOP: 40, // Stop percentage for black hover 2
         get BLACK_END() { return this.BLACK_STOP * 2; }, // End percentage for black hover 2
-        WHITE_START: 1, // Start opacity for white hover 2
+        WHITE_START: 0.7, // Gentler hover flash
         get WHITE_STOP() { return this.BLACK_END; }, // Stop percentage for white hover 2
       },
       HOVER_3: {
@@ -1773,7 +2031,7 @@ export const ATOMIX_GLASS = {
         get BLACK_MID() { return this.BLACK_START * 0.4; }, // Mid opacity for black hover 3
         BLACK_STOP: 50, // Stop percentage for black hover 3
         get BLACK_END() { return this.BLACK_STOP * 2; }, // End percentage for black hover 3
-        WHITE_START: 1, // Start opacity for white hover 3
+        WHITE_START: 0.7, // Gentler hover flash
         get WHITE_STOP() { return this.BLACK_END; }, // Stop percentage for white hover 3
       },
     },
@@ -1781,9 +2039,9 @@ export const ATOMIX_GLASS = {
     // Base and overlay gradient constants
     BASE_GRADIENT: {
       ANGLE: 135, // Gradient angle in degrees
-      BLACK_START_BASE: 0.15, // Base start opacity for black
+      BLACK_START_BASE: 0.10, // Base start opacity for black
       get BLACK_START_MULTIPLIER() { return this.BLACK_START_BASE * 0.02; }, // Multiplier for mouse X influence on start
-      BLACK_MID_BASE: 0.1, // Base mid opacity for black
+      BLACK_MID_BASE: 0.07, // Base mid opacity for black
       get BLACK_MID_MULTIPLIER() { return this.BLACK_MID_BASE * 0.02; }, // Multiplier for mouse Y influence on mid
       BLACK_MID_STOP: 50, // Mid stop percentage
       get BLACK_END_BASE() { return this.BLACK_START_BASE * 1.2; }, // Base end opacity for black
@@ -1792,7 +2050,7 @@ export const ATOMIX_GLASS = {
     },
 
     OVERLAY_GRADIENT: {
-      BLACK_START_BASE: 0.12, // Base start opacity for black overlay
+      BLACK_START_BASE: 0.08, // Base start opacity for black overlay
       get BLACK_START_MULTIPLIER() { return this.BLACK_START_BASE * 0.025; }, // Multiplier for mouse X influence on start
       get BLACK_MID() { return this.BLACK_START_BASE * 0.5; }, // Mid opacity for black overlay
       BLACK_MID_STOP: 40, // Mid stop percentage
@@ -1801,11 +2059,11 @@ export const ATOMIX_GLASS = {
       get WHITE_OPACITY() { return this.BLACK_START_BASE * 0.416; }, // White opacity for non-overlight mode
     },
 
-    // Overlay highlight constants
+    // Overlay highlight constants — Apple places specular at the top-center
     OVERLAY_HIGHLIGHT: {
-      POSITION_X: 20, // X position percentage
-      POSITION_Y: 20, // Y position percentage
-      WHITE_OPACITY: 0.4, // White opacity in gradient
+      POSITION_X: 50, // Centered horizontal — Apple's top-center specular
+      POSITION_Y: 5,  // Very top — catches light like a curved glass surface
+      WHITE_OPACITY: 0.28, // Softer specular — visible but not glaring
       get STOP() { return this.WHITE_OPACITY * 150; }, // Stop percentage
       get OPACITY_MULTIPLIER() { return this.WHITE_OPACITY * 1.75; }, // Multiplier for overlay highlight opacity
     },
@@ -1820,6 +2078,11 @@ export const ATOMIX_GLASS = {
     // Saturation constants
     SATURATION: {
       HIGH_CONTRAST: 200, // Saturation value for high contrast mode
+    },
+
+    // Container shadows
+    CONTAINER_SHADOW: {
+      LIGHT: '0 0 20px rgba(0, 0, 0, 0.10) inset, 0 4px 8px rgba(0, 0, 0, 0.06) inset',
     },
 
     // Phase 1: Animation System Constants

@@ -7,7 +7,7 @@ import React, {
   forwardRef,
   ComponentType,
 } from 'react';
-import { TAB } from '../../lib/constants/components';
+import { TAB, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { AtomixGlassProps } from '../../lib/types/components';
 
@@ -354,14 +354,7 @@ const TabsComponentBase = ({
 
   if (glass) {
     // Default glass settings for tabs
-    const defaultGlassProps = {
-      displacementScale: 60,
-      blurAmount: 1,
-      saturation: 160,
-      aberrationIntensity: 0.5,
-      borderRadius: 8,
-      mode: 'shader' as const,
-    };
+    const defaultGlassProps = GLASS_DEFAULTS.TABS;
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

@@ -1,6 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import { Callout } from './Callout';
+import { GLASS_DEFAULTS } from '../../lib/constants/components';
 
 // Mock AtomixGlass component since it has complex WebGL dependencies
 vi.mock('../AtomixGlass/AtomixGlass', () => ({
@@ -151,9 +152,9 @@ describe('Callout Component', () => {
       const glassProps = JSON.parse(glassElement.getAttribute('data-glass-props') || '{}');
 
       expect(glassProps).toMatchObject({
-        displacementScale: 30,
-        borderRadius: 8,
-        elasticity: 0,
+        displacementScale: GLASS_DEFAULTS.CALLOUT.displacementScale,
+        borderRadius: GLASS_DEFAULTS.CALLOUT.borderRadius,
+        elasticity: GLASS_DEFAULTS.CALLOUT.elasticity,
       });
     });
 

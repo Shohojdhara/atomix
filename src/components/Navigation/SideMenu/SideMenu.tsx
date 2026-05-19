@@ -6,6 +6,7 @@ import { AtomixGlass } from '../../AtomixGlass/AtomixGlass';
 import useForkRef from '../../../lib/utils/useForkRef';
 import SideMenuList from './SideMenuList';
 import SideMenuItem from './SideMenuItem';
+import { GLASS_DEFAULTS } from '../../../lib/constants/components';
 
 /**
  * SideMenu component provides a collapsible navigation menu with title and menu items.
@@ -305,12 +306,7 @@ export const SideMenu = forwardRef<HTMLDivElement, SideMenuProps>(
     );
 
     if (glass) {
-      const defaultGlassProps = {
-        displacementScale: 70,
-        blurAmount: 2,
-        borderRadius: 12,
-        mode: 'shader' as const,
-      };
+      const defaultGlassProps = GLASS_DEFAULTS.SIDE_MENU;
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
       return (
         <AtomixGlass {...glassProps}>

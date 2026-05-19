@@ -349,12 +349,12 @@ export const updateAtomixGlassStyles = (
       '--atomix-glass-container-shadow',
       isOverLight
         ? [
-            `inset 0 1px 0 rgba(255, 255, 255, ${(0.4 + mx * 0.002) * (overLightConfig.shadowIntensity || 1)})`,
-            `inset 0 -1px 0 rgba(0, 0, 0, ${(0.2 + Math.abs(my) * 0.001) * (overLightConfig.shadowIntensity || 1)})`,
-            `inset 0 0 20px rgba(0, 0, 0, ${(0.08 + Math.abs(mx + my) * 0.001) * (overLightConfig.shadowIntensity || 1)})`,
-            `0 2px 12px rgba(0, 0, 0, ${(0.12 + Math.abs(my) * 0.002) * (overLightConfig.shadowIntensity || 1)})`,
+            `inset 0 1px 0 rgba(255, 255, 255, ${(0.35 + mx * 0.002) * (overLightConfig.shadowIntensity || 1)})`,
+            `inset 0 -1px 0 rgba(0, 0, 0, ${(0.15 + Math.abs(my) * 0.001) * (overLightConfig.shadowIntensity || 1)})`,
+            `inset 0 0 20px rgba(0, 0, 0, ${(0.06 + Math.abs(mx + my) * 0.001) * (overLightConfig.shadowIntensity || 1)})`,
+            `0 2px 12px rgba(0, 0, 0, ${(0.08 + Math.abs(my) * 0.002) * (overLightConfig.shadowIntensity || 1)})`,
           ].join(', ')
-        : '0 0 20px rgba(0, 0, 0, 0.15) inset, 0 4px 8px rgba(0, 0, 0, 0.08) inset'
+        : ATOMIX_GLASS.CONSTANTS.CONTAINER_SHADOW.LIGHT
     );
 
     style.setProperty(

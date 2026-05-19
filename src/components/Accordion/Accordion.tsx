@@ -1,5 +1,5 @@
 import React, { ReactNode, useId, memo, forwardRef, ComponentType } from 'react';
-import { ACCORDION } from '../../lib/constants/components';
+import { ACCORDION, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { useAccordion } from '../../lib/composables/useAccordion';
 import type {
   AccordionProps as AccordionPropsType,
@@ -232,10 +232,7 @@ const AccordionImpl = memo(
 
     if (glass) {
       // Default glass settings for accordions
-      const defaultGlassProps = {
-        displacementScale: 20,
-        elasticity: 0,
-      };
+      const defaultGlassProps = GLASS_DEFAULTS.ACCORDION;
 
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

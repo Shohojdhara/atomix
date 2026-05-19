@@ -1,6 +1,7 @@
 import React, { forwardRef } from 'react';
 import { NavProps } from '../../../lib/types/components';
 import { useNav } from '../../../lib/composables/useNavbar';
+import { GLASS_DEFAULTS } from '../../../lib/constants/components';
 import { AtomixGlass } from '../../AtomixGlass/AtomixGlass';
 
 /**
@@ -48,12 +49,7 @@ export const Nav = forwardRef<HTMLUListElement, NavProps>(
     );
 
     if (glass) {
-      const defaultGlassProps = {
-        displacementScale: 60,
-        blurAmount: 1.5,
-        borderRadius: 8,
-        mode: 'shader' as const,
-      };
+      const defaultGlassProps = GLASS_DEFAULTS.NAV;
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
       return <AtomixGlass {...glassProps}>{navContent}</AtomixGlass>;
     }

@@ -1,5 +1,5 @@
 import React, { ReactNode, memo } from 'react';
-import { TOOLTIP } from '../../lib/constants/components';
+import { TOOLTIP, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { AtomixGlassProps } from '../../lib/types/components';
 import {
@@ -118,10 +118,7 @@ export const Tooltip: React.FC<TooltipProps> = memo(
       );
 
       if (glass) {
-        const defaultGlassProps = {
-          displacementScale: 100,
-          blurAmount: 3,
-        };
+        const defaultGlassProps = GLASS_DEFAULTS.TOOLTIP;
 
         const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

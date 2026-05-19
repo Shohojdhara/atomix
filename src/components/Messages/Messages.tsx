@@ -2,7 +2,7 @@ import React from 'react';
 import { Icon } from '../Icon/Icon';
 import { Avatar } from '../Avatar/Avatar';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
-import { MESSAGES } from '../../lib/constants/components';
+import { MESSAGES, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { MessagesProps } from '../../lib/types/components';
 import { useMessages } from '../../lib/composables/useMessages';
 
@@ -32,13 +32,7 @@ export const Messages: React.FC<MessagesProps> = ({
   const messagesId = id || `messages-${Math.random().toString(36).substr(2, 9)}`;
   const inputId = `${messagesId}-input`;
 
-  // Default glass settings for messages
-  const defaultGlassProps = {
-    displacementScale: 150,
-    borderRadius: 12,
-    elasticity: 0,
-    aberrationIntensity: 2,
-  };
+  const defaultGlassProps = GLASS_DEFAULTS.MESSAGES;
 
   const messagesClasses = `${MESSAGES.CLASSES.BASE} ${glass ? 'c-messages--glass' : ''} ${disabled ? 'is-disabled' : ''} ${className}`;
 

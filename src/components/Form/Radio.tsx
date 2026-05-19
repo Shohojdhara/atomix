@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { RadioProps } from '../../lib/types/components';
 import { useRadio } from '../../lib/composables/useRadio';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { GLASS_DEFAULTS } from '../../lib/constants/components';
 
 /**
  * Radio - A component for radio button inputs
@@ -62,15 +63,7 @@ export const Radio: React.FC<RadioProps> = memo(
     );
 
     if (glass) {
-      // Default glass settings for radio buttons
-      const defaultGlassProps = {
-        displacementScale: 40,
-        blurAmount: 1,
-        saturation: 160,
-        aberrationIntensity: 0.3,
-        borderRadius: 6,
-        mode: 'shader' as const,
-      };
+      const defaultGlassProps = GLASS_DEFAULTS.RADIO;
 
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

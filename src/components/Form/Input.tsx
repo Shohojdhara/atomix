@@ -2,6 +2,7 @@ import React, { forwardRef, memo } from 'react';
 import { InputProps } from '../../lib/types/components';
 import { useInput } from '../../lib/composables/useInput';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { GLASS_DEFAULTS } from '../../lib/constants/components';
 
 /**
  * Input - A component for text input fields
@@ -95,15 +96,7 @@ export const Input = memo(
       );
 
       if (glass) {
-        // Default glass settings for inputs
-        const defaultGlassProps = {
-          displacementScale: 60,
-          blurAmount: 1,
-          saturation: 180,
-          aberrationIntensity: 0.2,
-          borderRadius: 12,
-          mode: 'shader' as const,
-        };
+        const defaultGlassProps = GLASS_DEFAULTS.INPUT;
 
         const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

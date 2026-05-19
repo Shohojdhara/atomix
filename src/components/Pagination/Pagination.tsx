@@ -1,7 +1,7 @@
 import React, { memo, useState, FormEvent } from 'react';
 import { PaginationProps } from '../../lib/types/components';
 import { usePagination, DOTS } from '../../lib/composables/usePagination';
-import { PAGINATION_DEFAULTS } from '../../lib/constants/components';
+import { PAGINATION_DEFAULTS, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { Icon, IconProps } from '../Icon/Icon';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
@@ -238,15 +238,7 @@ export const Pagination: React.FC<PaginationProps> = memo(
     );
 
     if (glass) {
-      // Default glass settings for pagination
-      const defaultGlassProps = {
-        displacementScale: 60,
-        blurAmount: 1,
-        saturation: 160,
-        aberrationIntensity: 0.5,
-        borderRadius: 8,
-        mode: 'shader' as const,
-      };
+      const defaultGlassProps = GLASS_DEFAULTS.PAGINATION;
 
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

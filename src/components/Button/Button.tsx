@@ -3,7 +3,7 @@ import { ButtonProps } from '../../lib/types/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { Spinner } from '../Spinner/Spinner';
 import { Icon, type PhosphorIconsType } from '../Icon/Icon';
-import { BUTTON, THEME_NAMING } from '../../lib/constants/components';
+import { BUTTON, THEME_NAMING, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { ThemeNaming } from '../../lib/utils/themeNaming';
 import { renderSlot } from '../../lib/patterns';
 
@@ -321,11 +321,7 @@ export const Button = React.memo(
 
       if (glass) {
         // Default glass props
-        const defaultGlassProps = {
-          displacementScale: 20,
-          blurAmount: 0,
-          saturation: 200,
-        };
+        const defaultGlassProps = GLASS_DEFAULTS.BUTTON;
         const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
         return <AtomixGlass {...glassProps}>{buttonChildren}</AtomixGlass>;
       }

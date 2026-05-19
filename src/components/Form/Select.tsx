@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState, memo, useCallback, useMemo } from 'react';
 import { SelectProps, SelectOption as SelectOptionType } from '../../lib/types/components';
 import { useSelect } from '../../lib/composables';
-import { SELECT } from '../../lib/constants/components';
+import { SELECT, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { SelectContext, SelectOption } from './SelectOption';
 
@@ -396,12 +396,7 @@ const SelectComponentBase = ({
   );
 
   if (glass) {
-    // Default glass settings for select components
-    const defaultGlassProps = {
-      displacementScale: 60,
-      blurAmount: 10,
-      mode: 'shader' as const,
-    };
+    const defaultGlassProps = GLASS_DEFAULTS.SELECT;
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

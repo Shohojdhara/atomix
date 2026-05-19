@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useCallback, forwardRef } from 'react';
-import { THEME_COLORS, SIZES, RATING } from '../../lib/constants/components';
+import { THEME_COLORS, SIZES, RATING, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { useRating } from '../../lib/composables/useRating';
 import type { RatingProps } from '../../lib/types/components';
 import useForkRef from '../../lib/utils/useForkRef';
@@ -275,15 +275,7 @@ export const Rating = forwardRef<HTMLDivElement, RatingProps>(
     );
 
     if (glass) {
-      // Default glass settings for ratings
-      const defaultGlassProps = {
-        displacementScale: 60,
-        blurAmount: 1,
-        saturation: 160,
-        aberrationIntensity: 0.5,
-        borderRadius: 8,
-        mode: 'shader' as const,
-      };
+      const defaultGlassProps = GLASS_DEFAULTS.RATING;
 
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

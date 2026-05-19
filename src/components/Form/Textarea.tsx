@@ -2,6 +2,7 @@ import React, { forwardRef, memo } from 'react';
 import { TextareaProps } from '../../lib/types/components';
 import { useTextarea } from '../../lib/composables/useTextarea';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { GLASS_DEFAULTS } from '../../lib/constants/components';
 
 /**
  * Textarea - A component for multiline text input
@@ -86,15 +87,7 @@ export const Textarea = memo(
       );
 
       if (glass) {
-        // Default glass settings for textareas
-        const defaultGlassProps = {
-          displacementScale: 60,
-          blurAmount: 1,
-          saturation: 180,
-          aberrationIntensity: 1,
-          borderRadius: 8,
-          mode: 'shader' as const,
-        };
+        const defaultGlassProps = GLASS_DEFAULTS.TEXTAREA;
 
         const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

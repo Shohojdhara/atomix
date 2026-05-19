@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { TOGGLE } from '../../lib/constants/components';
+import { TOGGLE, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import { AtomixGlassProps, BaseComponentProps } from '../../lib/types/components';
 
@@ -115,15 +115,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   );
 
   if (glass) {
-    // Default glass settings for toggles
-    const defaultGlassProps = {
-      displacementScale: 60,
-      blurAmount: 1,
-      saturation: 160,
-      aberrationIntensity: 0.5,
-      borderRadius: 8,
-      mode: 'shader' as const,
-    };
+    const defaultGlassProps = GLASS_DEFAULTS.TOGGLE;
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 

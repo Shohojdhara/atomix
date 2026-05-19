@@ -10,7 +10,7 @@ import React, {
   ReactNode,
   ComponentType,
 } from 'react';
-import { DROPDOWN } from '../../lib/constants/components';
+import { DROPDOWN, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 import type {
   DropdownProps,
@@ -504,12 +504,8 @@ export const Dropdown: DropdownComponent = memo(function DropdownBase({
         onKeyDown={handleKeyDown}
       >
         {glass
-          ? // Default glass settings for dropdowns
-            (() => {
-              const defaultGlassProps = {
-                displacementScale: 20,
-                elasticity: 0,
-              };
+          ? (() => {
+              const defaultGlassProps = GLASS_DEFAULTS.DROPDOWN;
 
               const glassProps =
                 glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };

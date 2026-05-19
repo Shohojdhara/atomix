@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { NavbarProps } from '../../../lib/types/components';
 import { useNavbar } from '../../../lib/composables/useNavbar';
-import { NAVBAR } from '../../../lib/constants/components';
+import { NAVBAR, GLASS_DEFAULTS } from '../../../lib/constants/components';
 import { AtomixGlass } from '../../AtomixGlass/AtomixGlass';
 
 /**
@@ -187,14 +187,7 @@ export const Navbar = forwardRef<HTMLElement, NavbarProps>(
     );
 
     if (glass) {
-      const defaultGlassProps = {
-        displacementScale: 30,
-        blurAmount: 2,
-        borderRadius: 0,
-        elasticity: 0,
-        mode: 'shader' as const,
-        shaderVariant: 'premiumGlass' as const,
-      };
+      const defaultGlassProps = GLASS_DEFAULTS.NAVBAR;
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
       // AtomixGlass hoists layout props (position/top/left/right/zIndex) to its

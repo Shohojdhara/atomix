@@ -1,6 +1,6 @@
 import React, { useRef, memo } from 'react';
 import { useBadge } from '../../lib/composables/useBadge';
-import { BADGE } from '../../lib/constants/components';
+import { BADGE, GLASS_DEFAULTS } from '../../lib/constants/components';
 import { BadgeProps } from '../../lib/types/components';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
 
@@ -59,12 +59,12 @@ export const Badge: React.FC<BadgeProps> = memo(
     if (glass) {
       // Default glass settings for badges
       const defaultGlassProps = {
-        displacementScale: 20,
+        ...GLASS_DEFAULTS.BADGE,
+        // Override borderRadius dynamically if the ref is available
         borderRadius: ref.current?.getBoundingClientRect().width
           ? ref.current?.getBoundingClientRect().width / 2
-          : 16,
+          : GLASS_DEFAULTS.BADGE.borderRadius,
         className: 'c-badge--glass',
-        elasticity: 0,
       };
 
       const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };

@@ -416,79 +416,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       }
     }, [withLiquidBlur, blurAmount, mouseOffset, rectCache]);
 
-    const backdropStyle = useMemo(() => {
-      try {
-        const dynamicSaturation = saturation + (liquidBlur.baseBlur || 0) * 20;
 
-        // Validate blur values before using them
-        const validatedBaseBlur =
-          typeof liquidBlur.baseBlur === 'number' && !isNaN(liquidBlur.baseBlur)
-            ? liquidBlur.baseBlur
-            : 0;
-        const validatedEdgeBlur =
-          typeof liquidBlur.edgeBlur === 'number' && !isNaN(liquidBlur.edgeBlur)
-            ? liquidBlur.edgeBlur
-            : 0;
-        const validatedCenterBlur =
-          typeof liquidBlur.centerBlur === 'number' && !isNaN(liquidBlur.centerBlur)
-            ? liquidBlur.centerBlur
-            : 0;
-        const validatedFlowBlur =
-          typeof liquidBlur.flowBlur === 'number' && !isNaN(liquidBlur.flowBlur)
-            ? liquidBlur.flowBlur
-            : 0;
-
-        // Adaptive strategy: prefer single-pass blur for large areas or when effects are reduced
-        const area = rectCache ? rectCache.width * rectCache.height : 0;
-        const areaIsLarge = area > 180000; // ~600x300 threshold; tune as needed
-        const devicePrefersPerformance = effectiveReducedMotion || effectiveWithoutEffects;
-        const useMultiPass = withLiquidBlur && !devicePrefersPerformance && !areaIsLarge;
-
-        if (useMultiPass) {
-          // Use a single weighted-average blur instead of stacking multiple
-          // blur() calls. CSS blur() is additive — stacking 4 passes
-          // causes the perceived blur to compound far beyond any single value.
-          const weightedBlur = clampBlur(
-            validatedBaseBlur * 0.4 +
-              validatedEdgeBlur * 0.25 +
-              validatedCenterBlur * 0.15 +
-              validatedFlowBlur * 0.2
-          );
-
-          return {
-            backdropFilter: `blur(${weightedBlur}px) saturate(${Math.min(dynamicSaturation, 200)}%) contrast(${overLightConfig?.contrast || 1}) brightness(${overLightConfig?.brightness || 1})`,
-          };
-        }
-
-        // Single-pass fallback: stronger radius to match perceived blur of multi-pass
-        const effectiveBlur = clampBlur(
-          Math.max(
-            validatedBaseBlur,
-            validatedEdgeBlur * 0.8,
-            validatedCenterBlur * 1.1,
-            validatedFlowBlur * 0.9
-          )
-        );
-
-        return {
-          backdropFilter: `blur(${effectiveBlur}px) saturate(${Math.min(dynamicSaturation, 200)}%) contrast(${overLightConfig?.contrast || 1.05}) brightness(${overLightConfig?.brightness || 1.05})`,
-        };
-      } catch (error) {
-        console.warn('AtomixGlassContainer: Error calculating backdrop style', error);
-        return {
-          backdropFilter: `blur(${blurAmount}px) saturate(${saturation}%) contrast(1.05) brightness(1.05)`,
-        };
-      }
-    }, [
-      liquidBlur,
-      saturation,
-      blurAmount,
-      rectCache,
-      effectiveReducedMotion,
-      effectiveWithoutEffects,
-      withLiquidBlur,
-      overLightConfig,
-    ]);
 
     const containerVars = useMemo(() => {
       try {
@@ -503,47 +431,15 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
             : 0;
         return {
           '--atomix-glass-container-radius': `${typeof borderRadius === 'number' && !isNaN(borderRadius) ? borderRadius : 0}px`,
-          '--atomix-glass-container-backdrop': backdropStyle?.backdropFilter || 'none',
-          '--atomix-glass-container-shadow': overLight
-            ? [
-                `inset 0 1px 0 rgba(255, 255, 255, ${(0.4 + mx * 0.002) * (overLightConfig?.shadowIntensity || 1)})`,
-                `inset 0 -1px 0 rgba(0, 0, 0, ${(0.2 + Math.abs(my) * 0.001) * (overLightConfig?.shadowIntensity || 1)})`,
-                `inset 0 0 20px rgba(0, 0, 0, ${(0.08 + Math.abs(mx + my) * 0.001) * (overLightConfig?.shadowIntensity || 1)})`,
-                `0 2px 12px rgba(0, 0, 0, ${(0.12 + Math.abs(my) * 0.002) * (overLightConfig?.shadowIntensity || 1)})`,
-              ].join(', ')
-            : '0 0 20px rgba(0, 0, 0, 0.15) inset, 0 4px 8px rgba(0, 0, 0, 0.08) inset',
-          '--atomix-glass-container-shadow-opacity': effectiveWithoutEffects ? 0 : 1,
-          // Background and shadow values use design token-aligned RGB values
-          '--atomix-glass-container-bg': overLight
-            ? `linear-gradient(${180 + mx * 0.5}deg, rgba(255, 255, 255, 0.1) 0%, transparent 20%, transparent 80%, rgba(0, 0, 0, 0.05) 100%)`
-            : 'none',
-          '--atomix-glass-container-text-shadow': overLight
-            ? '0px 1px 2px rgba(255, 255, 255, 0.15)'
-            : '0px 2px 12px rgba(0, 0, 0, 0.4)',
-          '--atomix-glass-container-box-shadow': overLight
-            ? '0px 16px 70px rgba(0, 0, 0, 0.75)'
-            : '0px 12px 40px rgba(0, 0, 0, 0.25)',
         } as React.CSSProperties;
       } catch (error) {
         console.warn('AtomixGlassContainer: Error generating container variables', error);
         return {
           '--atomix-glass-container-padding': '0 0',
           '--atomix-glass-container-radius': '0px',
-          '--atomix-glass-container-backdrop': 'none',
-          '--atomix-glass-container-shadow': 'none',
-          '--atomix-glass-container-shadow-opacity': 1,
-          '--atomix-glass-container-bg': 'none',
-          '--atomix-glass-container-text-shadow': 'none',
         } as React.CSSProperties;
       }
-    }, [
-      borderRadius,
-      backdropStyle,
-      mouseOffset,
-      overLight,
-      effectiveWithoutEffects,
-      overLightConfig,
-    ]);
+    }, [borderRadius]);
 
     return (
       <div

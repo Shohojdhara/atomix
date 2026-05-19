@@ -37,14 +37,16 @@ $glass-z-index-content: 2 !default;
 $glass-hover-1-opacity: 0 !default;
 $glass-hover-2-opacity: 0 !default;
 $glass-hover-3-opacity: 0 !default;
-$glass-base-opacity: 0.6 !default;
-$glass-overlay-opacity: 0.35 !default;
-$glass-overlay-highlight-opacity: 0.25 !default;
+// Subtle translucency — Apple liquid glass is nearly invisible on its own
+$glass-base-opacity: 0.35 !default;
+$glass-overlay-opacity: 0.20 !default;
+$glass-overlay-highlight-opacity: 0.18 !default;
 
 // ============================================================================
 // Border Opacity
 // ============================================================================
-$glass-border-1-opacity: 0.18 !default;
+// Hairline border — barely perceptible physical edge
+$glass-border-1-opacity: 0.08 !default;
 
 // ============================================================================
 // Over-Light Mode Opacity
@@ -126,28 +128,32 @@ $glass-overlay-black-end: 0 !default;
 // ============================================================================
 // Overlay Highlight
 // ============================================================================
-$glass-highlight-start-color: rgba(255, 255, 255, 0.24) !default;
+// Softer top-center specular (Apple positions the light catch at the top)
+$glass-highlight-start-color: rgba(255, 255, 255, 0.18) !default;
 $glass-highlight-end-color: rgba(255, 255, 255, 0) !default;
-$glass-highlight-opacity-multiplier: 1.1 !default;
+$glass-highlight-opacity-multiplier: 0.9 !default;
 
 // ============================================================================
 // Border Shadow
 // ============================================================================
-$glass-border-color: rgba(255, 255, 255, 0.45) !default;
-$glass-inner-shadow-color: rgba(255, 255, 255, 0.18) !default;
-$glass-outer-shadow-color: rgba(0, 0, 0, 0.28) !default;
+// Hairline edge + stronger inner light catch + lighter outer lift
+$glass-border-color: rgba(255, 255, 255, 0.28) !default;
+$glass-inner-shadow-color: rgba(255, 255, 255, 0.30) !default;
+$glass-outer-shadow-color: rgba(0, 0, 0, 0.18) !default;
 
 // ============================================================================
 // Backdrop Filter
 // ============================================================================
-$glass-backdrop-filter: blur(30px) saturate(140%) brightness(110%) !default;
+// Deep frosting with near-neutral brightness — colour comes from the backdrop
+$glass-backdrop-filter: blur(40px) saturate(180%) brightness(102%) !default;
 
 // ============================================================================
 // Transition
 // ============================================================================
 $glass-transition: var(--#{config.$prefix}transition-base) !default;
-$glass-transition-duration: 0.3s !default;
-$glass-easing: cubic-bezier(0.23, 1, 0.32, 1) !default;
+// Slower, more deliberate motion — Apple liquid glass doesn't rush
+$glass-transition-duration: 0.4s !default;
+$glass-easing: cubic-bezier(0.25, 0.1, 0.25, 1) !default;
 
 // ============================================================================
 // Blend Modes
@@ -169,6 +175,6 @@ $glass-background-black-color: var(--#{config.$prefix}black, #000000) !default;
 // ============================================================================
 // Border Backdrop
 // ============================================================================
-$glass-border-backdrop-blur: 30px !default;
-$glass-border-backdrop-saturate: 140% !default;
-$glass-border-backdrop-brightness: 110% !default;
+$glass-border-backdrop-blur: 40px !default;
+$glass-border-backdrop-saturate: 180% !default;
+$glass-border-backdrop-brightness: 102% !default;

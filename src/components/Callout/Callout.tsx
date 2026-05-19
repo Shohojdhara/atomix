@@ -3,6 +3,7 @@ import { CalloutProps } from '../../lib/types/components';
 import { useCallout } from '../../lib/composables/useCallout';
 import { Icon } from '../Icon/Icon';
 import { AtomixGlass } from '../AtomixGlass/AtomixGlass';
+import { GLASS_DEFAULTS } from '../../lib/constants/components';
 
 // Type-safe interface for compound component detection
 type ExtendedComponentType<P = {}> = ComponentType<P> & {
@@ -176,11 +177,7 @@ const CalloutComponentBase = ({
 
   if (glass) {
     // Default glass settings for callouts
-    const defaultGlassProps = {
-      displacementScale: 30,
-      borderRadius: 8,
-      elasticity: 0,
-    };
+    const defaultGlassProps = GLASS_DEFAULTS.CALLOUT;
 
     const glassProps = glass === true ? defaultGlassProps : { ...defaultGlassProps, ...glass };
 
