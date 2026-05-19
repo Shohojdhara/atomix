@@ -90,8 +90,6 @@ interface AtomixGlassContainerProps
   withLiquidBlur?: boolean;
   isFixedOrSticky?: boolean;
   elasticity?: number;
-
-  // Phase 1: Animation System props
   shaderTime?: number;
 
   contentRef?: React.RefObject<HTMLDivElement | null>;
@@ -130,8 +128,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       shaderVariant = 'liquidGlass',
       withLiquidBlur = false,
       isFixedOrSticky = false,
-
-      // Phase 1: Animation System props
       shaderTime,
       withTimeAnimation = false,
       animationSpeed = 1.0,
@@ -156,7 +152,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     const shaderDebounceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const shaderUpdateTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // Phase 1: Animation frame ref for continuous shader updates
     const animationFrameRef = useRef<number | null>(null);
 
     // Lazy load shader utilities only when shader mode is needed
@@ -260,7 +255,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       };
     }, [mode, glassSize, shaderVariant]);
 
-    // Phase 1: Time-Based Animation Loop - Continuous shader regeneration
     useEffect(() => {
       // Only run animations in shader mode with time animation enabled
       if (
@@ -288,11 +282,11 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       const effectiveSpeed = Math.max(0.5, Math.min(2, animationSpeed || 1));
       const complexity = withMultiLayerDistortion
         ? Math.max(
-            1,
-            (distortionOctaves || 3) / 3 +
-              Math.max(0, (distortionLacunarity || 2) - 2) * 0.25 +
-              Math.max(0, (distortionGain || 0.5) - 0.5)
-          )
+          1,
+          (distortionOctaves || 3) / 3 +
+          Math.max(0, (distortionLacunarity || 2) - 2) * 0.25 +
+          Math.max(0, (distortionGain || 0.5) - 0.5)
+        )
         : 1;
       const targetFps = Math.max(
         12,

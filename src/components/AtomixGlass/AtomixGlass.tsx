@@ -3,10 +3,8 @@ import type { AtomixGlassProps } from '../../lib/types/components';
 import { ATOMIX_GLASS } from '../../lib/constants/components';
 import { AtomixGlassContainer } from './AtomixGlassContainer';
 import { useAtomixGlass } from '../../lib/composables/useAtomixGlass';
-// Phase 3: Optimization & Adaptation
 import { useResponsiveGlass } from '../../lib/composables/useResponsiveGlass';
 import { usePerformanceMonitor } from '../../lib/composables/usePerformanceMonitor';
-import { PerformanceDashboard } from './PerformanceDashboard';
 import {
   getDevicePreset,
   MOBILE_OPTIMIZED_BREAKPOINTS,
@@ -221,7 +219,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     padding,
     style,
     isFixedOrSticky,
-    // Phase 1: Animation System props
     withTimeAnimation,
     animationSpeed,
     withMultiLayerDistortion,
@@ -231,9 +228,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     distortionQuality,
   });
 
-  // ============================================================================
-  // Phase 3: Optimization & Adaptation Systems
-  // ============================================================================
 
   // Get device preset parameters - memoized to prevent recalculation
   const devicePresetParams = useMemo(() => {
@@ -519,7 +513,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
         shaderVariant={shaderVariant}
         withLiquidBlur={withLiquidBlur}
         isFixedOrSticky={isFixedOrSticky}
-        // Phase 1: Animation System props
         shaderTime={getShaderTime()}
         withTimeAnimation={withTimeAnimation}
         animationSpeed={animationSpeed}
@@ -541,15 +534,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       {shouldRenderOverLightLayers && renderOverLightLayers()}
 
       {withBorder && renderBorderElements()}
-
-      {/* Phase 3: Performance Monitoring Dashboard - Only in development with debugPerformance enabled */}
-      {debugPerformance && performanceMetrics && (
-        <PerformanceDashboard
-          metrics={performanceMetrics}
-          isVisible={true}
-          onClose={() => {}} // No-op, dashboard always visible when debugPerformance is true
-        />
-      )}
     </div>
   );
 });
