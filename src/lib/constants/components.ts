@@ -1950,19 +1950,19 @@ export const ATOMIX_GLASS = {
   },
   CONSTANTS: {
     ACTIVATION_ZONE: 200,
-    LERP_FACTOR: 0.08,
+    LERP_FACTOR: 0.05, // Lower = more viscous, liquid-smooth tracking (Apple feel)
     SMOOTHSTEP_POWER: 2.5,
     MIN_BLUR: 0.1,
     MOUSE_INFLUENCE_DIVISOR: 100,
     EDGE_FADE_PIXELS: 2,
-    // Elasticity physics constants
-    ELASTICITY_TRANSLATION_FACTOR: 0.1,
+    // Elasticity physics constants — Apple-tuned: soft springs, fast settling, minimal stretch
+    ELASTICITY_TRANSLATION_FACTOR: 0.06, // Subtler elastic shift (was 0.1)
     ELASTICITY_DISTANCE_THRESHOLD: 200,
     ELASTICITY_COMPRESSION_FACTOR: 0.3,
-    ELASTICITY_STIFFNESS: 0.1,
-    ELASTICITY_DAMPING: 0.76,
+    ELASTICITY_STIFFNESS: 0.06, // Softer springs = gentler motion (was 0.1)
+    ELASTICITY_DAMPING: 0.88, // Fast settling, no wobble (was 0.76)
     ELASTICITY_VELOCITY_FACTOR: 0.65,
-    ELASTICITY_STRETCH_RATIO: 0.45,
+    ELASTICITY_STRETCH_RATIO: 0.25, // Less visible surface tension stretch (was 0.45)
     ELASTICITY_MAGNIFICATION_BASE: 1.02,
     // Note: This default must match the SCSS variable --atomix-radius-md
     // @see src/styles/01-settings/_settings.global.scss
@@ -1978,8 +1978,8 @@ export const ATOMIX_GLASS = {
     // Gradient calculation constants
     GRADIENT: {
       BASE_ANGLE: 135, // Base angle for border gradients (degrees)
-      ANGLE_MULTIPLIER: 1.2, // Multiplier for mouse influence on angle
-      VELOCITY_ANGLE_MULTIPLIER: 2.5, // How much velocity affects gradient rotation
+      ANGLE_MULTIPLIER: 0.5, // Multiplier for mouse influence on angle
+      VELOCITY_ANGLE_MULTIPLIER: 0.5, // How much velocity affects gradient rotation
       CHROMATIC_OFFSET: 1.5, // Degree offset for chromatic rim layers
       BORDER_STOP_1: {
         MIN: 10, // Minimum percentage for border stop 1

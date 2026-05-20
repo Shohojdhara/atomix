@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 import type { DisplacementMode } from '../../lib/types/components';
-import type { FragmentShaderType } from './shader-utils';
-import { getDisplacementMap } from './glass-utils';
+import { getChromaticDisplacementScale, getDisplacementMap } from './glass-utils';
 import { displacementMap, polarDisplacementMap, prominentDisplacementMap } from './utils';
 
 interface GlassFilterProps {
@@ -13,9 +12,43 @@ interface GlassFilterProps {
   blurAmount: number;
 }
 
+/** Per-channel SVG filter configuration for chromatic aberration. */
+const CHROMATIC_CHANNELS = [
+  {
+    result: 'RED_DISPLACED',
+    channelResult: 'RED_CHANNEL',
+    aberrationFactor: 0,
+    colorMatrix:
+      '1 0 0 0 0\n0 0 0 0 0\n0 0 0 0 0\n0 0 0 1 0',
+  },
+  {
+    result: 'GREEN_DISPLACED',
+    channelResult: 'GREEN_CHANNEL',
+    aberrationFactor: 0.02,
+    colorMatrix:
+      '0 0 0 0 0\n0 1 0 0 0\n0 0 0 0 0\n0 0 0 1 0',
+  },
+  {
+    result: 'BLUE_DISPLACED',
+    channelResult: 'BLUE_CHANNEL',
+    aberrationFactor: 0.03,
+    colorMatrix:
+      '0 0 0 0 0\n0 0 0 0 0\n0 0 1 0 0\n0 0 0 1 0',
+  },
+] as const;
+
+const FILTER_SVG_STYLE: React.CSSProperties = {
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  inset: 0,
+};
+
 /**
- * GlassFilter - SVG filter component for glass morphism effects
- * Creates chromatic aberration and edge distortion effects using SVG filters
+ * Renders an SVG filter definition for glass morphism distortion.
+ *
+ * Produces chromatic aberration at the edges via channel-separated displacement
+ * maps and recomposites the center region without distortion.
  */
 const GlassFilterComponent: React.FC<GlassFilterProps> = ({
   id,
@@ -25,15 +58,7 @@ const GlassFilterComponent: React.FC<GlassFilterProps> = ({
   shaderMapUrl,
   blurAmount,
 }) => (
-  <svg
-    style={{
-      position: 'absolute',
-      width: '100%',
-      height: '100%',
-      inset: 0,
-    }}
-    aria-hidden="true"
-  >
+  <svg style={FILTER_SVG_STYLE} aria-hidden="true">
     <defs>
       <radialGradient id={`${id}-edge-mask`} cx="50%" cy="50%" r="50%">
         <stop offset="0%" stopColor="black" stopOpacity="0" />
@@ -77,59 +102,29 @@ const GlassFilterComponent: React.FC<GlassFilterProps> = ({
 
         <feOffset in="SourceGraphic" dx="0" dy="0" result="CENTER_ORIGINAL" />
 
-        <feDisplacementMap
-          in="SourceGraphic"
-          in2="DISPLACEMENT_MAP"
-          scale={displacementScale * (mode === 'shader' ? 1 : -1)}
-          xChannelSelector="R"
-          yChannelSelector="B"
-          result="RED_DISPLACED"
-        />
-        <feColorMatrix
-          in="RED_DISPLACED"
-          type="matrix"
-          values="1 0 0 0 0
-                 0 0 0 0 0
-                 0 0 0 0 0
-                 0 0 0 1 0"
-          result="RED_CHANNEL"
-        />
-
-        <feDisplacementMap
-          in="SourceGraphic"
-          in2="DISPLACEMENT_MAP"
-          scale={displacementScale * ((mode === 'shader' ? 1 : -1) - aberrationIntensity * 0.02)}
-          xChannelSelector="R"
-          yChannelSelector="B"
-          result="GREEN_DISPLACED"
-        />
-        <feColorMatrix
-          in="GREEN_DISPLACED"
-          type="matrix"
-          values="0 0 0 0 0
-                 0 1 0 0 0
-                 0 0 0 0 0
-                 0 0 0 1 0"
-          result="GREEN_CHANNEL"
-        />
-
-        <feDisplacementMap
-          in="SourceGraphic"
-          in2="DISPLACEMENT_MAP"
-          scale={displacementScale * ((mode === 'shader' ? 1 : -1) - aberrationIntensity * 0.03)}
-          xChannelSelector="R"
-          yChannelSelector="B"
-          result="BLUE_DISPLACED"
-        />
-        <feColorMatrix
-          in="BLUE_DISPLACED"
-          type="matrix"
-          values="0 0 0 0 0
-                 0 0 0 0 0
-                 0 0 1 0 0
-                 0 0 0 1 0"
-          result="BLUE_CHANNEL"
-        />
+        {CHROMATIC_CHANNELS.map(channel => (
+          <React.Fragment key={channel.channelResult}>
+            <feDisplacementMap
+              in="SourceGraphic"
+              in2="DISPLACEMENT_MAP"
+              scale={getChromaticDisplacementScale(
+                mode,
+                displacementScale,
+                aberrationIntensity,
+                channel.aberrationFactor
+              )}
+              xChannelSelector="R"
+              yChannelSelector="B"
+              result={channel.result}
+            />
+            <feColorMatrix
+              in={channel.result}
+              type="matrix"
+              values={channel.colorMatrix}
+              result={channel.channelResult}
+            />
+          </React.Fragment>
+        ))}
 
         <feBlend in="GREEN_CHANNEL" in2="BLUE_CHANNEL" mode="screen" result="GB_COMBINED" />
         <feBlend in="RED_CHANNEL" in2="GB_COMBINED" mode="screen" result="RGB_COMBINED" />
@@ -160,9 +155,8 @@ const GlassFilterComponent: React.FC<GlassFilterProps> = ({
 
 GlassFilterComponent.displayName = 'GlassFilter';
 
-// Memoize component to prevent unnecessary re-renders
+/** Shallow prop comparison to avoid redundant SVG filter regeneration. */
 export const GlassFilter = memo(GlassFilterComponent, (prevProps, nextProps) => {
-  // Custom comparison: only re-render if props actually changed
   return (
     prevProps.id === nextProps.id &&
     prevProps.displacementScale === nextProps.displacementScale &&

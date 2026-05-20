@@ -1,34 +1,32 @@
 import React, { forwardRef, useId, useRef, useState, useEffect, useMemo } from 'react';
-import type { CSSProperties } from 'react';
 import type {
   DisplacementMode,
   MousePosition,
   GlassSize,
   AtomixGlassProps,
 } from '../../lib/types/components';
+import useForkRef from '../../lib/utils/useForkRef';
+import { mergeClassNames } from '../../lib/utils/componentUtils';
 import type { FragmentShaderType, ShaderOptions, Vec2 } from './shader-utils';
 import { GlassFilter } from './GlassFilter';
 import {
-  calculateMouseInfluence,
-  clampBlur,
-  validateGlassSize,
   getCachedShader,
+  getShaderAnimationTargetFps,
   setCachedShader,
+  toSafeNumber,
+  validateGlassSize,
 } from './glass-utils';
 import { ATOMIX_GLASS } from '../../lib/constants/components';
 
-const { CONSTANTS } = ATOMIX_GLASS;
 
 
-
-// ─── Shader utility types ─────────────────────────────────────────────────────
-
+/** Minimal interface for dynamically loaded shader displacement generators. */
 interface ShaderGenerator {
   updateShader(): string;
   destroy(): void;
 }
 
-/** Fragment shader function — signature matches shader-utils.ts */
+/** Fragment shader signature; must match `shader-utils.ts`. */
 type FragmentShaderFn = (uv: Vec2, mousePosition?: Vec2) => Vec2;
 
 interface ShaderUtilsModule {
@@ -87,8 +85,10 @@ interface AtomixGlassContainerProps
 }
 
 /**
- * AtomixGlassContainer - Internal container component for glass effects
- * Handles the visual glass morphism layer with filters and backdrop effects
+ * Internal glass surface that owns backdrop-filter, SVG distortion, and content.
+ *
+ * Layout and stacking styles are applied via the `style` prop from the parent.
+ * The root wrapper supplies CSS custom properties only.
  */
 export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContainerProps>(
   (
@@ -134,6 +134,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
     // React 18 useId — stable, unique, and SSR-safe (no module-level counter)
     const rawId = useId();
     const filterId = useMemo(() => `atomix-glass-filter-${rawId.replace(/:/g, '')}`, [rawId]);
+    const containerRef = useForkRef(ref, null);
 
     const [shaderMapUrl, setShaderMapUrl] = useState<string>('');
     const shaderGeneratorRef = useRef<ShaderGenerator | null>(null);
@@ -261,27 +262,14 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
         return;
       }
 
-      const baseFps =
-        distortionQuality === 'ultra'
-          ? 60
-          : distortionQuality === 'high'
-            ? 30
-            : distortionQuality === 'medium'
-              ? 24
-              : 20;
-      const effectiveSpeed = Math.max(0.5, Math.min(2, animationSpeed || 1));
-      const complexity = withMultiLayerDistortion
-        ? Math.max(
-          1,
-          (distortionOctaves || 3) / 3 +
-          Math.max(0, (distortionLacunarity || 2) - 2) * 0.25 +
-          Math.max(0, (distortionGain || 0.5) - 0.5)
-        )
-        : 1;
-      const targetFps = Math.max(
-        12,
-        Math.min(60, Math.round((baseFps * effectiveSpeed) / complexity))
-      );
+      const targetFps = getShaderAnimationTargetFps({
+        distortionQuality,
+        animationSpeed,
+        withMultiLayerDistortion,
+        distortionOctaves,
+        distortionLacunarity,
+        distortionGain,
+      });
       const frameInterval = 1000 / targetFps;
       let lastUpdate = 0;
       let isCancelled = false;
@@ -353,15 +341,13 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
 
     return (
       <div
-        ref={el => {
-          // Handle forwarded ref
-          if (typeof ref === 'function') {
-            ref(el);
-          } else if (ref) {
-            (ref as React.MutableRefObject<HTMLDivElement | null>).current = el;
-          }
-        }}
-        className={`${ATOMIX_GLASS.CONTAINER_CLASS} ${className} ${isActive ? ATOMIX_GLASS.CLASSES.ACTIVE : ''} ${overLight ? ATOMIX_GLASS.CLASSES.OVER_LIGHT : ''}`}
+        ref={containerRef}
+        className={mergeClassNames(
+          ATOMIX_GLASS.CONTAINER_CLASS,
+          className,
+          isActive && ATOMIX_GLASS.CLASSES.ACTIVE,
+          overLight && ATOMIX_GLASS.CLASSES.OVER_LIGHT
+        )}
         style={{ ...style, ...containerVars }}
         onClick={onClick}
       >
@@ -377,16 +363,8 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
               blurAmount={blurAmount}
               mode={mode}
               id={filterId}
-              displacementScale={
-                typeof displacementScale === 'number' && !isNaN(displacementScale)
-                  ? displacementScale
-                  : 0
-              }
-              aberrationIntensity={
-                typeof aberrationIntensity === 'number' && !isNaN(aberrationIntensity)
-                  ? aberrationIntensity
-                  : 0
-              }
+              displacementScale={toSafeNumber(displacementScale)}
+              aberrationIntensity={toSafeNumber(aberrationIntensity)}
               shaderMapUrl={shaderMapUrl}
             />
             {/* Enhanced Apple Liquid Glass Inner Shadow Layer */}

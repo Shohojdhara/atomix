@@ -168,25 +168,24 @@ describe('AtomixGlass Component', () => {
 
     const root = container.querySelector('.c-atomix-glass');
     const glassContainer = container.querySelector('.c-atomix-glass__container');
-    expect(root).toHaveStyle('position: fixed');
+    // Layout belongs on the container so backdrop-filter samples the page correctly.
+    expect(root).not.toHaveStyle('position: fixed');
+    expect(glassContainer).toHaveStyle('position: fixed');
     expect(glassContainer).toHaveStyle('background-color: rgb(255, 0, 0)');
   });
 
-  test('sets 100% width/height for fixed/sticky positioning', async () => {
+  test('applies z-index on container for fixed positioning', () => {
     const { container } = render(
-      <AtomixGlass style={{ position: 'fixed' }}>
+      <AtomixGlass style={{ position: 'fixed', top: 0, left: 0, zIndex: 1200 }}>
         <div>Content</div>
       </AtomixGlass>
     );
 
+    const root = container.querySelector('.c-atomix-glass');
     const glassContainer = container.querySelector('.c-atomix-glass__container');
-    
-    // Use waitFor because updateAtomixGlassStyles is called imperatively inside a requestAnimationFrame loop
-    await waitFor(() => {
-      // With the new logic, fixed/sticky elements use measured sizes, 
-      // not 100% (which is for standard flow)
-      expect(glassContainer).not.toHaveStyle('--atomix-glass-container-width: 100%');
-    });
+    expect(root).not.toHaveStyle('z-index: 1200');
+    expect(glassContainer).toHaveStyle('position: fixed');
+    expect(glassContainer).toHaveStyle('z-index: 1200');
   });
 
   test('sets 100% width/height for standard flow (not fixed/sticky)', async () => {
@@ -196,11 +195,11 @@ describe('AtomixGlass Component', () => {
       </AtomixGlass>
     );
 
-    const glassContainer = container.querySelector('.c-atomix-glass__container');
-    
+    const root = container.querySelector('.c-atomix-glass');
+
     await waitFor(() => {
-      expect(glassContainer).toHaveStyle('--atomix-glass-container-width: 100%');
-      expect(glassContainer).toHaveStyle('--atomix-glass-container-height: 100%');
+      expect(root).toHaveStyle('--atomix-glass-width: 100%');
+      expect(root).toHaveStyle('--atomix-glass-height: 100%');
     });
   });
 
@@ -241,8 +240,7 @@ describe('AtomixGlass Component', () => {
   });
 });
 
-// Visual regression tests
-// Keep only a single smoke snapshot to detect catastrophic DOM changes.
+/** Smoke snapshot to guard against unintended DOM structure changes. */
 describe('AtomixGlass Visual Regression', () => {
   test('matches snapshot with default props', () => {
     const { container } = render(

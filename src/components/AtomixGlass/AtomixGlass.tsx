@@ -1,7 +1,16 @@
 import React, { forwardRef, memo, useMemo, useRef } from 'react';
 import type { AtomixGlassProps } from '../../lib/types/components';
 import { ATOMIX_GLASS } from '../../lib/constants/components';
+import { mergeClassNames } from '../../lib/utils/componentUtils';
+import useForkRef from '../../lib/utils/useForkRef';
 import { AtomixGlassContainer } from './AtomixGlassContainer';
+import {
+  buildGlassRootCssVariables,
+  getGlassInternalPositionStyles,
+  isGlassFixedOrSticky,
+  resolveGlassAdjustedSize,
+  resolveGlassContainerEffects,
+} from './glass-utils';
 import { useAtomixGlass } from '../../lib/composables/useAtomixGlass';
 import { useResponsiveGlass } from '../../lib/composables/useResponsiveGlass';
 import { usePerformanceMonitor } from '../../lib/composables/usePerformanceMonitor';
@@ -32,6 +41,10 @@ import {
  * - Follows BEM methodology for class naming
  * - Implements focus-ring mixin for accessibility
  * - Supports reduced motion and high contrast preferences
+ *
+ * Style architecture:
+ * - Root (`.c-atomix-glass`): CSS custom properties for layer geometry and motion.
+ * - Container (`.c-atomix-glass__container`): layout, z-index, and backdrop-filter.
  *
  * @example
  * // Basic usage with dynamic border-radius extraction
@@ -90,29 +103,7 @@ import {
  * </AtomixGlass>
  */
 
-// ─── Type guard for the dev-only performance flag ────────────────────────────
-declare global {
-  interface Window {
-    enablePerformanceMonitoring?: boolean;
-  }
-}
-
-// Helper to merge refs
-function mergeRefs<T = any>(
-  ...refs: (React.MutableRefObject<T> | React.LegacyRef<T> | undefined | null)[]
-) {
-  return (node: T) => {
-    refs.forEach(ref => {
-      if (typeof ref === 'function') {
-        ref(node);
-      } else if (ref != null) {
-        (ref as React.MutableRefObject<T | null>).current = node;
-      }
-    });
-  };
-}
-
-// Internal implementation with forwardRef
+/** Internal implementation; ref is forwarded to the root wrapper element. */
 const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function AtomixGlass(
   {
     children,
@@ -163,21 +154,18 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
   const glassRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const internalWrapperRef = useRef<HTMLDivElement>(null);
-  const mergedRef = useMemo(() => mergeRefs(ref, internalWrapperRef), [ref]);
+  const mergedRef = useForkRef(ref, internalWrapperRef);
 
-  // ── Layout hoisting ──────────────────────────────────────────────────────
-  // When position is fixed/sticky the layout props must live on the ROOT
-  // `.c-atomix-glass` element so that every decorative layer (borders,
-  // backgrounds, hover effects) stays in the same stacking context.
-
-  // Extract zIndex from style so it becomes the base for ALL internal
-  // layers via --atomix-glass-base-z-index.  It must NOT be applied as a
-  // real z-index on the root element — that would break the glass effect.
+  /**
+   * Style partitioning for backdrop-filter compatibility.
+   * - Root (`.c-atomix-glass`): CSS custom properties only (`glassVars`).
+   * - Container (`.c-atomix-glass__container`): layout, stacking, and visual styles.
+   * Backdrop sampling occurs on `__filter-overlay` inside the container; layout
+   * properties must not be applied to the root or the effect will not render correctly.
+   */
   const { zIndex: customZIndex, ...restStyle } = style;
-  const isFixedOrSticky =
-    propsIsFixedOrSticky || restStyle.position === 'fixed' || restStyle.position === 'sticky';
+  const isFixedOrSticky = isGlassFixedOrSticky(propsIsFixedOrSticky, restStyle.position);
 
-  // Use composable hook for all state and logic
   const {
     isHovered,
     isActive,
@@ -229,12 +217,10 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
   });
 
 
-  // Get device preset parameters - memoized to prevent recalculation
   const devicePresetParams = useMemo(() => {
     return getDevicePreset(devicePreset);
   }, [devicePreset]);
 
-  // Responsive breakpoint system - automatically adjusts parameters based on viewport
   useResponsiveGlass({
     baseParams: {
       ...devicePresetParams,
@@ -253,192 +239,143 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     debug: false,
   });
 
-  // Performance monitoring - tracks FPS, frame time, memory usage
-  const { metrics: performanceMetrics, toggleMonitoring } = usePerformanceMonitor({
-    enabled: debugPerformance, // Enable when debugPerformance is true
+  const { toggleMonitoring } = usePerformanceMonitor({
+    enabled: debugPerformance,
     debug: false,
     showOverlay: false,
   });
 
-  // Auto-start performance monitoring when debugPerformance is enabled
   React.useEffect(() => {
     if (debugPerformance) {
       toggleMonitoring();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debugPerformance]); // Re-run when debugPerformance changes
+  }, [debugPerformance]);
 
   const isOverLight = useMemo(() => overLightConfig.isOverLight, [overLightConfig.isOverLight]);
 
   const shouldRenderOverLightLayers = withOverLightLayers && isOverLight;
 
-  const rootLayoutStyle = useMemo<React.CSSProperties>(() => {
-    if (!isFixedOrSticky) return {};
-    const { position: p, top: t, left: l, right: r, bottom: b } = restStyle;
-    return {
-      ...(p && { position: p }),
-      ...(t !== undefined && { top: t }),
-      ...(l !== undefined && { left: l }),
-      ...(r !== undefined && { right: r }),
-      ...(b !== undefined && { bottom: b }),
-    };
-  }, [isFixedOrSticky, restStyle]);
-
-  // Calculate base style with transforms
-  // When layout is hoisted to the root, strip those props from the container
-  const baseStyle = useMemo(() => {
-    if (isFixedOrSticky) {
-      const { position: _p, top: _t, left: _l, right: _r, bottom: _b, ...visualStyle } = restStyle;
-      return {
-        ...visualStyle,
-      };
-    }
-    return {
+  const containerStyle = useMemo(
+    () => ({
       ...restStyle,
-    };
-  }, [isFixedOrSticky, restStyle]);
+      ...(customZIndex !== undefined && { zIndex: customZIndex }),
+    }),
+    [restStyle, customZIndex]
+  );
 
-  // Build className with state modifiers
-  const componentClassName = [
+  const componentClassName = mergeClassNames(
     ATOMIX_GLASS.BASE_CLASS,
     effectiveReducedMotion && `${ATOMIX_GLASS.BASE_CLASS}--reduced-motion`,
     effectiveHighContrast && `${ATOMIX_GLASS.BASE_CLASS}--high-contrast`,
     effectiveWithoutEffects && `${ATOMIX_GLASS.BASE_CLASS}--disabled-effects`,
-    className,
-  ]
-    .filter(Boolean)
-    .join(' ');
+    className
+  );
 
-  // Calculate position and size styles for internal layers
-  // When root is fixed/sticky, internal layers use absolute (relative to root)
   const positionStyles = useMemo(
-    () => ({
-      position: (isFixedOrSticky
-        ? 'absolute'
-        : restStyle.position || 'absolute') as React.CSSProperties['position'],
-      top: !isFixedOrSticky ? 0 : (restStyle.top ?? 0),
-      left: !isFixedOrSticky ? 0 : (restStyle.left ?? 0),
-      right: !isFixedOrSticky ? 'auto' : (restStyle.right ?? 'auto'),
-      bottom: !isFixedOrSticky ? 'auto' : (restStyle.bottom ?? 'auto'),
-    }),
+    () => getGlassInternalPositionStyles(isFixedOrSticky, restStyle),
+    [isFixedOrSticky, restStyle]
+  );
+
+  const adjustedSize = useMemo(
+    () =>
+      resolveGlassAdjustedSize({
+        width,
+        height,
+        restStyle,
+        glassSize,
+        isFixedOrSticky,
+      }),
+    [width, height, restStyle, glassSize, isFixedOrSticky]
+  );
+
+  const glassVars = useMemo(
+    () =>
+      buildGlassRootCssVariables({
+        effectiveBorderRadius,
+        transformStyle,
+        adjustedSize,
+        isOverLight,
+        customZIndex,
+        isFixedOrSticky,
+        positionStyles,
+        restStyle,
+      }),
     [
+      effectiveBorderRadius,
+      transformStyle,
+      adjustedSize,
+      isOverLight,
+      customZIndex,
       isFixedOrSticky,
-      restStyle.position,
-      restStyle.top,
-      restStyle.left,
-      restStyle.right,
-      restStyle.bottom,
+      positionStyles,
+      restStyle,
     ]
   );
 
-  const adjustedSize = useMemo(() => {
-    // Keep a reference to positionStyles to avoid unused-variable lint,
-    // but sizing is driven by explicit width/height or measured size.
-    const _position = positionStyles.position;
-
-    const resolveLength = (value: string | number | undefined, measured: number): string => {
-      if (value !== undefined && isFixedOrSticky) {
-        return typeof value === 'number' ? `${value}px` : value;
-      }
-
-      if (measured > 0 && isFixedOrSticky) {
-        return `${measured}px`;
-      }
-
-      return '100%';
-    };
-
-    const effectiveWidth = width ?? restStyle.width;
-    const effectiveHeight = height ?? restStyle.height;
-
-    return {
-      width: resolveLength(effectiveWidth, glassSize.width),
-      height: resolveLength(effectiveHeight, glassSize.height),
-    };
-  }, [
-    width,
-    height,
-    restStyle.width,
-    restStyle.height,
-    positionStyles.position,
-    glassSize.width,
-    glassSize.height,
-    isFixedOrSticky,
-  ]);
-
-  // Memoize CSS variables object
-  const glassVars = useMemo(() => {
-    return {
-      ...(customZIndex !== undefined && { '--atomix-glass-base-z-index': customZIndex }),
-      '--atomix-glass-radius': `${effectiveBorderRadius}px`,
-      '--atomix-glass-transform': transformStyle || 'none',
-      '--atomix-glass-container-position': `${!isFixedOrSticky ? positionStyles.position : rootLayoutStyle.position}`,
-      '--atomix-glass-position': `${!isFixedOrSticky ? positionStyles.position : rootLayoutStyle.position}`,
-      '--atomix-glass-top': `${!isFixedOrSticky ? 0 : (restStyle.top ?? 0)}px`,
-      '--atomix-glass-left': `${!isFixedOrSticky ? 0 : (restStyle.left ?? 0)}px`,
-      '--atomix-glass-right': !isFixedOrSticky ? 'auto' : (restStyle.right ?? 'auto'),
-      '--atomix-glass-bottom': !isFixedOrSticky ? 'auto' : (restStyle.bottom ?? 'auto'),
-      '--atomix-glass-width': adjustedSize.width,
-      '--atomix-glass-height': adjustedSize.height,
-      '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.125rem)',
-      '--atomix-glass-blend-mode': isOverLight ? 'multiply' : 'overlay',
-    } as React.CSSProperties;
-  }, [
-    effectiveBorderRadius,
-    transformStyle,
-    adjustedSize,
-    isOverLight,
-    customZIndex,
-    isFixedOrSticky,
-    positionStyles.position,
-    rootLayoutStyle.position,
-    restStyle.top,
-    restStyle.left,
-    restStyle.right,
-    restStyle.bottom,
-  ]);
-
-  // ─── Render helpers ──────────────────────────────────────────────────────
+  const containerEffects = useMemo(
+    () =>
+      resolveGlassContainerEffects({
+        displacementScale,
+        blurAmount,
+        saturation,
+        aberrationIntensity,
+        mode,
+        effectiveWithoutEffects,
+        effectiveHighContrast,
+        isOverLight,
+        saturationBoost: overLightConfig.saturationBoost,
+        mouseOffset,
+        globalMousePosition,
+      }),
+    [
+      displacementScale,
+      blurAmount,
+      saturation,
+      aberrationIntensity,
+      mode,
+      effectiveWithoutEffects,
+      effectiveHighContrast,
+      isOverLight,
+      overLightConfig.saturationBoost,
+      mouseOffset,
+      globalMousePosition,
+    ]
+  );
 
   const renderHoverLayers = () => (
     <>
-      {/* Hover layers - opacity and background set via CSS variables in SCSS */}
       <div className={ATOMIX_GLASS.HOVER_1_CLASS} />
       <div className={ATOMIX_GLASS.HOVER_2_CLASS} />
       <div className={ATOMIX_GLASS.HOVER_3_CLASS} />
     </>
   );
 
-  const renderBackgroundLayer = (layerType: 'dark' | 'black') => (
+  const backgroundLayerTypes = ['dark', 'black'] as const;
+  const renderBackgroundLayer = (layerType: (typeof backgroundLayerTypes)[number]) => (
     <div
-      className={[
+      className={mergeClassNames(
         ATOMIX_GLASS.BACKGROUND_LAYER_CLASS,
         layerType === 'dark'
           ? ATOMIX_GLASS.BACKGROUND_LAYER_DARK_CLASS
           : ATOMIX_GLASS.BACKGROUND_LAYER_BLACK_CLASS,
         isOverLight
           ? ATOMIX_GLASS.BACKGROUND_LAYER_OVER_LIGHT_CLASS
-          : ATOMIX_GLASS.BACKGROUND_LAYER_HIDDEN_CLASS,
-      ]
-        .filter(Boolean)
-        .join(' ')}
+          : ATOMIX_GLASS.BACKGROUND_LAYER_HIDDEN_CLASS
+      )}
     />
   );
 
   const renderOverLightLayers = () => (
     <>
-      {/* Base and overlay layers - opacity and background set via CSS variables in SCSS */}
       <div className={ATOMIX_GLASS.BASE_LAYER_CLASS} />
       <div className={ATOMIX_GLASS.OVERLAY_LAYER_CLASS} />
-      {/* Overlay highlight - opacity and background are dynamic, calculated inline */}
       <div className={ATOMIX_GLASS.OVERLAY_HIGHLIGHT_CLASS} />
     </>
   );
 
   const renderBorderElements = () => (
     <>
-      {/* Border elements - all styles (static and dynamic via CSS variables) are in SCSS */}
-      {/* Position, size, transform, transition, border-radius all use CSS variables set in glassVars */}
       <span className={ATOMIX_GLASS.BORDER_BACKDROP_CLASS} />
       <span className={ATOMIX_GLASS.BORDER_1_CLASS} />
       <span className={ATOMIX_GLASS.BORDER_2_CLASS} />
@@ -450,7 +387,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       {...rest}
       ref={mergedRef}
       className={componentClassName}
-      style={{ ...glassVars }}
+      style={glassVars}
       role={role || (onClick ? 'button' : undefined)}
       tabIndex={onClick ? (tabIndex ?? 0) : tabIndex}
       aria-label={ariaLabel}
@@ -463,36 +400,15 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
         ref={glassRef}
         contentRef={contentRef}
         className={className}
-        style={{ ...restStyle } as React.CSSProperties}
+        style={containerStyle as React.CSSProperties}
         borderRadius={effectiveBorderRadius}
-        displacementScale={
-          effectiveWithoutEffects
-            ? 0
-            : mode === 'shader'
-              ? displacementScale * ATOMIX_GLASS.CONSTANTS.MULTIPLIERS.SHADER_DISPLACEMENT
-              : isOverLight
-                ? displacementScale * ATOMIX_GLASS.CONSTANTS.MULTIPLIERS.OVER_LIGHT_DISPLACEMENT
-                : displacementScale
-        }
-        blurAmount={effectiveWithoutEffects ? 0 : blurAmount}
-        saturation={
-          effectiveHighContrast
-            ? ATOMIX_GLASS.CONSTANTS.SATURATION.HIGH_CONTRAST
-            : isOverLight
-              ? saturation * overLightConfig.saturationBoost
-              : saturation
-        }
-        aberrationIntensity={
-          effectiveWithoutEffects
-            ? 0
-            : mode === 'shader'
-              ? aberrationIntensity * ATOMIX_GLASS.CONSTANTS.MULTIPLIERS.SHADER_ABERRATION
-              : aberrationIntensity
-        }
+        displacementScale={containerEffects.displacementScale}
+        blurAmount={containerEffects.blurAmount}
+        saturation={containerEffects.saturation}
+        aberrationIntensity={containerEffects.aberrationIntensity}
         glassSize={glassSize}
-
-        mouseOffset={effectiveWithoutEffects ? { x: 0, y: 0 } : mouseOffset}
-        globalMousePosition={effectiveWithoutEffects ? { x: 0, y: 0 } : globalMousePosition}
+        mouseOffset={containerEffects.mouseOffset}
+        globalMousePosition={containerEffects.globalMousePosition}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onMouseDown={handleMouseDown}
@@ -527,10 +443,9 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
 
       {Boolean(onClick) && renderHoverLayers()}
 
-      {/* Background layers for over-light mode */}
-      {/* Static styles (pointer-events) are in SCSS; will-change is managed via .u-glass-clean-root utility for backdrop-filter stability */}
-      {renderBackgroundLayer('dark')}
-      {renderBackgroundLayer('black')}
+      {backgroundLayerTypes.map(layerType => (
+        <React.Fragment key={layerType}>{renderBackgroundLayer(layerType)}</React.Fragment>
+      ))}
       {shouldRenderOverLightLayers && renderOverLightLayers()}
 
       {withBorder && renderBorderElements()}
@@ -540,10 +455,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
 
 AtomixGlassInner.displayName = 'AtomixGlass';
 
-/**
- * AtomixGlass - wrapped with React.memo to prevent unnecessary re-renders.
- * Ref is forwarded to the root `<div>` element.
- */
+/** Memoized public export. Ref targets the root `.c-atomix-glass` wrapper. */
 export const AtomixGlass = memo(AtomixGlassInner);
 
 export default AtomixGlass;
