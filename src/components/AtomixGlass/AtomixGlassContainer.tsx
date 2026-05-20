@@ -19,17 +19,7 @@ import { ATOMIX_GLASS } from '../../lib/constants/components';
 
 const { CONSTANTS } = ATOMIX_GLASS;
 
-// ─── Blur multiplier constants (module-level, never change at runtime) ────────
-const EDGE_BLUR_MULTIPLIER = 1.25;
-const CENTER_BLUR_MULTIPLIER = 1.1;
-const FLOW_BLUR_MULTIPLIER = 1.2;
-const MOUSE_INFLUENCE_BLUR_FACTOR = 0.15;
-const EDGE_INTENSITY_MULTIPLIER = 1.5;
-const EDGE_INTENSITY_MOUSE_FACTOR = 0.15;
-const CENTER_INTENSITY_DISTANCE_FACTOR = 0.3;
-const CENTER_INTENSITY_MOUSE_FACTOR = 0.1;
-/** Maximum blur multiplier relative to base — prevents runaway blur. */
-const MAX_BLUR_RELATIVE = 2;
+
 
 // ─── Shader utility types ─────────────────────────────────────────────────────
 
@@ -79,7 +69,7 @@ interface AtomixGlassContainerProps
     borderOpacity?: number;
   };
   borderRadius?: number;
-  padding?: string;
+
   glassSize?: GlassSize;
   onClick?: () => void;
   mode?: DisplacementMode;
@@ -119,7 +109,7 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       overLight = false,
       overLightConfig = {},
       borderRadius = 0,
-      padding = '0 0',
+
       glassSize = { width: 0, height: 0 },
       onClick,
       mode = 'standard',
@@ -344,92 +334,18 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
 
     // Removed forced reflow to avoid layout thrash and potential feedback sizing loops
 
-    const [rectCache, setRectCache] = useState<DOMRect | null>(null);
 
-    useEffect(() => {
-      if (!ref || typeof ref === 'function') return undefined;
-      const element = (ref as React.RefObject<HTMLDivElement>).current;
-      if (!element) return undefined;
-
-      try {
-        setRectCache(element.getBoundingClientRect());
-      } catch (error) {
-        console.warn('AtomixGlassContainer: Error getting element bounds', error);
-        setRectCache(null);
-      }
-
-      return undefined;
-    }, [ref, glassSize]);
-
-    const liquidBlur = useMemo(() => {
-      const defaultBlur = {
-        baseBlur: blurAmount,
-        edgeBlur: blurAmount * EDGE_BLUR_MULTIPLIER,
-        centerBlur: blurAmount * CENTER_BLUR_MULTIPLIER,
-        flowBlur: blurAmount * FLOW_BLUR_MULTIPLIER,
-      };
-
-      // Enhanced validation for liquid blur
-      if (
-        !withLiquidBlur ||
-        !rectCache ||
-        !mouseOffset ||
-        typeof mouseOffset.x !== 'number' ||
-        typeof mouseOffset.y !== 'number' ||
-        isNaN(mouseOffset.x) ||
-        isNaN(mouseOffset.y)
-      ) {
-        return defaultBlur;
-      }
-
-      try {
-        const mouseInfluence = calculateMouseInfluence(mouseOffset);
-        const maxBlur = blurAmount * MAX_BLUR_RELATIVE;
-
-        const baseBlur = Math.min(
-          maxBlur,
-          blurAmount + mouseInfluence * blurAmount * MOUSE_INFLUENCE_BLUR_FACTOR
-        );
-        const edgeIntensity = mouseInfluence * EDGE_INTENSITY_MOUSE_FACTOR;
-        const edgeBlur = Math.min(maxBlur, baseBlur * (0.8 + edgeIntensity * 0.4));
-        const centerIntensity = mouseInfluence * CENTER_INTENSITY_MOUSE_FACTOR;
-        const centerBlur = Math.min(maxBlur, baseBlur * (0.3 + centerIntensity * 0.3));
-        const flowBlur = Math.min(maxBlur, baseBlur * FLOW_BLUR_MULTIPLIER);
-
-        // NOTE: hover/active multipliers intentionally omitted here —
-        // they belong on opacity layers, not the blur filter itself.
-        return {
-          baseBlur: clampBlur(baseBlur),
-          edgeBlur: clampBlur(edgeBlur),
-          centerBlur: clampBlur(centerBlur),
-          flowBlur: clampBlur(flowBlur),
-        };
-      } catch (error) {
-        console.warn('AtomixGlassContainer: Error calculating liquid blur', error);
-        return defaultBlur;
-      }
-    }, [withLiquidBlur, blurAmount, mouseOffset, rectCache]);
 
 
 
     const containerVars = useMemo(() => {
       try {
-        // Safe extraction of mouse offset values
-        const mx =
-          mouseOffset && typeof mouseOffset.x === 'number' && !isNaN(mouseOffset.x)
-            ? mouseOffset.x
-            : 0;
-        const my =
-          mouseOffset && typeof mouseOffset.y === 'number' && !isNaN(mouseOffset.y)
-            ? mouseOffset.y
-            : 0;
         return {
           '--atomix-glass-container-radius': `${typeof borderRadius === 'number' && !isNaN(borderRadius) ? borderRadius : 0}px`,
         } as React.CSSProperties;
       } catch (error) {
         console.warn('AtomixGlassContainer: Error generating container variables', error);
         return {
-          '--atomix-glass-container-padding': '0 0',
           '--atomix-glass-container-radius': '0px',
         } as React.CSSProperties;
       }

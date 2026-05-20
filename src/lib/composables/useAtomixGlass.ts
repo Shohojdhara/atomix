@@ -228,7 +228,7 @@ export function useAtomixGlass({
   children,
   blurAmount,
   saturation,
-  padding,
+
   withLiquidBlur,
   isFixedOrSticky = false,
   priority = 1, // Default priority
@@ -958,7 +958,7 @@ export function useAtomixGlass({
         withLiquidBlur,
         blurAmount,
         saturation,
-        padding,
+
         isFixedOrSticky,
       });
 
@@ -1000,7 +1000,7 @@ export function useAtomixGlass({
     withLiquidBlur,
     blurAmount,
     saturation,
-    padding,
+
     isFixedOrSticky,
     stopLerpLoop,
   ]);
@@ -1140,7 +1140,7 @@ export function useAtomixGlass({
       withLiquidBlur,
       blurAmount,
       saturation,
-      padding,
+
     });
   }, [
     isHovered,
@@ -1158,7 +1158,7 @@ export function useAtomixGlass({
     withLiquidBlur,
     blurAmount,
     saturation,
-    padding,
+
     onClick,
   ]);
 

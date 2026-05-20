@@ -1934,7 +1934,7 @@ export const ATOMIX_GLASS = {
     get CORNER_RADIUS() {
       return 16; // Use 16 to match SCSS design system (was 20)
     },
-    PADDING: '0',
+
     MODE: 'standard' as const,
     OVER_LIGHT: false as const,
     ENABLE_OVER_LIGHT_LAYERS: true,

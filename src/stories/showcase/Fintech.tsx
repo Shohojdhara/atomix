@@ -1032,7 +1032,6 @@ const Fintech: React.FC = () => {
                   displacementScale={100}
                   borderRadius={32}
                   elasticity={0}
-                  padding="1rem"
                 >
                   <div className="u-p-4">
                     <div className="u-flex u-justify-between u-mb-2">
@@ -1078,7 +1077,6 @@ const Fintech: React.FC = () => {
                   displacementScale={100}
                   borderRadius={32}
                   elasticity={0}
-                  padding="1rem"
                   className="u-h-100"
                 >
                   <div className="u-p-4 u-h-100 u-flex u-flex-column">
@@ -1210,7 +1208,6 @@ const Fintech: React.FC = () => {
                 displacementScale={100}
                 borderRadius={32}
                 elasticity={0}
-                padding="1rem"
               >
                 <div className="u-p-4">
                   <h2 className="u-text-2 u-font-bold u-mb-3">Trusted by industry leaders</h2>
@@ -1227,7 +1224,6 @@ const Fintech: React.FC = () => {
                 displacementScale={100}
                 borderRadius={32}
                 elasticity={0}
-                padding="1rem"
               >
                 <div className="u-p-4">
                   <h2 className="u-text-2 u-font-bold u-mb-3">Trusted by industry leaders</h2>

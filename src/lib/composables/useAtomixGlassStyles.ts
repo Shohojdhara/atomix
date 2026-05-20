@@ -44,7 +44,7 @@ export const updateAtomixGlassStyles = (
     withLiquidBlur?: boolean;
     blurAmount?: number;
     saturation?: number;
-    padding?: string;
+
     isFixedOrSticky?: boolean;
   }
 ) => {
@@ -71,7 +71,7 @@ export const updateAtomixGlassStyles = (
     withLiquidBlur,
     blurAmount = ATOMIX_GLASS.DEFAULTS.BLUR_AMOUNT,
     saturation = ATOMIX_GLASS.DEFAULTS.SATURATION,
-    padding = ATOMIX_GLASS.DEFAULTS.PADDING,
+
     isFixedOrSticky = false,
   } = params;
 
@@ -339,7 +339,7 @@ export const updateAtomixGlassStyles = (
     // Container variables
     const style = containerElement.style;
 
-    style.setProperty('--atomix-glass-container-padding', padding);
+
     style.setProperty('--atomix-glass-container-radius', `${effectiveBorderRadius}px`);
 
     style.setProperty('--atomix-glass-container-backdrop', backdropFilterString);

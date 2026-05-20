@@ -226,7 +226,7 @@ export interface AtomixGlassProps extends React.HTMLAttributes<HTMLDivElement> {
   globalMousePosition?: MousePosition;
   mouseOffset?: MousePosition;
   mouseContainer?: React.RefObject<HTMLElement | null> | null;
-  padding?: string;
+
   height?: string | number;
   width?: string | number;
   overLight?: OverLightConfig;

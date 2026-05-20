@@ -126,7 +126,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     mouseOffset: externalMouseOffset,
     mouseContainer = null,
     className = '',
-    padding = ATOMIX_GLASS.DEFAULTS.PADDING,
+
     overLight = ATOMIX_GLASS.DEFAULTS.OVER_LIGHT,
     style = {},
     mode = ATOMIX_GLASS.DEFAULTS.MODE,
@@ -216,7 +216,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     blurAmount,
     saturation,
     withLiquidBlur,
-    padding,
+
     style,
     isFixedOrSticky,
     withTimeAnimation,
@@ -490,7 +490,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
               : aberrationIntensity
         }
         glassSize={glassSize}
-        padding={padding}
+
         mouseOffset={effectiveWithoutEffects ? { x: 0, y: 0 } : mouseOffset}
         globalMousePosition={effectiveWithoutEffects ? { x: 0, y: 0 } : globalMousePosition}
         onMouseEnter={handleMouseEnter}
