@@ -27,50 +27,50 @@ export const baseArgTypes = {
   // Visual category
   displacementScale: {
     control: { type: 'range', min: 0, max: 100, step: 1 },
-    description: 'Displacement scale for the glass effect (default: 70)',
+    description: 'Displacement scale — Apple chrome ~24, hero ~48 (default: 28)',
     table: {
       category: 'Visual' as ArgTypeCategory,
-      defaultValue: { summary: '70' },
+      defaultValue: { summary: '28' },
     },
   },
   blurAmount: {
-    control: { type: 'range', min: 0, max: 10, step: 0.5 },
-    description: 'Blur amount for the backdrop (default: 0.0625)',
+    control: { type: 'range', min: 0, max: 50, step: 1 },
+    description: 'Backdrop blur in pixels — Apple frost ~20–40 (default: 20)',
     table: {
       category: 'Visual' as ArgTypeCategory,
-      defaultValue: { summary: '0.0625' },
+      defaultValue: { summary: '20' },
     },
   },
   saturation: {
     control: { type: 'range', min: 100, max: 300, step: 5 },
-    description: 'Saturation percentage for the backdrop (default: 140)',
+    description: 'Backdrop saturation % (default: 180 — Apple recipe)',
     table: {
       category: 'Visual' as ArgTypeCategory,
-      defaultValue: { summary: '140' },
+      defaultValue: { summary: '180' },
     },
   },
   aberrationIntensity: {
     control: { type: 'range', min: 0, max: 10, step: 0.1 },
-    description: 'Chromatic aberration intensity (default: 2)',
+    description: 'Chromatic aberration intensity (default: ~0.56)',
     table: {
       category: 'Visual' as ArgTypeCategory,
-      defaultValue: { summary: '2' },
+      defaultValue: { summary: '0.56' },
     },
   },
   elasticity: {
     control: { type: 'range', min: 0, max: 1, step: 0.01 },
-    description: 'Elasticity factor for mouse interactions (default: 0.15)',
+    description: 'Elasticity for mouse tracking (default: 0.05)',
     table: {
       category: 'Visual' as ArgTypeCategory,
-      defaultValue: { summary: '0.15' },
+      defaultValue: { summary: '0.05' },
     },
   },
   borderRadius: {
     control: { type: 'range', min: 0, max: 50, step: 1 },
-    description: 'Corner radius in pixels (default: 20)',
+    description: 'Corner radius in pixels (default: 16)',
     table: {
       category: 'Visual' as ArgTypeCategory,
-      defaultValue: { summary: '20' },
+      defaultValue: { summary: '16' },
     },
   },
   overLight: {

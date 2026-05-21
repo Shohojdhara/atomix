@@ -11,7 +11,8 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Meta, StoryObj } from '@storybook/react';
 import AtomixGlass from '../AtomixGlass';
-import { BackgroundWrapper, backgroundImages } from './shared-components';
+import { BackgroundWrapper, backgroundImages, PremiumScene } from './shared-components';
+import { PREMIUM_GLASS, premiumTypography } from './premium-presets';
 
 import { Button } from '../../Button';
 import { Badge } from '../../Badge';
@@ -28,7 +29,7 @@ const meta: Meta<typeof AtomixGlass> = {
     docs: {
       description: {
         component:
-          'Real-world examples showing how to use AtomixGlass in different design contexts and applications.',
+          'Premium real-world previews — Apple-tuned glass (deep blur, subtle displacement) across product UI patterns.',
       },
     },
   },
@@ -37,6 +38,41 @@ const meta: Meta<typeof AtomixGlass> = {
 
 export default meta;
 type Story = StoryObj<typeof AtomixGlass>;
+
+/**
+ * Curated premium preview — card, chrome, and liquid presets side by side.
+ */
+export const PremiumShowcase: Story = {
+  render: () => (
+    <PremiumScene photoIndex={1} height="100vh">
+      <div
+        className="u-grid u-gap-6 u-w-100"
+        style={{
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          maxWidth: '960px',
+          margin: '0 auto',
+          fontFamily: premiumTypography.fontFamily,
+        }}
+      >
+        {(
+          [
+            { preset: PREMIUM_GLASS.chrome, label: 'Chrome', sub: 'Nav · sidebar · player' },
+            { preset: PREMIUM_GLASS.card, label: 'Card', sub: 'Panels · modals' },
+            { preset: PREMIUM_GLASS.liquid, label: 'Liquid', sub: 'Shader · motion' },
+          ] as const
+        ).map(({ preset, label, sub }) => (
+          <AtomixGlass key={label} {...preset} elasticity={0}>
+            <div style={{ padding: '32px 28px', color: '#fff' }}>
+              <div style={{ fontSize: '11px', letterSpacing: '0.08em', opacity: 0.5 }}>PREMIUM</div>
+              <h3 style={{ margin: '8px 0 4px', fontSize: '22px', fontWeight: 700 }}>{label}</h3>
+              <p style={{ margin: 0, fontSize: '13px', color: premiumTypography.muted }}>{sub}</p>
+            </div>
+          </AtomixGlass>
+        ))}
+      </div>
+    </PremiumScene>
+  ),
+};
 
 /**
  * Hero section example
@@ -52,18 +88,7 @@ export const HeroExample: Story = {
     >
       <div>
         <div className="u-max-w-4xl u-mx-auto">
-          <AtomixGlass
-            displacementScale={150}
-            blurAmount={2.5}
-            saturation={160}
-            aberrationIntensity={4}
-            borderRadius={30}
-            mode="prominent"
-            withLiquidBlur={true}
-            withTimeAnimation={true}
-            withMultiLayerDistortion={true}
-            onClick={() => {}}
-          >
+          <AtomixGlass {...PREMIUM_GLASS.hero} borderRadius={30} elasticity={0.06} onClick={() => {}}>
             <div
               className="u-p-12 u-text-white u-text-center"
               style={{ padding: '48px 40px', textAlign: 'center' }}
@@ -234,9 +259,9 @@ export const VideoBackground: Story = {
 
           {/* Side Control Panel */}
           <AtomixGlass
-            displacementScale={40}
-            blurAmount={0.06}
-            saturation={120}
+            displacementScale={24}
+            blurAmount={20}
+            saturation={180}
             aberrationIntensity={1.5}
             borderRadius={16}
             mode="standard"
@@ -411,10 +436,10 @@ export const DashboardCards: Story = {
       >
         <div className="u-max-w-6xl u-mx-auto u-text-white" style={{ maxWidth: '1200px', margin: '0 auto', color: 'white' }}>
           <AtomixGlass
-            displacementScale={80}
-            blurAmount={2.5}
-            saturation={160}
-            aberrationIntensity={3}
+            displacementScale={32}
+            blurAmount={26}
+            saturation={185}
+            aberrationIntensity={0.9}
             borderRadius={24}
             mode="prominent"
             withLiquidBlur={true}
@@ -585,7 +610,7 @@ export const ProductCard: Story = {
         }
       >
         <div className="u-w-75 u-mx-auto" style={{ width: '300px' }}>
-          <AtomixGlass displacementScale={50} blurAmount={1.5} mode="standard" elasticity={0}>
+          <AtomixGlass displacementScale={28} blurAmount={24} mode="standard" elasticity={0}>
             <div className="u-p-3">
               {/* Product Image */}
               <div
@@ -776,9 +801,9 @@ export const NotificationCenter: Story = {
       >
         <div className="u-w-90 u-max-w-md u-mx-auto" style={{ width: '360px', maxWidth: 'none', margin: '0 auto' }}>
           <AtomixGlass
-            displacementScale={100}
-            blurAmount={2}
-            saturation={150}
+            displacementScale={36}
+            blurAmount={22}
+            saturation={180}
             aberrationIntensity={2.5}
             borderRadius={20}
             mode="polar"
@@ -924,9 +949,9 @@ export const LoginForm: Story = {
         <div className="u-py-16 u-text-white">
           <div className="u-max-w-md u-mx-auto" style={{ maxWidth: '380px' }}>
             <AtomixGlass
-              displacementScale={50}
-              blurAmount={1}
-              saturation={130}
+              displacementScale={28}
+              blurAmount={20}
+              saturation={180}
               aberrationIntensity={2}
               borderRadius={24}
               mode="standard"
@@ -1217,15 +1242,15 @@ export const SimpleMusicPlayer: Story = {
       >
         <div style={{ maxWidth: '380px' }} className="u-mx-auto">
           <AtomixGlass
-            displacementScale={55}
-            blurAmount={3}
+            displacementScale={28}
+            blurAmount={24}
             borderRadius={28}
             elasticity={0.01}
             mode="standard"
           >
             <div className="u-p-3">
               {/* Album Art */}
-              <AtomixGlass displacementScale={0} blurAmount={0} borderRadius={20} mode="standard">
+              <AtomixGlass displacementScale={0} blurAmount={20} borderRadius={20} mode="standard">
                 <div
                   style={{
                     aspectRatio: '1:2',
@@ -1509,10 +1534,10 @@ export const MusicPlayer: Story = {
       >
         <div className="u-max-w-lg u-mx-auto" style={{ maxWidth: '500px', margin: '0 auto' }}>
           <AtomixGlass
-            displacementScale={100}
-            blurAmount={3}
-            saturation={170}
-            aberrationIntensity={3}
+            displacementScale={36}
+            blurAmount={24}
+            saturation={185}
+            aberrationIntensity={0.9}
             borderRadius={30}
             mode="polar"
             withLiquidBlur={true}
@@ -1899,7 +1924,7 @@ export const PricingTable: Story = {
 
             {/* Billing Toggle */}
             <div style={{ width: '100%', maxWidth: '200px', margin: '0 auto' }}>
-              <AtomixGlass blurAmount={1} saturation={120} borderRadius={50} mode="standard">
+              <AtomixGlass blurAmount={20} saturation={180} borderRadius={50} mode="standard">
                 <button
                   onClick={() => setBillingCycle('monthly')}
                   style={{
@@ -1966,7 +1991,7 @@ export const PricingTable: Story = {
                 <AtomixGlass
                   key={index}
                   displacementScale={plan.popular ? 100 : 40}
-                  blurAmount={1}
+                  blurAmount={20}
                   saturation={plan.popular ? 180 : 130}
                   aberrationIntensity={plan.popular ? 2 : 1.5}
                   borderRadius={24}
@@ -2200,8 +2225,8 @@ export const ChatInterface: Story = {
       >
         <div style={{ maxWidth: '450px', width: '100%' }} className="u-mx-auto">
           <AtomixGlass
-            displacementScale={100}
-            blurAmount={1}
+            displacementScale={36}
+            blurAmount={20}
             borderRadius={24}
             elasticity={0.1}
             mode="prominent"
@@ -2556,8 +2581,8 @@ export const ProfileCard: Story = {
       >
         <div style={{ width: '420px', maxWidth: '100%' }} className="u-mx-auto">
           <AtomixGlass
-            displacementScale={45}
-            blurAmount={5}
+            displacementScale={26}
+            blurAmount={28}
             borderRadius={24}
             mode="standard"
             elasticity={0.05}
@@ -2788,7 +2813,7 @@ export const ProfileCard: Story = {
                   }}
                 >
                   <AtomixGlass
-                    blurAmount={0.8}
+                    blurAmount={22}
                     borderRadius={16}
                     elasticity={0}
                     mode="standard"
@@ -2867,7 +2892,7 @@ export const SettingsPanel: Story = {
         height="90vh"
       >
         <div className="u-mx-auto u-py-6" style={{ maxWidth: '550px' }}>
-          <AtomixGlass displacementScale={45} blurAmount={1} borderRadius={24} mode="standard">
+          <AtomixGlass displacementScale={26} blurAmount={20} borderRadius={24} mode="standard">
             <div style={{ padding: '32px' }}>
               {/* Header */}
               <div className="u-mb-5">
@@ -3276,7 +3301,7 @@ export const EventCard: Story = {
         height="90vh"
       >
         <div className="u-mx-auto u-py-6" style={{ maxWidth: '480px' }}>
-          <AtomixGlass displacementScale={45} blurAmount={4} borderRadius={24} mode="standard">
+          <AtomixGlass displacementScale={26} blurAmount={26} borderRadius={24} mode="standard">
             {/* Event Image */}
             <div
               style={{
@@ -3652,8 +3677,8 @@ export const SocialMediaPost: Story = {
       >
         <div className="u-mx-auto u-py-6" style={{ maxWidth: '450px' }}>
           <AtomixGlass
-            displacementScale={200}
-            blurAmount={5}
+            displacementScale={56}
+            blurAmount={28}
             borderRadius={24}
             mode="standard"
             elasticity={0}
@@ -4014,8 +4039,8 @@ export const WeatherWidget: Story = {
       >
         <div className="u-mx-auto u-py-6" style={{ maxWidth: '500px' }}>
           <AtomixGlass
-            displacementScale={60}
-            blurAmount={1.1}
+            displacementScale={28}
+            blurAmount={22}
             saturation={190}
             borderRadius={32}
             mode="standard"
@@ -4293,8 +4318,8 @@ export const SearchResults: Story = {
       >
         <div className="u-mx-auto u-py-6" style={{ maxWidth: '900px' }}>
           <AtomixGlass
-            displacementScale={30}
-            blurAmount={2}
+            displacementScale={24}
+            blurAmount={22}
             borderRadius={30}
             mode="standard"
             onClick={() => {}}
@@ -4536,8 +4561,8 @@ export const PaymentForm: Story = {
       >
         <div style={{ minWidth: '300px', maxWidth: '400px' }} className="u-mx-auto">
           <AtomixGlass
-            displacementScale={120}
-            blurAmount={2}
+            displacementScale={24}
+            blurAmount={22}
             saturation={180}
             borderRadius={28}
             mode="standard"
@@ -4590,7 +4615,7 @@ export const PaymentForm: Story = {
               <AtomixGlass
                 mode="standard"
                 displacementScale={0}
-                blurAmount={0}
+                blurAmount={20}
                 saturation={200}
                 elasticity={0}
               >
@@ -4921,8 +4946,8 @@ export const NewsletterSubscription: Story = {
       >
         <div className="u-mx-auto u-py-6" style={{ maxWidth: '500px' }}>
           <AtomixGlass
-            displacementScale={100}
-            blurAmount={3}
+            displacementScale={36}
+            blurAmount={24}
             borderRadius={32}
             mode="standard"
             elasticity={0}
@@ -5545,8 +5570,8 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={60}
-                blurAmount={0}
+                displacementScale={28}
+                blurAmount={20}
                 borderRadius={24}
                 mode="prominent"
                 onClick={() => null}
@@ -5608,8 +5633,8 @@ export const MobileUIExample: Story = {
               <div style={{ height: '15px' }} />
 
               <AtomixGlass
-                displacementScale={60}
-                blurAmount={0}
+                displacementScale={28}
+                blurAmount={20}
                 saturation={185}
                 elasticity={0.2}
                 borderRadius={30}
@@ -5687,8 +5712,8 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={220}
-                blurAmount={0}
+                displacementScale={56}
+                blurAmount={20}
                 borderRadius={15}
                 mode="shader"
                 onClick={() => null}
@@ -5733,8 +5758,8 @@ export const MobileUIExample: Story = {
               <div style={{ height: '15px' }} />
 
               <AtomixGlass
-                displacementScale={60}
-                blurAmount={0}
+                displacementScale={28}
+                blurAmount={20}
                 borderRadius={15}
                 onClick={() => null}
               >
@@ -5780,8 +5805,8 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={60}
-                blurAmount={0}
+                displacementScale={28}
+                blurAmount={20}
                 borderRadius={15}
                 mode="standard"
                 onClick={() => null}
@@ -5899,8 +5924,8 @@ export const MobileUIExample: Story = {
           return (
             <div style={{ padding: '10px 0' }}>
               <AtomixGlass
-                displacementScale={120}
-                blurAmount={0}
+                displacementScale={24}
+                blurAmount={20}
                 saturation={180}
                 elasticity={0.16}
                 borderRadius={15}
@@ -5969,9 +5994,9 @@ export const MobileUIExample: Story = {
             <div style={{ textAlign: 'center', marginBottom: '40px' }}>
               <AtomixGlass
                 mode="standard"
-                displacementScale={60}
-                blurAmount={1}
-                saturation={130}
+                displacementScale={28}
+                blurAmount={20}
+                saturation={180}
                 borderRadius={24}
                 elasticity={0.1}
                 style={{ marginBottom: '24px', display: 'inline-block' }}
@@ -6032,7 +6057,7 @@ export const MobileUIExample: Story = {
                 {/* Header */}
                 <AtomixGlass
                   displacementScale={20}
-                  blurAmount={1}
+                  blurAmount={20}
                   saturation={180}
                   elasticity={0}
                   borderRadius={26}
@@ -6065,7 +6090,7 @@ export const MobileUIExample: Story = {
 
                 {/* Bottom navigation */}
                 <AtomixGlass
-                  displacementScale={25}
+                  displacementScale={22}
                   elasticity={0}
                   borderRadius={18}
                   mode="shader"
@@ -6143,6 +6168,129 @@ export const MobileUIExample: Story = {
       description: {
         story:
           'This example demonstrates how AtomixGlass components can be optimized for mobile interfaces. The design showcases a complete mobile app UI with navigation tabs, responsive layouts, and touch-friendly controls. The glass effect provides a modern and elegant look while maintaining excellent readability and usability on smaller screens.',
+      },
+    },
+  },
+};
+
+/**
+ * Apple Music–style layout: dark chrome, sidebar, and floating player bar.
+ * Uses AtomixGlass defaults tuned for Apple's liquid-glass recipe.
+ */
+export const AppleMusicUI: Story = {
+  render: () => (
+    <div
+      style={{
+        minHeight: '90vh',
+        background:
+          'radial-gradient(ellipse 120% 80% at 70% 20%, #5c1030 0%, #1a0a12 45%, #0d0d0f 100%)',
+        color: '#fff',
+        fontFamily: premiumTypography.fontFamily,
+        display: 'flex',
+        overflow: 'hidden',
+      }}
+    >
+      <AtomixGlass
+        {...PREMIUM_GLASS.chrome}
+        borderRadius={0}
+        style={{ width: 220, flexShrink: 0 }}
+      >
+        <nav style={{ padding: '20px 12px', minHeight: '90vh' }}>
+          <p
+            style={{
+              margin: '0 0 16px 12px',
+              fontSize: 11,
+              fontWeight: 600,
+              letterSpacing: '0.06em',
+              textTransform: 'uppercase',
+              opacity: 0.45,
+            }}
+          >
+            Library
+          </p>
+          {['Home', 'New', 'Radio'].map((item, i) => (
+            <div
+              key={item}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 10,
+                padding: '8px 12px',
+                marginBottom: 4,
+                borderRadius: 8,
+                fontSize: 14,
+                fontWeight: 500,
+                background: i === 0 ? 'rgba(255, 45, 85, 0.22)' : 'transparent',
+                color: i === 0 ? '#ff375f' : 'rgba(255,255,255,0.85)',
+              }}
+            >
+              <Icon name={i === 0 ? 'House' : i === 1 ? 'Sparkle' : 'Radio'} />
+              {item}
+            </div>
+          ))}
+        </nav>
+      </AtomixGlass>
+
+      <main style={{ flex: 1, padding: '32px 40px 120px', position: 'relative' }}>
+        <h1 style={{ margin: '0 0 28px', fontSize: 34, fontWeight: 700 }}>Home</h1>
+        <div style={{ display: 'grid', gap: 16, maxWidth: 520 }}>
+          <div
+            style={{
+              borderRadius: 14,
+              padding: 28,
+              background: 'linear-gradient(135deg, #8b1538 0%, #e91e63 55%, #ff6b9d 100%)',
+              minHeight: 140,
+            }}
+          >
+            <span style={{ fontSize: 28, opacity: 0.9 }}></span>
+            <p style={{ margin: '12px 0 0', fontSize: 22, fontWeight: 600 }}>100 million songs.</p>
+          </div>
+          <div
+            style={{
+              borderRadius: 14,
+              padding: 28,
+              background: 'linear-gradient(135deg, #c026d3 0%, #e879f9 100%)',
+              minHeight: 100,
+            }}
+          />
+        </div>
+
+        <div
+          style={{
+            position: 'absolute',
+            left: '50%',
+            bottom: 32,
+            transform: 'translateX(-50%)',
+            width: 'min(420px, 90%)',
+          }}
+        >
+          <AtomixGlass {...PREMIUM_GLASS.pill}>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 20,
+                padding: '14px 28px',
+                color: 'rgba(255,255,255,0.65)',
+              }}
+            >
+              <Icon name="Shuffle" />
+              <Icon name="SkipBack" />
+              <Icon name="Play" />
+              <Icon name="SkipForward" />
+              <Icon name="Repeat" />
+            </div>
+          </AtomixGlass>
+        </div>
+      </main>
+    </div>
+  ),
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Apple Music–inspired dark UI with a glass sidebar and floating playback pill. Uses default AtomixGlass tuning (deep blur, low displacement, subtle tint).',
       },
     },
   },
@@ -6271,15 +6419,7 @@ export const AppleInspiredUI: Story = {
           }}
         >
           {/* Top menu bar - macOS style */}
-          <AtomixGlass
-            displacementScale={70}
-            blurAmount={0}
-            saturation={150}
-            borderRadius={8}
-            mode="shader"
-            shaderVariant="premiumGlass"
-            elasticity={0}
-          >
+          <AtomixGlass borderRadius={8} elasticity={0}>
             <div
               style={{
                 padding: '10px 16px',
@@ -6392,8 +6532,8 @@ export const AppleInspiredUI: Story = {
 
           {/* Center widget - iOS style */}
           <AtomixGlass
-            displacementScale={50}
-            blurAmount={2}
+            displacementScale={28}
+            blurAmount={22}
             shaderVariant="premiumGlass"
             borderRadius={24}
             mode="shader"
@@ -6477,9 +6617,9 @@ export const AppleInspiredUI: Story = {
               </div>
 
               <AtomixGlass
-                displacementScale={12}
-                blurAmount={5}
-                saturation={130}
+                displacementScale={16}
+                blurAmount={28}
+                saturation={180}
                 aberrationIntensity={1}
                 borderRadius={16}
                 elasticity={0}
@@ -6586,9 +6726,9 @@ export const AppleInspiredUI: Story = {
 
           {/* Bottom dock - macOS style */}
           <AtomixGlass
-            displacementScale={15}
-            blurAmount={2}
-            saturation={140}
+            displacementScale={18}
+            blurAmount={22}
+            saturation={180}
             aberrationIntensity={1.2}
             borderRadius={24}
             mode="polar"

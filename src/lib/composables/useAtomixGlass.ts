@@ -678,11 +678,12 @@ export function useAtomixGlass({
       isOverLight,
       threshold: 0.7,
       opacity: baseOpacity,
-      contrast: 1.4,
-      brightness: 0.9,
-      saturationBoost: 1.3, // Fixed value — dynamic saturation amplifies perceived displacement
-      shadowIntensity: 0.9,
-      borderOpacity: 0.7,
+      // Dark UI (Apple Music): neutral contrast + slight brightness lift
+      contrast: isOverLight ? 1.4 : 1.02,
+      brightness: isOverLight ? 0.9 : 1.02,
+      saturationBoost: isOverLight ? 1.3 : 1.0,
+      shadowIntensity: isOverLight ? 0.9 : 1.0,
+      borderOpacity: isOverLight ? 0.7 : 0.35,
     };
 
     if (typeof overLight === 'object' && overLight !== null) {

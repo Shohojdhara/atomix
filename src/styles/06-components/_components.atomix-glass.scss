@@ -10,6 +10,7 @@
   // Local, sane defaults (kept minimal)
   --_glass-radius: var(--atomix-glass-radius, var(--atomix-radius-md, 0.75rem));
   --_glass-transform: var(--atomix-glass-transform, translateZ(0));
+  --_glass-backdrop: #{$glass-backdrop-filter};
 
   --atomix-glass-position: absolute;
   --atomix-glass-border-width: var(--atomix-spacing-0-5, 0.125rem);
@@ -130,7 +131,7 @@
 
   &__base {
     mix-blend-mode: soft-light;
-    opacity: var(--atomix-glass-base-opacity, 0.6);
+    opacity: var(--atomix-glass-base-opacity, #{$glass-base-opacity});
     background: var(
       --atomix-glass-base-gradient,
       linear-gradient(
@@ -143,7 +144,7 @@
 
   &__overlay {
     mix-blend-mode: overlay;
-    opacity: var(--atomix-glass-overlay-opacity, 0.35);
+    opacity: var(--atomix-glass-overlay-opacity, #{$glass-overlay-opacity});
     background: var(
       --atomix-glass-overlay-gradient,
       radial-gradient(
@@ -164,13 +165,13 @@
     transition: var(--_glass-transition);
     mix-blend-mode: screen;
     z-index: var(--_glass-z-overlay-highlight);
-    opacity: var(--atomix-glass-overlay-highlight-opacity, 0.25);
+    opacity: var(--atomix-glass-overlay-highlight-opacity, #{$glass-overlay-highlight-opacity});
     background: var(
       --atomix-glass-overlay-highlight-bg,
-      linear-gradient(
-        180deg,
+      radial-gradient(
+        90% 55% at 50% 0%,
         var(--atomix-glass-highlight-start-color, #{$glass-highlight-start-color}) 0%,
-        var(--atomix-glass-highlight-end-color, #{$glass-highlight-end-color}) 60%
+        var(--atomix-glass-highlight-end-color, #{$glass-highlight-end-color}) 72%
       )
     );
   }
@@ -217,7 +218,7 @@
   }
 
   &__border-1 {
-    opacity: var(--atomix-glass-border-1-opacity, var(--atomix-opacity-18, 0.18));
+    opacity: var(--atomix-glass-border-1-opacity, #{$glass-border-1-opacity});
     mix-blend-mode: screen;
     z-index: var(--_glass-z-border-2);
     background: var(--atomix-glass-border-gradient-1, none);

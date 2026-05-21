@@ -4,11 +4,11 @@ exports[`AtomixGlass Visual Regression > matches snapshot with default props 1`]
 <div>
   <div
     class="c-atomix-glass"
-    style="--atomix-glass-radius: 16px; --atomix-glass-transform: translate(0px, 0px) scaleX(1) scaleY(1); --atomix-glass-container-position: absolute; --atomix-glass-position: absolute; --atomix-glass-top: 0px; --atomix-glass-left: 0px; --atomix-glass-right: auto; --atomix-glass-bottom: auto; --atomix-glass-width: 100%; --atomix-glass-height: 100%; --atomix-glass-container-width: 100%; --atomix-glass-container-height: 100%; --atomix-glass-border-width: var(--atomix-spacing-0-5, 0.125rem); --atomix-glass-blend-mode: overlay; --atomix-glass-child-parallax: translate(0px, 0px); --atomix-glass-contrast: 1.4; --atomix-glass-brightness: 0.9; --atomix-glass-border-gradient-1: linear-gradient(136.5deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.041999999999999996) 33%, rgba(255, 255, 255, 0.13985999999999998) 66%, rgba(255, 255, 255, 0) 100%); --atomix-glass-border-gradient-2: linear-gradient(133.5deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.11171999999999999) 33%, rgba(255, 255, 255, 0.21) 66%, rgba(255, 255, 255, 0) 100%); --atomix-glass-hover-1-gradient: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 50%); --atomix-glass-hover-2-gradient: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 80%); --atomix-glass-hover-3-gradient: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%); --atomix-glass-base-gradient: rgba(255, 255, 255, 0.0666); --atomix-glass-overlay-gradient: rgba(255, 255, 255, 0.03328); --atomix-glass-hover-1-opacity: 0; --atomix-glass-hover-2-opacity: 0; --atomix-glass-hover-3-opacity: 0; --atomix-glass-base-opacity: 0; --atomix-glass-overlay-opacity: 0; --atomix-glass-overlay-highlight-opacity: 0;"
+    style="--atomix-glass-radius: 16px; --atomix-glass-transform: translate(0px, 0px) scaleX(1) scaleY(1); --atomix-glass-container-position: absolute; --atomix-glass-position: absolute; --atomix-glass-top: 0px; --atomix-glass-left: 0px; --atomix-glass-right: auto; --atomix-glass-bottom: auto; --atomix-glass-width: 100%; --atomix-glass-height: 100%; --atomix-glass-container-width: 100%; --atomix-glass-container-height: 100%; --atomix-glass-border-width: var(--atomix-spacing-0-5, 0.125rem); --atomix-glass-blend-mode: overlay; --atomix-glass-child-parallax: translate(0px, 0px); --atomix-glass-contrast: 1.02; --atomix-glass-brightness: 1.02; --atomix-glass-border-gradient-1: linear-gradient(136.5deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.020999999999999998) 33%, rgba(255, 255, 255, 0.06992999999999999) 66%, rgba(255, 255, 255, 0) 100%); --atomix-glass-border-gradient-2: linear-gradient(133.5deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.05585999999999999) 33%, rgba(255, 255, 255, 0.105) 66%, rgba(255, 255, 255, 0) 100%); --atomix-glass-hover-1-gradient: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 50%); --atomix-glass-hover-2-gradient: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 80%); --atomix-glass-hover-3-gradient: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 100%); --atomix-glass-base-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.22) 55%, rgba(0, 0, 0, 0.12) 100%); --atomix-glass-overlay-gradient: radial-gradient(120% 80% at 50% 0%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 55%); --atomix-glass-hover-1-opacity: 0; --atomix-glass-hover-2-opacity: 0; --atomix-glass-hover-3-opacity: 0; --atomix-glass-base-opacity: 0.14; --atomix-glass-overlay-opacity: 0.1; --atomix-glass-overlay-highlight-opacity: 0.04900000000000001;"
   >
     <div
       class="c-atomix-glass__container"
-      style="--atomix-glass-container-radius: 16px; --atomix-glass-container-backdrop: blur(8.25px) saturate(243%) contrast(1.4) brightness(0.9); --atomix-glass-container-shadow: 0 0 20px rgba(0, 0, 0, 0.10) inset, 0 4px 8px rgba(0, 0, 0, 0.06) inset; --atomix-glass-container-shadow-opacity: 1; --atomix-glass-container-bg: none; --atomix-glass-container-text-shadow: 0px 2px 12px rgba(0, 0, 0, 0.4); --atomix-glass-container-box-shadow: 0px 12px 40px rgba(0, 0, 0, 0.25);"
+      style="--atomix-glass-container-radius: 16px; --atomix-glass-container-backdrop: blur(20.16px) saturate(250%) contrast(1.02) brightness(1.02); --atomix-glass-container-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.32), inset 0 1px 2px rgba(255, 255, 255, 0.06), 0 8px 32px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.16); --atomix-glass-container-shadow-opacity: 1; --atomix-glass-container-bg: none; --atomix-glass-container-text-shadow: 0px 2px 12px rgba(0, 0, 0, 0.4); --atomix-glass-container-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.32), 0 2px 8px rgba(0, 0, 0, 0.18);"
     >
       <div
         class="c-atomix-glass__inner"
@@ -33,7 +33,7 @@ exports[`AtomixGlass Visual Regression > matches snapshot with default props 1`]
                   stop-opacity="0"
                 />
                 <stop
-                  offset="76.7%"
+                  offset="78.88%"
                   stop-color="black"
                   stop-opacity="0"
                 />
@@ -75,7 +75,7 @@ exports[`AtomixGlass Visual Regression > matches snapshot with default props 1`]
                   result="EDGE_MASK"
                 >
                   <fefunca
-                    tableValues="0 0.0825 1"
+                    tableValues="0 0.028000000000000004 1"
                     type="discrete"
                   />
                 </fecomponenttransfer>
@@ -89,7 +89,7 @@ exports[`AtomixGlass Visual Regression > matches snapshot with default props 1`]
                   in="SourceGraphic"
                   in2="DISPLACEMENT_MAP"
                   result="RED_DISPLACED"
-                  scale="-55"
+                  scale="-28"
                   xChannelSelector="R"
                   yChannelSelector="B"
                 />
@@ -106,7 +106,7 @@ exports[`AtomixGlass Visual Regression > matches snapshot with default props 1`]
                   in="SourceGraphic"
                   in2="DISPLACEMENT_MAP"
                   result="GREEN_DISPLACED"
-                  scale="-56.815"
+                  scale="-28.3136"
                   xChannelSelector="R"
                   yChannelSelector="B"
                 />
@@ -123,7 +123,7 @@ exports[`AtomixGlass Visual Regression > matches snapshot with default props 1`]
                   in="SourceGraphic"
                   in2="DISPLACEMENT_MAP"
                   result="BLUE_DISPLACED"
-                  scale="-57.722500000000004"
+                  scale="-28.470399999999998"
                   xChannelSelector="R"
                   yChannelSelector="B"
                 />
@@ -151,7 +151,7 @@ exports[`AtomixGlass Visual Regression > matches snapshot with default props 1`]
                 <fegaussianblur
                   in="RGB_COMBINED"
                   result="ABERRATED_BLURRED"
-                  stdDeviation="0.680625"
+                  stdDeviation="0.5644800000000001"
                 />
                 <fecomposite
                   in="ABERRATED_BLURRED"

@@ -178,11 +178,12 @@ export const updateAtomixGlassStyles = (
     };
 
     const opacityValues = {
-      hover1: isHovered || isActive ? 0.5 : 0,
-      hover2: isActive ? 0.5 : 0,
-      hover3: isHovered ? 0.4 : isActive ? 0.8 : 0,
-      base: isOverLight ? overLightConfig.opacity : 0,
-      over: isOverLight ? overLightConfig.opacity * 1.1 : 0,
+      hover1: isHovered || isActive ? 0.35 : 0,
+      hover2: isActive ? 0.35 : 0,
+      hover3: isHovered ? 0.25 : isActive ? 0.45 : 0,
+      // Dark chrome: faint smoky tint; over-light keeps stronger fill
+      base: isOverLight ? overLightConfig.opacity : 0.14,
+      over: isOverLight ? overLightConfig.opacity * 1.1 : 0.1,
     };
 
     const style = wrapperElement.style;
@@ -236,14 +237,14 @@ export const updateAtomixGlassStyles = (
       '--atomix-glass-base-gradient',
       isOverLight
         ? `linear-gradient(${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.ANGLE}deg, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_START_BASE + mx * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_START_MULTIPLIER}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_BASE + my * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_MULTIPLIER}) ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_MID_STOP}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_END_BASE + absMx * ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.BLACK_END_MULTIPLIER}) 100%)`
-        : `rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.BASE_GRADIENT.WHITE_OPACITY})`
+        : `linear-gradient(180deg, rgba(${blackColor}, 0.42) 0%, rgba(${blackColor}, 0.22) 55%, rgba(${blackColor}, 0.12) 100%)`
     );
 
     style.setProperty(
       '--atomix-glass-overlay-gradient',
       isOverLight
         ? `radial-gradient(circle at ${basePosition.x}% ${basePosition.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_BASE + absMx * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_START_MULTIPLIER}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_MID_STOP}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_BASE + absMy * ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.BLACK_END_MULTIPLIER}) 100%)`
-        : `rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.OVERLAY_GRADIENT.WHITE_OPACITY})`
+        : `radial-gradient(120% 80% at 50% 0%, rgba(${whiteColor}, 0.14) 0%, rgba(${whiteColor}, 0) 55%)`
     );
 
     // Opacities
@@ -376,7 +377,9 @@ export const updateAtomixGlassStyles = (
 
     style.setProperty(
       '--atomix-glass-container-box-shadow',
-      isOverLight ? '0px 16px 70px rgba(0, 0, 0, 0.75)' : '0px 12px 40px rgba(0, 0, 0, 0.25)'
+      isOverLight
+        ? '0px 16px 70px rgba(0, 0, 0, 0.75)'
+        : '0 8px 32px rgba(0, 0, 0, 0.32), 0 2px 8px rgba(0, 0, 0, 0.18)'
     );
   }
 };

@@ -12,6 +12,12 @@
 import { Meta, StoryObj } from '@storybook/react';
 import AtomixGlass from '../AtomixGlass';
 import Button from '../../Button/Button';
+import {
+  PLAYGROUND_DEFAULT_SETTINGS,
+  PLAYGROUND_PRESETS,
+  PREMIUM_GLASS,
+} from './premium-presets';
+import { advancedArgTypes } from './argTypes';
 import { useState, useEffect, useCallback, useRef } from 'react';
 import React from 'react';
 import type { RefObject } from 'react';
@@ -26,127 +32,16 @@ const meta: Meta<typeof AtomixGlass> = {
   title: 'Components/AtomixGlass',
   component: AtomixGlass,
   parameters: {
-    layout: 'centered',
+    layout: 'fullscreen',
     docs: {
       description: {
         component:
-          'A glass-like component with chromatic aberration and displacement effects. The component provides a modern, frosted glass aesthetic with interactive hover effects. This component is ideal for creating modern UI elements with depth and visual interest.',
+          'Premium liquid glass with Apple-tuned defaults: deep backdrop frost (20–40px blur), 180% saturation, subtle displacement, and dark-mode smoky tint. Use the Playground story to explore presets from UI chrome through cinematic shader modes.',
       },
     },
   },
   tags: ['autodocs'],
-  argTypes: {
-    children: {
-      control: 'text',
-      description: 'Content to display inside the glass effect',
-    },
-    displacementScale: {
-      control: { type: 'range', min: 0, max: 100, step: 1 },
-      description: 'Displacement scale for the glass effect (default: 70)',
-      table: { defaultValue: { summary: '70' } },
-    },
-    blurAmount: {
-      control: { type: 'range', min: 0, max: 10, step: 0.5 },
-      description: 'Blur amount for the backdrop (default: 0.0625)',
-      table: { defaultValue: { summary: '0.0625' } },
-    },
-    saturation: {
-      control: { type: 'range', min: 100, max: 300, step: 5 },
-      description: 'Saturation percentage for the backdrop (default: 140)',
-      table: { defaultValue: { summary: '140' } },
-    },
-    aberrationIntensity: {
-      control: { type: 'range', min: 0, max: 10, step: 0.1 },
-      description: 'Chromatic aberration intensity (default: 2)',
-      table: { defaultValue: { summary: '2' } },
-    },
-    elasticity: {
-      control: { type: 'range', min: 0, max: 1, step: 0.01 },
-      description: 'Elasticity factor for mouse interactions (default: 0.15)',
-      table: { defaultValue: { summary: '0.15' } },
-    },
-    borderRadius: {
-      control: { type: 'range', min: 0, max: 50, step: 1 },
-      description: 'Corner radius in pixels (default: 20)',
-      table: { defaultValue: { summary: '20' } },
-    },
-    globalMousePosition: {
-      control: 'object',
-      description: 'External global mouse position { x: number; y: number }',
-    },
-    mouseOffset: {
-      control: 'object',
-      description: 'External mouse offset { x: number; y: number }',
-    },
-    mouseContainer: {
-      control: false,
-      description: 'React ref object for mouse container element',
-    },
-    padding: {
-      control: 'text',
-      description: 'Padding for the glass container (default: "0 0")',
-      table: { defaultValue: { summary: '"0 0"' } },
-    },
-    overLight: {
-      control: 'boolean',
-      description: 'Whether the glass is over a light background (default: false)',
-      table: { defaultValue: { summary: 'false' } },
-    },
-    mode: {
-      control: 'select',
-      options: ['standard', 'polar', 'prominent', 'shader'],
-      description: 'Glass effect mode (default: "standard")',
-      table: { defaultValue: { summary: '"standard"' } },
-    },
-    onClick: {
-      action: 'clicked',
-      description: 'Click event handler',
-    },
-    className: {
-      control: 'text',
-      description: 'Additional CSS class names',
-    },
-    style: {
-      control: 'object',
-      description: 'CSS style object',
-    },
-    'aria-label': {
-      control: 'text',
-      description: 'ARIA label for accessibility',
-    },
-    'aria-describedby': {
-      control: 'text',
-      description: 'ARIA describedby attribute for accessibility',
-    },
-    role: {
-      control: 'text',
-      description: 'ARIA role attribute',
-    },
-    tabIndex: {
-      control: 'number',
-      description: 'Tab index for keyboard navigation',
-    },
-    reducedMotion: {
-      control: 'boolean',
-      description: 'Override for reduced motion preference (default: false)',
-      table: { defaultValue: { summary: 'false' } },
-    },
-    highContrast: {
-      control: 'boolean',
-      description: 'Override for high contrast preference (default: false)',
-      table: { defaultValue: { summary: 'false' } },
-    },
-    withoutEffects: {
-      control: 'boolean',
-      description: 'Disable all visual effects (default: false)',
-      table: { defaultValue: { summary: 'false' } },
-    },
-    debugPerformance: {
-      control: 'boolean',
-      description: 'Enable performance monitoring (default: false)',
-      table: { defaultValue: { summary: 'false' } },
-    },
-  },
+  argTypes: advancedArgTypes,
 };
 
 export default meta;
@@ -313,31 +208,7 @@ export const Playground: Story = {
       disableResponsiveBreakpoints: boolean;
       debugPerformance: boolean;
       debugOverLight: boolean;
-    }>({
-      displacementScale: 40,
-      blurAmount: 1,
-      saturation: 140,
-      aberrationIntensity: 2,
-      elasticity: 0.15,
-      borderRadius: 20,
-      overLight: false,
-      reducedMotion: false,
-      highContrast: false,
-      withoutEffects: false,
-      withLiquidBlur: false,
-      withBorder: true,
-      withTimeAnimation: true,
-      animationSpeed: 1.0,
-      withMultiLayerDistortion: false,
-      distortionOctaves: 3,
-      distortionLacunarity: 2.0,
-      distortionGain: 0.5,
-      distortionQuality: 'medium',
-      devicePreset: 'balanced',
-      disableResponsiveBreakpoints: false,
-      debugPerformance: false,
-      debugOverLight: false,
-    });
+    }>({ ...PLAYGROUND_DEFAULT_SETTINGS });
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [backgroundIndex, setBackgroundIndex] = useState(0);
@@ -366,163 +237,7 @@ export const Playground: Story = {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const backgroundsArrayRef = useRef<typeof backgrounds | null>(null);
 
-    const presets = {
-      minimal: {
-        name: 'Minimal',
-        icon: '🌿',
-        settings: {
-          displacementScale: 40,
-          blurAmount: 0.5,
-          saturation: 110,
-          aberrationIntensity: 0.5,
-          elasticity: 0.05,
-          borderRadius: 12,
-          overLight: false,
-          reducedMotion: false,
-          highContrast: false,
-          withoutEffects: false,
-          withLiquidBlur: false,
-          withBorder: true,
-          withTimeAnimation: false,
-          animationSpeed: 1.0,
-          withMultiLayerDistortion: false,
-          distortionOctaves: 3,
-          distortionLacunarity: 2.0,
-          distortionGain: 0.5,
-          distortionQuality: 'medium' as const,
-          devicePreset: 'balanced' as const,
-          disableResponsiveBreakpoints: false,
-          debugPerformance: false,
-          debugOverLight: false,
-        },
-        mode: 'standard' as const,
-        shader: 'liquidGlass' as const,
-      },
-      standard: {
-        name: 'Standard',
-        icon: '⚖️',
-        settings: {
-          displacementScale: 80,
-          blurAmount: 1,
-          saturation: 140,
-          aberrationIntensity: 2,
-          elasticity: 0.15,
-          borderRadius: 20,
-          overLight: false,
-          reducedMotion: false,
-          highContrast: false,
-          withoutEffects: false,
-          withLiquidBlur: false,
-          withBorder: true,
-          withTimeAnimation: true,
-          animationSpeed: 1.0,
-          withMultiLayerDistortion: false,
-          distortionOctaves: 3,
-          distortionLacunarity: 2.0,
-          distortionGain: 0.5,
-          distortionQuality: 'medium' as const,
-          devicePreset: 'balanced' as const,
-          disableResponsiveBreakpoints: false,
-          debugPerformance: false,
-          debugOverLight: false,
-        },
-        mode: 'standard' as const,
-        shader: 'liquidGlass' as const,
-      },
-      liquid: {
-        name: 'Liquid Glass',
-        icon: '💧',
-        settings: {
-          displacementScale: 150,
-          blurAmount: 2.5,
-          saturation: 180,
-          aberrationIntensity: 4.0,
-          elasticity: 0.35,
-          borderRadius: 40,
-          overLight: false,
-          reducedMotion: false,
-          highContrast: false,
-          withoutEffects: false,
-          withLiquidBlur: true,
-          withBorder: true,
-          withTimeAnimation: true,
-          animationSpeed: 1.2,
-          withMultiLayerDistortion: true,
-          distortionOctaves: 4,
-          distortionLacunarity: 2.2,
-          distortionGain: 0.55,
-          distortionQuality: 'high' as const,
-          devicePreset: 'quality' as const,
-          disableResponsiveBreakpoints: false,
-          debugPerformance: false,
-          debugOverLight: false,
-        },
-        mode: 'prominent' as const,
-        shader: 'appleFluid' as const,
-      },
-      premium: {
-        name: 'Premium',
-        icon: '💎',
-        settings: {
-          displacementScale: 180,
-          blurAmount: 1.5,
-          saturation: 170,
-          aberrationIntensity: 3.5,
-          elasticity: 0.25,
-          borderRadius: 28,
-          overLight: false,
-          reducedMotion: false,
-          highContrast: false,
-          withoutEffects: false,
-          withLiquidBlur: true,
-          withBorder: true,
-          withTimeAnimation: true,
-          animationSpeed: 1.2,
-          withMultiLayerDistortion: true,
-          distortionOctaves: 5,
-          distortionLacunarity: 2.5,
-          distortionGain: 0.6,
-          distortionQuality: 'high' as const,
-          devicePreset: 'quality' as const,
-          disableResponsiveBreakpoints: false,
-          debugPerformance: false,
-          debugOverLight: false,
-        },
-        mode: 'prominent' as const,
-        shader: 'plasma' as const,
-      },
-      dramatic: {
-        name: 'Dramatic',
-        icon: '🎭',
-        settings: {
-          displacementScale: 200,
-          blurAmount: 1,
-          saturation: 200,
-          aberrationIntensity: 5,
-          elasticity: 0.35,
-          borderRadius: 32,
-          overLight: false,
-          reducedMotion: false,
-          highContrast: false,
-          withoutEffects: false,
-          withLiquidBlur: true,
-          withBorder: true,
-          withTimeAnimation: true,
-          animationSpeed: 1.5,
-          withMultiLayerDistortion: true,
-          distortionOctaves: 6,
-          distortionLacunarity: 3.0,
-          distortionGain: 0.7,
-          distortionQuality: 'ultra' as const,
-          devicePreset: 'quality' as const,
-          disableResponsiveBreakpoints: false,
-          debugPerformance: false,
-          debugOverLight: false,
-        },
-        mode: 'shader' as const,
-        shader: 'waves' as const,
-      },
-    };
+    const presets = PLAYGROUND_PRESETS;
 
     const applyPreset = (presetKey: keyof typeof presets) => {
       const preset = presets[presetKey];
@@ -625,10 +340,12 @@ export const Playground: Story = {
       Math.min(
         100,
         100 -
-          settings.displacementScale * 0.15 -
-          Math.abs(settings.blurAmount) * 2 -
-          settings.aberrationIntensity * 3 -
-          settings.elasticity * 20
+          settings.displacementScale * 0.35 -
+          Math.abs(settings.blurAmount) * 0.85 -
+          settings.aberrationIntensity * 8 -
+          settings.elasticity * 35 -
+          (settings.withMultiLayerDistortion ? 12 : 0) -
+          (settings.withTimeAnimation ? 6 : 0)
       )
     );
 
@@ -806,7 +523,7 @@ export const Playground: Story = {
           >
             {/* Control Panel Sidebar */}
             <div className="u-h-100 u-relative">
-              <AtomixGlass blurAmount={3} elasticity={0} displacementScale={100} borderRadius={20}>
+              <AtomixGlass {...PREMIUM_GLASS.chrome} borderRadius={20}>
                 <div
                   className="u-h-100 u-p-3 custom-scrollbar"
                   style={{
@@ -920,7 +637,7 @@ export const Playground: Story = {
                     </label>
                     <div
                       className="u-grid u-gap-2"
-                      style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}
+                      style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(72px, 1fr))' }}
                     >
                       {Object.entries(presets).map(([key, preset]) => (
                         <button
@@ -1029,10 +746,14 @@ export const Playground: Story = {
                                 : key === 'aberrationIntensity'
                                   ? 10
                                   : key === 'blurAmount'
-                                    ? 10
+                                    ? 50
                                     : 1;
                           const step =
-                            key === 'aberrationIntensity' || key === 'blurAmount' ? 0.01 : 1;
+                            key === 'aberrationIntensity'
+                              ? 0.05
+                              : key === 'blurAmount'
+                                ? 1
+                                : 1;
                           const label = key
                             .replace(/([A-Z])/g, ' $1')
                             .replace(/^./, s => s.toUpperCase());
@@ -1052,9 +773,8 @@ export const Playground: Story = {
                                     textAlign: 'center',
                                   }}
                                 >
-                                  {(value as number).toFixed(
-                                    key === 'aberrationIntensity' || key === 'blurAmount' ? 2 : 0
-                                  )}
+                                  {(value as number).toFixed(key === 'aberrationIntensity' ? 2 : 0)}
+                                  {key === 'blurAmount' ? 'px' : ''}
                                 </span>
                               </div>
                               <div className="u-relative" style={{ height: '20px' }}>
@@ -2125,33 +1845,7 @@ export const Playground: Story = {
                       variant="ghost"
                       size="sm"
                       onClick={() => {
-                        setSettings({
-                          displacementScale: 120,
-                          blurAmount: 0,
-                          saturation: 140,
-                          aberrationIntensity: 2,
-                          elasticity: 0.15,
-                          borderRadius: 20,
-                          overLight: false,
-                          reducedMotion: false,
-                          highContrast: false,
-                          withoutEffects: false,
-                          withLiquidBlur: false,
-                          withBorder: true,
-                          withTimeAnimation: true,
-                          animationSpeed: 1.0,
-                          withMultiLayerDistortion: false,
-                          distortionOctaves: 3,
-                          distortionLacunarity: 2.0,
-                          distortionGain: 0.5,
-                          distortionQuality: 'medium',
-                          devicePreset: 'balanced',
-                          disableResponsiveBreakpoints: false,
-                          debugPerformance: false,
-                          debugOverLight: false,
-                        });
-                        setSelectedMode('standard');
-                        setSelectedShader('liquidGlass');
+                        applyPreset('apple');
                       }}
                       className="u-w-100"
                     >
@@ -2166,12 +1860,7 @@ export const Playground: Story = {
               <div className="u-w-100 u-h-100 u-flex u-items-center u-justify-center u-p-2 u-p-lg-4">
                 {showCode ? (
                   <div className="u-w-100 u-h-100 u-flex u-items-center">
-                    <AtomixGlass
-                      displacementScale={80}
-                      aberrationIntensity={1}
-                      borderRadius={20}
-                      saturation={120}
-                    >
+                    <AtomixGlass {...PREMIUM_GLASS.card} borderRadius={20}>
                       <div className="u-p-6">
                         <div className="u-flex u-justify-between u-items-center u-mb-6">
                           <div>

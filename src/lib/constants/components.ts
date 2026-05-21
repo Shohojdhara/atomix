@@ -1699,7 +1699,7 @@ export const GLASS_DEFAULTS = {
    * elasticity: 0 — modals should not wobble when the user interacts with them.
    */
   MODAL: {
-    blurAmount: 2.2,
+    blurAmount: 28,
     elasticity: 0,
     mode: 'shader' as const,
     shaderMode: 'premiumGlass',
@@ -1713,7 +1713,7 @@ export const GLASS_DEFAULTS = {
    */
   NAVBAR: {
     displacementScale: 24,
-    blurAmount: 2,
+    blurAmount: 24,
     borderRadius: 0,
     elasticity: 0,
     mode: 'shader' as const,
@@ -1725,9 +1725,10 @@ export const GLASS_DEFAULTS = {
    * enough. Rounded corners to match typical pill / tab nav designs.
    */
   NAV: {
-    displacementScale: 48,
-    blurAmount: 1.5,
+    displacementScale: 24,
+    blurAmount: 20,
     borderRadius: 8,
+    elasticity: 0,
     mode: 'shader' as const,
   },
 
@@ -1736,8 +1737,8 @@ export const GLASS_DEFAULTS = {
    * Moderate displacement; shader for depth. Zero elasticity.
    */
   SIDE_MENU: {
-    displacementScale: 30,
-    blurAmount: 2,
+    displacementScale: 24,
+    blurAmount: 24,
     borderRadius: 0,
     elasticity: 0,
     mode: 'shader' as const,
@@ -1749,11 +1750,12 @@ export const GLASS_DEFAULTS = {
    * Low displacement so the content remains readable.
    */
   POPOVER: {
-    displacementScale: 40,
-    blurAmount: 1,
-    saturation: 170,
-    aberrationIntensity: 0.4,
-    borderRadius: 8,
+    displacementScale: 22,
+    blurAmount: 20,
+    saturation: 180,
+    aberrationIntensity: 0.35,
+    borderRadius: 12,
+    elasticity: 0,
     mode: 'shader' as const,
   },
 
@@ -1763,19 +1765,21 @@ export const GLASS_DEFAULTS = {
    * freely and the distortion reads as depth. No shader (too small to matter).
    */
   TOOLTIP: {
-    displacementScale: 80,
-    blurAmount: 3,
+    displacementScale: 18,
+    blurAmount: 16,
+    elasticity: 0,
   },
 
   /**
    * Tabs — tabbed content panel. Shader for the nav strip refraction.
    */
   TABS: {
-    displacementScale: 48,
-    blurAmount: 1,
-    saturation: 170,
-    aberrationIntensity: 0.4,
-    borderRadius: 8,
+    displacementScale: 24,
+    blurAmount: 20,
+    saturation: 180,
+    aberrationIntensity: 0.35,
+    borderRadius: 12,
+    elasticity: 0,
     mode: 'shader' as const,
   },
 
@@ -1920,17 +1924,18 @@ export const ATOMIX_GLASS = {
     SHADER: 'c-atomix-glass--shader',
   },
   DEFAULTS: {
-    DISPLACEMENT_SCALE: 55,
+    /** Subtle refraction — Apple UI chrome avoids heavy liquid distortion */
+    DISPLACEMENT_SCALE: 28,
     get BLUR_AMOUNT() {
-      return this.DISPLACEMENT_SCALE * 0.15; // Dynamically computed based on displacement
+      // Apple Music sidebar / player bar: ~20–40px frost (see $glass-backdrop-filter)
+      return Math.max(20, this.DISPLACEMENT_SCALE * 0.72);
     },
-    get SATURATION() {
-      return 100 + (this.DISPLACEMENT_SCALE * 0.35); // Punchier colours without oversaturation
-    },
+    /** Fixed 180% matches Apple's saturate(180%) backdrop recipe */
+    SATURATION: 180,
     get ABERRATION_INTENSITY() {
-      return this.DISPLACEMENT_SCALE * 0.03; // Scale aberration with displacement
+      return this.DISPLACEMENT_SCALE * 0.02;
     },
-    ELASTICITY: 0.08,
+    ELASTICITY: 0.05,
     get CORNER_RADIUS() {
       return 16; // Use 16 to match SCSS design system (was 20)
     },
@@ -2080,9 +2085,10 @@ export const ATOMIX_GLASS = {
       HIGH_CONTRAST: 200, // Saturation value for high contrast mode
     },
 
-    // Container shadows
+    // Container shadows — hairline inner catch + soft floating lift (Apple player bar)
     CONTAINER_SHADOW: {
-      LIGHT: '0 0 20px rgba(0, 0, 0, 0.10) inset, 0 4px 8px rgba(0, 0, 0, 0.06) inset',
+      LIGHT:
+        'inset 0 0.5px 0 rgba(255, 255, 255, 0.32), inset 0 1px 2px rgba(255, 255, 255, 0.06), 0 8px 32px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.16)',
     },
 
     // Phase 1: Animation System Constants
