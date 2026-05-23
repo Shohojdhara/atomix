@@ -19,9 +19,61 @@ $glass-radius: var(--#{config.$prefix}radius-md, 0.75rem) !default;
 $glass-position: absolute !default;
 
 // ============================================================================
-// Border Width
+// Border (liquid glass rim)
 // ============================================================================
-$glass-border-width: var(--#{config.$prefix}spacing-0-5, 0.125rem) !default;
+// Hairline refractive edge — Apple liquid glass (~0.5px physical)
+$glass-border-width: max(0.5px, 0.03125rem) !default;
+
+// Layer opacity (static fallback when JS gradients are off)
+$glass-border-1-opacity: 0.08 !default;
+
+// Rim shadow tokens (inset hairline + inner catch + outer lift)
+$glass-border-color: rgba(255, 255, 255, 0.28) !default;
+$glass-inner-shadow-color: rgba(255, 255, 255, 0.30) !default;
+$glass-outer-shadow-color: rgba(0, 0, 0, 0.18) !default;
+
+// Border-only backdrop (ring sampling)
+$glass-border-backdrop-blur: 40px !default;
+$glass-border-backdrop-saturate: 180% !default;
+$glass-border-backdrop-brightness: 102% !default;
+$glass-border-backdrop-filter: blur($glass-border-backdrop-blur) saturate($glass-border-backdrop-saturate)
+  brightness($glass-border-backdrop-brightness) !default;
+
+// Static gradient fallbacks (dark chrome)
+$glass-border-fallback-rim: conic-gradient(
+  from 225deg at 50% 50%,
+  rgba(255, 255, 255, 0) 0deg,
+  rgba(255, 255, 255, 0.28) 52deg,
+  rgba(255, 255, 255, 0.1) 120deg,
+  rgba(255, 255, 255, 0.22) 200deg,
+  rgba(255, 255, 255, 0.06) 280deg,
+  rgba(255, 255, 255, 0) 360deg
+) !default;
+
+$glass-border-fallback-inner-highlight: linear-gradient(
+  135deg,
+  rgba(255, 255, 255, 0.22) 0%,
+  rgba(255, 255, 255, 0.06) 28%,
+  rgba(255, 255, 255, 0) 55%
+) !default;
+
+// Over-light: darker rim + softer inner catch on bright backdrops
+$glass-border-fallback-rim-over-light: conic-gradient(
+  from 225deg at 50% 50%,
+  rgba(0, 0, 0, 0) 0deg,
+  rgba(0, 0, 0, 0.22) 52deg,
+  rgba(0, 0, 0, 0.08) 120deg,
+  rgba(0, 0, 0, 0.18) 200deg,
+  rgba(0, 0, 0, 0.05) 280deg,
+  rgba(0, 0, 0, 0) 360deg
+) !default;
+
+$glass-border-fallback-inner-over-light: linear-gradient(
+  135deg,
+  rgba(255, 255, 255, 0.35) 0%,
+  rgba(255, 255, 255, 0.12) 30%,
+  rgba(255, 255, 255, 0) 55%
+) !default;
 
 // ============================================================================
 // Z-Index Layers
@@ -41,12 +93,6 @@ $glass-hover-3-opacity: 0 !default;
 $glass-base-opacity: 0.35 !default;
 $glass-overlay-opacity: 0.20 !default;
 $glass-overlay-highlight-opacity: 0.18 !default;
-
-// ============================================================================
-// Border Opacity
-// ============================================================================
-// Hairline border — barely perceptible physical edge
-$glass-border-1-opacity: 0.08 !default;
 
 // ============================================================================
 // Over-Light Mode Opacity
@@ -134,14 +180,6 @@ $glass-highlight-end-color: rgba(255, 255, 255, 0) !default;
 $glass-highlight-opacity-multiplier: 0.9 !default;
 
 // ============================================================================
-// Border Shadow
-// ============================================================================
-// Hairline edge + stronger inner light catch + lighter outer lift
-$glass-border-color: rgba(255, 255, 255, 0.28) !default;
-$glass-inner-shadow-color: rgba(255, 255, 255, 0.30) !default;
-$glass-outer-shadow-color: rgba(0, 0, 0, 0.18) !default;
-
-// ============================================================================
 // Backdrop Filter
 // ============================================================================
 // Deep frosting with near-neutral brightness — colour comes from the backdrop
@@ -150,10 +188,10 @@ $glass-backdrop-filter: blur(40px) saturate(180%) brightness(102%) !default;
 // ============================================================================
 // Transition
 // ============================================================================
-$glass-transition: var(--#{config.$prefix}transition-base) !default;
-// Slower, more deliberate motion — Apple liquid glass doesn't rush
-$glass-transition-duration: 0.4s !default;
-$glass-easing: cubic-bezier(0.25, 0.1, 0.25, 1) !default;
+// Duration aligned with the global $transition-base token (0.3s).
+// Easing matches the Atomix system easing — fast-start, slow-finish.
+$glass-transition-duration: 0.3s !default;
+$glass-easing: cubic-bezier(0.23, 1, 0.32, 1) !default;
 
 // ============================================================================
 // Blend Modes
@@ -172,9 +210,3 @@ $glass-border-2-blend-mode: overlay !default;
 $glass-background-dark-color: var(--#{config.$prefix}gray-9, #1f2937) !default;
 $glass-background-black-color: var(--#{config.$prefix}black, #000000) !default;
 
-// ============================================================================
-// Border Backdrop
-// ============================================================================
-$glass-border-backdrop-blur: 40px !default;
-$glass-border-backdrop-saturate: 180% !default;
-$glass-border-backdrop-brightness: 102% !default;

@@ -131,7 +131,9 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     highContrast = false,
     withoutEffects = false,
     withLiquidBlur = false,
+    border,
     withBorder = true,
+    debugBorderRadius = false,
     withOverLightLayers = ATOMIX_GLASS.DEFAULTS.ENABLE_OVER_LIGHT_LAYERS,
     debugPerformance = false,
     debugOverLight = false,
@@ -184,6 +186,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     handleMouseDown,
     handleMouseUp,
     handleKeyDown,
+    resolvedBorder,
   } = useAtomixGlass({
     glassRef,
     contentRef,
@@ -204,6 +207,9 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     blurAmount,
     saturation,
     withLiquidBlur,
+    border,
+    withBorder,
+    debugBorderRadius,
 
     style,
     isFixedOrSticky,
@@ -239,18 +245,11 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     debug: false,
   });
 
-  const { toggleMonitoring } = usePerformanceMonitor({
+  usePerformanceMonitor({
     enabled: debugPerformance,
     debug: false,
     showOverlay: false,
   });
-
-  React.useEffect(() => {
-    if (debugPerformance) {
-      toggleMonitoring();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debugPerformance]);
 
   const isOverLight = useMemo(() => overLightConfig.isOverLight, [overLightConfig.isOverLight]);
 
@@ -300,6 +299,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
         isFixedOrSticky,
         positionStyles,
         restStyle,
+        borderWidth: resolvedBorder.width,
       }),
     [
       effectiveBorderRadius,
@@ -310,6 +310,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       isFixedOrSticky,
       positionStyles,
       restStyle,
+      resolvedBorder.width,
     ]
   );
 
@@ -345,15 +346,16 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
 
   const renderHoverLayers = () => (
     <>
-      <div className={ATOMIX_GLASS.HOVER_1_CLASS} />
-      <div className={ATOMIX_GLASS.HOVER_2_CLASS} />
-      <div className={ATOMIX_GLASS.HOVER_3_CLASS} />
+      <div aria-hidden="true" className={ATOMIX_GLASS.HOVER_1_CLASS} />
+      <div aria-hidden="true" className={ATOMIX_GLASS.HOVER_2_CLASS} />
+      <div aria-hidden="true" className={ATOMIX_GLASS.HOVER_3_CLASS} />
     </>
   );
 
   const backgroundLayerTypes = ['dark', 'black'] as const;
   const renderBackgroundLayer = (layerType: (typeof backgroundLayerTypes)[number]) => (
     <div
+      aria-hidden="true"
       className={mergeClassNames(
         ATOMIX_GLASS.BACKGROUND_LAYER_CLASS,
         layerType === 'dark'
@@ -368,17 +370,17 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
 
   const renderOverLightLayers = () => (
     <>
-      <div className={ATOMIX_GLASS.BASE_LAYER_CLASS} />
-      <div className={ATOMIX_GLASS.OVERLAY_LAYER_CLASS} />
-      <div className={ATOMIX_GLASS.OVERLAY_HIGHLIGHT_CLASS} />
+      <div aria-hidden="true" className={ATOMIX_GLASS.BASE_LAYER_CLASS} />
+      <div aria-hidden="true" className={ATOMIX_GLASS.OVERLAY_LAYER_CLASS} />
+      <div aria-hidden="true" className={ATOMIX_GLASS.OVERLAY_HIGHLIGHT_CLASS} />
     </>
   );
 
   const renderBorderElements = () => (
     <>
-      <span className={ATOMIX_GLASS.BORDER_BACKDROP_CLASS} />
-      <span className={ATOMIX_GLASS.BORDER_1_CLASS} />
-      <span className={ATOMIX_GLASS.BORDER_2_CLASS} />
+      <span aria-hidden="true" className={ATOMIX_GLASS.BORDER_BACKDROP_CLASS} />
+      <span aria-hidden="true" className={ATOMIX_GLASS.BORDER_1_CLASS} />
+      <span aria-hidden="true" className={ATOMIX_GLASS.BORDER_2_CLASS} />
     </>
   );
 
@@ -393,7 +395,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}
       aria-disabled={onClick && effectiveWithoutEffects ? true : onClick ? false : undefined}
-      aria-pressed={onClick ? isActive : undefined}
       onKeyDown={onClick ? handleKeyDown : undefined}
     >
       <AtomixGlassContainer
@@ -413,7 +414,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
         onMouseLeave={handleMouseLeave}
         onMouseDown={handleMouseDown}
         onMouseUp={handleMouseUp}
-        isHovered={isHovered}
         isActive={isActive}
         overLight={isOverLight}
         overLightConfig={{
@@ -448,7 +448,7 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
       ))}
       {shouldRenderOverLightLayers && renderOverLightLayers()}
 
-      {withBorder && renderBorderElements()}
+      {resolvedBorder.enabled && renderBorderElements()}
     </div>
   );
 });

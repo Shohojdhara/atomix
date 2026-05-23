@@ -1,6 +1,48 @@
 // AtomixGlass Tools
 // =============================================================================
-// Glass-specific mixins and utilities
-// Note: Focus ring and other general mixins are available in tools.component
+// Liquid glass border ring mixins
 
-@use 'tools.component' as *;
+@use '../01-settings/settings.atomix-glass' as *;
+
+/// Shared geometry for border effect layers (backdrop + gradient rings).
+@mixin liquid-glass-border-layer {
+  display: block;
+  box-sizing: border-box;
+  pointer-events: none;
+  position: var(--atomix-glass-position);
+  top: var(--atomix-glass-top);
+  left: var(--atomix-glass-left);
+  right: var(--atomix-glass-right);
+  bottom: var(--atomix-glass-bottom);
+  width: var(--atomix-glass-width);
+  height: var(--atomix-glass-height);
+  border-radius: var(--_glass-radius);
+  transform: var(--_glass-transform);
+  transition: var(--_glass-transition);
+}
+
+/// Hollow ring mask — clips content to the border band only (padding-box XOR border-box).
+/// Do not set overflow: hidden here; it breaks mask-composite at rounded corners.
+@mixin liquid-glass-border-ring-mask {
+  padding: var(--atomix-glass-border-width, #{$glass-border-width});
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+
+/// Gradient / painted rim — mask ring + background (conic or JS linear-gradient).
+@mixin liquid-glass-border-painted-ring {
+  @include liquid-glass-border-layer;
+  @include liquid-glass-border-ring-mask;
+}
+
+/// Backdrop sampling ring — same mask geometry, backdrop-filter on the band only.
+@mixin liquid-glass-border-backdrop-ring {
+  @include liquid-glass-border-layer;
+  @include liquid-glass-border-ring-mask;
+}

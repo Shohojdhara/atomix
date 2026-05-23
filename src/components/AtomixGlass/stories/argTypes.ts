@@ -73,6 +73,23 @@ export const baseArgTypes = {
       defaultValue: { summary: '16' },
     },
   },
+  border: {
+    control: { type: 'boolean' },
+    description:
+      'Liquid glass rim (0.5px hairline). Use structured config in code: border={{ width, opacity, animated }}',
+    table: {
+      category: 'Visual' as ArgTypeCategory,
+      defaultValue: { summary: 'true' },
+    },
+  },
+  withBorder: {
+    control: { type: 'boolean' },
+    description: '@deprecated Use `border` instead',
+    table: {
+      category: 'Visual' as ArgTypeCategory,
+      defaultValue: { summary: 'true' },
+    },
+  },
   overLight: {
     control: {
       type: 'select',

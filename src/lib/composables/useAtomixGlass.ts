@@ -19,6 +19,10 @@ import {
   calculateVelocity,
   smoothstep,
 } from '../../components/AtomixGlass/glass-utils';
+import {
+  normalizeBorderConfig,
+  type ResolvedGlassBorderConfig,
+} from '../../components/AtomixGlass/glass-border-styles';
 import { updateAtomixGlassStyles } from './useAtomixGlassStyles';
 // Phase 1: Time-Based Animation System
 import {
@@ -191,6 +195,9 @@ interface UseAtomixGlassReturn {
   // Transform calculations
   transformStyle: string;
 
+  /** Resolved liquid glass rim configuration */
+  resolvedBorder: ResolvedGlassBorderConfig;
+
   // Phase 1: Animation System - Shader time control
   getShaderTime: () => number;
   applyTimeBasedDistortion: (uv: { x: number; y: number }) => { x: number; y: number };
@@ -221,6 +228,8 @@ export function useAtomixGlass({
   reducedMotion = false,
   highContrast = false,
   withoutEffects = false,
+  border,
+  withBorder = true,
   elasticity = ATOMIX_GLASS.DEFAULTS.ELASTICITY,
   onClick,
   debugBorderRadius = false,
@@ -244,6 +253,11 @@ export function useAtomixGlass({
   // State
   const [isHovered, setIsHovered] = useState(false);
   const [isActive, setIsActive] = useState(false);
+
+  const resolvedBorder = useMemo(
+    () => normalizeBorderConfig(border, withBorder),
+    [border, withBorder]
+  );
 
   // Mouse tracking refs
   const cachedRectRef = useRef<DOMRect | null>(null);
@@ -683,7 +697,9 @@ export function useAtomixGlass({
       brightness: isOverLight ? 0.9 : 1.02,
       saturationBoost: isOverLight ? 1.3 : 1.0,
       shadowIntensity: isOverLight ? 0.9 : 1.0,
-      borderOpacity: isOverLight ? 0.7 : 0.35,
+      borderOpacity: isOverLight
+        ? ATOMIX_GLASS.BORDER.OVER_LIGHT.opacity
+        : ATOMIX_GLASS.BORDER.DARK.opacity,
     };
 
     if (typeof overLight === 'object' && overLight !== null) {
@@ -714,6 +730,12 @@ export function useAtomixGlass({
         3.0,
         baseConfig.saturationBoost
       );
+      const validatedBorderOpacity = validateConfigValue(
+        objConfig.borderOpacity,
+        0.1,
+        1.0,
+        baseConfig.borderOpacity
+      );
 
       const finalConfig = {
         ...baseConfig,
@@ -722,6 +744,7 @@ export function useAtomixGlass({
         contrast: validatedContrast,
         brightness: validatedBrightness,
         saturationBoost: validatedSaturationBoost,
+        borderOpacity: validatedBorderOpacity,
       };
 
       if (
@@ -961,6 +984,8 @@ export function useAtomixGlass({
         saturation,
 
         isFixedOrSticky,
+        borderAnimated: resolvedBorder.animated,
+        borderOpacityMultiplier: resolvedBorder.opacityMultiplier,
       });
 
       // ── Stop check ──────────────────────────────────────────────────
@@ -1003,6 +1028,8 @@ export function useAtomixGlass({
     saturation,
 
     isFixedOrSticky,
+    resolvedBorder.animated,
+    resolvedBorder.opacityMultiplier,
     stopLerpLoop,
   ]);
 
@@ -1141,7 +1168,8 @@ export function useAtomixGlass({
       withLiquidBlur,
       blurAmount,
       saturation,
-
+      borderAnimated: resolvedBorder.animated,
+      borderOpacityMultiplier: resolvedBorder.opacityMultiplier,
     });
   }, [
     isHovered,
@@ -1159,7 +1187,8 @@ export function useAtomixGlass({
     withLiquidBlur,
     blurAmount,
     saturation,
-
+    resolvedBorder.animated,
+    resolvedBorder.opacityMultiplier,
     onClick,
   ]);
 
@@ -1192,6 +1221,7 @@ export function useAtomixGlass({
     globalMousePosition, // This is now static (refs or props) unless prop changes
     mouseOffset, // This is now static (refs or props) unless prop changes
     overLightConfig,
+    resolvedBorder,
     transformStyle,
     getShaderTime,
     applyTimeBasedDistortion,

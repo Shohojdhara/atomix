@@ -1883,6 +1883,49 @@ export const GLASS_DEFAULTS = {
 } as const;
 
 /**
+ * Liquid glass border gradient math (canonical; mirrors _settings.atomix-glass.scss).
+ */
+export const GLASS_BORDER_GRADIENT = {
+  BASE_ANGLE: 135,
+  ANGLE_MULTIPLIER: 0.5,
+  VELOCITY_ANGLE_MULTIPLIER: 0.5,
+  CHROMATIC_OFFSET: 1.5,
+  STOP_1: {
+    MIN: 10,
+    BASE: 33,
+    get MULTIPLIER() {
+      return this.BASE * 0.009;
+    },
+  },
+  STOP_2: {
+    MAX: 90,
+    BASE: 66,
+    get MULTIPLIER() {
+      return this.BASE * 0.006;
+    },
+  },
+  OPACITY: {
+    /** Matches $glass-border-1-opacity (0.08) */
+    BASE_1: 0.08,
+    get BASE_2() {
+      return this.BASE_1 * 3.33;
+    },
+    get BASE_3() {
+      return this.BASE_1 * 2.66;
+    },
+    get BASE_4() {
+      return this.BASE_1 * 5;
+    },
+    get MULTIPLIER_LOW() {
+      return this.BASE_1 * 0.066;
+    },
+    get MULTIPLIER_HIGH() {
+      return this.BASE_1 * 0.1;
+    },
+  },
+} as const;
+
+/**
  * AtomixGlass-specific constants
  */
 export const ATOMIX_GLASS = {
@@ -1896,6 +1939,18 @@ export const ATOMIX_GLASS = {
   BORDER_BACKDROP_CLASS: 'c-atomix-glass__border-backdrop',
   BORDER_1_CLASS: 'c-atomix-glass__border-1',
   BORDER_2_CLASS: 'c-atomix-glass__border-2',
+  /** Centralized liquid glass rim configuration */
+  BORDER: {
+    WIDTH_CSS_VAR: '--atomix-glass-border-width',
+    DEFAULT_WIDTH: '0.5px',
+    GRADIENT_CSS_VARS: {
+      GRADIENT_1: '--atomix-glass-border-gradient-1',
+      GRADIENT_2: '--atomix-glass-border-gradient-2',
+    },
+    GRADIENT: GLASS_BORDER_GRADIENT,
+    OVER_LIGHT: { opacity: 0.7 },
+    DARK: { opacity: 0.35 },
+  },
   HOVER_1_CLASS: 'c-atomix-glass__hover-1',
   HOVER_2_CLASS: 'c-atomix-glass__hover-2',
   HOVER_3_CLASS: 'c-atomix-glass__hover-3',
@@ -1982,28 +2037,16 @@ export const ATOMIX_GLASS = {
 
     // Gradient calculation constants
     GRADIENT: {
-      BASE_ANGLE: 135, // Base angle for border gradients (degrees)
-      ANGLE_MULTIPLIER: 0.5, // Multiplier for mouse influence on angle
-      VELOCITY_ANGLE_MULTIPLIER: 0.5, // How much velocity affects gradient rotation
-      CHROMATIC_OFFSET: 1.5, // Degree offset for chromatic rim layers
-      BORDER_STOP_1: {
-        MIN: 10, // Minimum percentage for border stop 1
-        BASE: 33, // Base percentage for border stop 1
-        get MULTIPLIER() { return this.BASE * 0.009; }, // Multiplier for mouse Y influence
-      },
-      BORDER_STOP_2: {
-        MAX: 90, // Maximum percentage for border stop 2
-        BASE: 66, // Base percentage for border stop 2
-        get MULTIPLIER() { return this.BASE * 0.006; }, // Multiplier for mouse Y influence
-      },
-      BORDER_OPACITY: {
-        BASE_1: 0.06, // Hairline border gradient — barely perceptible physical edge
-        get BASE_2() { return this.BASE_1 * 3.33; }, // Base opacity for border gradient 2
-        get BASE_3() { return this.BASE_1 * 2.66; }, // Base opacity for border gradient 3
-        get BASE_4() { return this.BASE_1 * 5; }, // Base opacity for border gradient 4
-        get MULTIPLIER_LOW() { return this.BASE_1 * 0.066; }, // Low multiplier for mouse influence on opacity
-        get MULTIPLIER_HIGH() { return this.BASE_1 * 0.1; }, // High multiplier for mouse influence on opacity
-      },
+      BASE_ANGLE: GLASS_BORDER_GRADIENT.BASE_ANGLE,
+      ANGLE_MULTIPLIER: GLASS_BORDER_GRADIENT.ANGLE_MULTIPLIER,
+      VELOCITY_ANGLE_MULTIPLIER: GLASS_BORDER_GRADIENT.VELOCITY_ANGLE_MULTIPLIER,
+      CHROMATIC_OFFSET: GLASS_BORDER_GRADIENT.CHROMATIC_OFFSET,
+      /** @deprecated Use ATOMIX_GLASS.BORDER.GRADIENT.STOP_1 */
+      BORDER_STOP_1: GLASS_BORDER_GRADIENT.STOP_1,
+      /** @deprecated Use ATOMIX_GLASS.BORDER.GRADIENT.STOP_2 */
+      BORDER_STOP_2: GLASS_BORDER_GRADIENT.STOP_2,
+      /** @deprecated Use ATOMIX_GLASS.BORDER.GRADIENT.OPACITY */
+      BORDER_OPACITY: GLASS_BORDER_GRADIENT.OPACITY,
       CENTER_POSITION: 50, // Center position percentage (50%)
       HOVER_POSITION: {
         DIVISOR_1: 2, // Divisor for hover 1 position calculation

@@ -181,6 +181,11 @@ export function usePerformanceMonitor(
   const [manualOverride, setManualOverride] = useState(false);
   const [isEnabled, setIsEnabled] = useState(enabled);
 
+  // Sync external `enabled` prop changes into internal state
+  useEffect(() => {
+    setIsEnabled(enabled ?? true);
+  }, [enabled]);
+
   // Refs for frame tracking
   const frameCountRef = useRef(0);
   const lastFpsUpdateRef = useRef(0);

@@ -501,6 +501,8 @@ export interface GlassRootCssVarsInput {
   isFixedOrSticky: boolean;
   positionStyles: GlassLayoutPosition;
   restStyle: CSSProperties;
+  /** Rim width — maps to `--atomix-glass-border-width`. */
+  borderWidth?: string;
 }
 
 /**
@@ -519,6 +521,7 @@ export function buildGlassRootCssVariables(input: GlassRootCssVarsInput): CSSPro
     isFixedOrSticky,
     positionStyles,
     restStyle,
+    borderWidth = ATOMIX_GLASS.BORDER.DEFAULT_WIDTH,
   } = input;
 
   const layerPosition = getGlassLayerPositionVar(isFixedOrSticky, positionStyles, restStyle);
@@ -539,7 +542,7 @@ export function buildGlassRootCssVariables(input: GlassRootCssVarsInput): CSSPro
     // Aliases maintained for backward compatibility and consumer overrides.
     '--atomix-glass-container-width': adjustedSize.width,
     '--atomix-glass-container-height': adjustedSize.height,
-    '--atomix-glass-border-width': 'var(--atomix-spacing-0-5, 0.125rem)',
+    [ATOMIX_GLASS.BORDER.WIDTH_CSS_VAR]: borderWidth,
     '--atomix-glass-blend-mode': isOverLight ? 'multiply' : 'overlay',
   } as CSSProperties;
 }

@@ -3,6 +3,28 @@
 
 @use '../01-settings/settings.atomix-glass' as *;
 @use '../02-tools/tools.component' as *;
+@use '../02-tools/tools.glass' as glass;
+
+// ─── @property registrations ─────────────────────────────────────────────────
+// Typed custom properties let the browser interpolate these values in
+// CSS transitions without needing JS class-toggling.
+@property --atomix-glass-hover-1-opacity {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --atomix-glass-hover-2-opacity {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
+
+@property --atomix-glass-hover-3-opacity {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 0;
+}
 
 .c-atomix-glass {
   position: relative;
@@ -13,7 +35,8 @@
   --_glass-backdrop: #{$glass-backdrop-filter};
 
   --atomix-glass-position: absolute;
-  --atomix-glass-border-width: var(--atomix-spacing-0-5, 0.125rem);
+  --atomix-glass-border-width: #{$glass-border-width};
+  --atomix-glass-border-backdrop-filter: #{$glass-border-backdrop-filter};
   --atomix-glass-top: 0;
   --atomix-glass-left: 0;
   --atomix-glass-right: auto;
@@ -56,10 +79,9 @@
     0 1px 2px var(--atomix-glass-inner-shadow-color, #{$glass-inner-shadow-color}) inset,
     0 2px 6px var(--atomix-glass-outer-shadow-color, #{$glass-outer-shadow-color});
 
-  // Base layer styles for effect layers
-  &__hover-1,
-  &__hover-2,
-  &__hover-3,
+  // ── Over-light decorative layers (base, overlay) ─────────────────────────
+  // These use var-based positioning so they correctly follow the container in
+  // fixed / sticky layouts where the container may have explicit pixel offsets.
   &__base,
   &__overlay {
     position: var(--atomix-glass-position);
@@ -73,58 +95,67 @@
     border-radius: var(--_glass-radius);
     transform: var(--_glass-transform);
     transition: var(--_glass-transition);
-  }
-
-  &__hover-1,
-  &__hover-2,
-  &__hover-3 {
-    z-index: var(--_glass-z-hover);
-  }
-
-  &__base,
-  &__overlay {
     z-index: var(--_glass-z-effect);
   }
 
-  // Interactive hover effects
+  // ── Interactive hover / press layers ─────────────────────────────────────
+  // Always fill the glass surface with inset: 0.  Move in sync with the
+  // elastic spring via the shared --atomix-glass-transform var.
+  // Opacity is driven via typed @property vars so CSS transitions interpolate.
   &__hover-1,
   &__hover-2,
   &__hover-3 {
-    mix-blend-mode: overlay;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    border-radius: var(--_glass-radius);
+    transform: var(--_glass-transform);
+    // Opacity transition — works because @property declares the var as <number>
+    transition:
+      opacity #{$glass-transition-duration} #{$glass-easing},
+      border-radius #{$glass-transition-duration} #{$glass-easing};
+    z-index: var(--_glass-z-hover);
   }
 
+  // hover-1: ambient cursor-tracking highlight (white overlay glow)
   &__hover-1 {
     opacity: var(--atomix-glass-hover-1-opacity, 0);
+    mix-blend-mode: overlay;
     background: var(
       --atomix-glass-hover-1-gradient,
       radial-gradient(
-        60% 60% at 50% 0%,
-        var(--atomix-glass-hover-1-start-color, #{$glass-hover-1-start-color}) 0%,
-        var(--atomix-glass-hover-1-end-color, #{$glass-hover-1-end-color}) 60%
+        65% 55% at 50% 30%,
+        rgba(255, 255, 255, 0.22) 0%,
+        rgba(255, 255, 255, 0) 72%
       )
     );
   }
 
+  // hover-2: press depth — subtle shadow at the press point (darken only on active)
   &__hover-2 {
     opacity: var(--atomix-glass-hover-2-opacity, 0);
+    mix-blend-mode: multiply;
     background: var(
       --atomix-glass-hover-2-gradient,
       radial-gradient(
-        80% 80% at 50% 100%,
-        var(--atomix-glass-hover-2-start-color, #{$glass-hover-2-start-color}) 0%,
-        var(--atomix-glass-hover-2-end-color, #{$glass-hover-2-end-color}) 60%
+        70% 60% at 50% 60%,
+        rgba(0, 0, 0, 0.18) 0%,
+        rgba(0, 0, 0, 0) 72%
       )
     );
   }
 
+  // hover-3: global soft-light tint shift — full surface brightness on hover/press
   &__hover-3 {
     opacity: var(--atomix-glass-hover-3-opacity, 0);
+    mix-blend-mode: soft-light;
     background: var(
       --atomix-glass-hover-3-gradient,
       linear-gradient(
-        180deg,
-        var(--atomix-glass-hover-3-start-color, #{$glass-hover-3-start-color}) 0%,
-        var(--atomix-glass-hover-3-end-color, #{$glass-hover-3-end-color}) 100%
+        160deg,
+        rgba(255, 255, 255, 0.12) 0%,
+        rgba(255, 255, 255, 0.04) 55%,
+        rgba(255, 255, 255, 0) 100%
       )
     );
   }
@@ -176,58 +207,48 @@
     );
   }
 
-  // Border effect layers - matching old version exactly
-  &__border-backdrop,
-  &__border-1,
-  &__border-2 {
-    // Static styles
-    padding: var(--atomix-glass-border-width);
-    box-sizing: border-box;
-    overflow: hidden;
-    pointer-events: none;
-    /* autoprefixer: ignore next */
-    -webkit-mask:
-      linear-gradient(var(--atomix-black, #000000) 0 0) content-box,
-      linear-gradient(var(--atomix-black, #000000) 0 0);
-    /* autoprefixer: ignore next */
-    -webkit-mask-composite: xor;
-    /* autoprefixer: ignore next */
-    mask:
-      linear-gradient(var(--atomix-black, #000000) 0 0) content-box,
-      linear-gradient(var(--atomix-black, #000000) 0 0);
-    /* autoprefixer: ignore next */
-    mask-composite: exclude;
-
-    position: var(--atomix-glass-position);
-    top: var(--atomix-glass-top);
-    left: var(--atomix-glass-left);
-    right: var(--atomix-glass-right);
-    bottom: var(--atomix-glass-bottom);
-    width: var(--atomix-glass-width);
-    height: var(--atomix-glass-height);
-    border-radius: var(--_glass-radius);
-    transform: var(--_glass-transform);
-    transition: var(--_glass-transition);
-  }
-
+  // Border effect layers — liquid glass rim (see tools.glass mixins)
   &__border-backdrop {
-    mix-blend-mode: overlay;
+    @include glass.liquid-glass-border-backdrop-ring;
+
+    mix-blend-mode: #{$glass-border-backdrop-blend-mode};
     z-index: var(--_glass-z-border-1);
-    backdrop-filter: #{$glass-backdrop-filter};
-    // box-shadow: var(--atomix-glass-border-shadow);
+    backdrop-filter: var(--atomix-glass-border-backdrop-filter, #{$glass-border-backdrop-filter});
+    box-shadow: var(--atomix-glass-border-shadow);
   }
 
   &__border-1 {
+    @include glass.liquid-glass-border-painted-ring;
+
+    background: var(--atomix-glass-border-gradient-1, #{$glass-border-fallback-rim});
     opacity: var(--atomix-glass-border-1-opacity, #{$glass-border-1-opacity});
-    mix-blend-mode: screen;
+    mix-blend-mode: #{$glass-border-1-blend-mode};
     z-index: var(--_glass-z-border-2);
-    background: var(--atomix-glass-border-gradient-1, none);
   }
 
   &__border-2 {
-    mix-blend-mode: overlay;
+    @include glass.liquid-glass-border-painted-ring;
+
+    background: var(--atomix-glass-border-gradient-2, #{$glass-border-fallback-inner-highlight});
+    mix-blend-mode: #{$glass-border-2-blend-mode};
     z-index: var(--_glass-z-border-3);
-    background: var(--atomix-glass-border-gradient-2, none);
+  }
+
+  // Over-light: darker conic rim + brighter top-left inner catch
+  &:has(.c-atomix-glass__container--over-light) {
+    .c-atomix-glass__border-1 {
+      background: var(
+        --atomix-glass-border-gradient-1,
+        #{$glass-border-fallback-rim-over-light}
+      );
+    }
+
+    .c-atomix-glass__border-2 {
+      background: var(
+        --atomix-glass-border-gradient-2,
+        #{$glass-border-fallback-inner-over-light}
+      );
+    }
   }
 
   &__container {
@@ -275,7 +296,7 @@
     position: absolute;
     inset: var(--atomix-glass-border-width);
     pointer-events: none;
-    border-radius: var(--_glass-radius);
+    border-radius: max(0px, calc(var(--_glass-radius) - var(--atomix-glass-border-width)));
     box-shadow: var(--atomix-glass-container-shadow);
     opacity: var(--atomix-glass-container-shadow-opacity);
     background: var(--atomix-glass-container-bg);
@@ -346,17 +367,30 @@
   &--disabled-effects {
     --atomix-glass-transform: none;
     --atomix-glass-transition: none;
+    --_glass-transition: none;
   }
 
-  // Focus ring for interactive elements (when onClick is provided)
+  // ── Interactive glass (onClick provided) ─────────────────────────────────
   &[role='button'],
   &[tabindex]:not([tabindex='-1']) {
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+
     @include focus-ring;
+
+    // CSS-level press scale fires instantly on :active (before the JS spring
+    // takes over) for zero-latency tactile feedback.
+    &:active > .c-atomix-glass__container {
+      transform: scale(0.985);
+      transition: transform 0.06s cubic-bezier(0.4, 0, 1, 1);
+    }
   }
 
   // Responsive and accessibility
   @media (prefers-reduced-motion: reduce) {
     --atomix-glass-transition: none;
+    --_glass-transition: none;
 
     * {
       transition: none !important;
@@ -364,6 +398,8 @@
   }
 
   @media (prefers-contrast: high) {
-    border-width: var(--atomix-spacing-0-5, 0.125rem);
+    border: var(--atomix-spacing-0-5, 0.125rem) solid currentColor;
+    outline: var(--atomix-spacing-0-5, 0.125rem) solid transparent;
+    outline-offset: var(--atomix-spacing-0-5, 0.125rem);
   }
 }

@@ -54,7 +54,8 @@ function MyComponent() {
 | `mode` | 'standard' \| 'polar' \| 'prominent' \| 'shader' | 'standard' | Glass effect mode |
 | `onClick` | () => void | undefined | Optional click handler (makes component interactive) |
 | `shaderVariant` | 'liquidGlass' \| 'premiumGlass' \| 'appleFluid' \| 'liquidMetal' \| 'plasma' \| 'waves' \| 'noise' | 'liquidGlass' | Shader variant for shader mode |
-| `withBorder` | boolean | true | Show border effects |
+| `border` | boolean \| GlassBorderConfig | true | Liquid glass rim (hairline ~0.5px). Object: `{ enabled?, width?, opacity?, animated? }` |
+| `withBorder` | boolean | true | **Deprecated** — use `border`. Alias when `border` is omitted |
 | `withLiquidBlur` | boolean | false | Enable liquid blur effects |
 | `withOverLightLayers` | boolean | true | Enable over-light background layers |
 | `withoutEffects` | boolean | false | Disable all visual effects |

@@ -210,6 +210,30 @@ export interface OverLightObjectConfig {
    * saturationBoost: 2.0
    */
   saturationBoost?: number;
+
+  /**
+   * Rim opacity multiplier for animated border gradients (0.1 - 1.0)
+   *
+   * @default 0.7 when over-light is active, 0.35 otherwise
+   */
+  borderOpacity?: number;
+}
+
+/**
+ * Liquid glass rim configuration (Apple-style hairline border).
+ */
+export interface GlassBorderConfig {
+  /** Whether border layers render. @default true */
+  enabled?: boolean;
+  /** Rim width — maps to `--atomix-glass-border-width`. @default 0.5px */
+  width?: string | number;
+  /** Multiplier on rim gradient opacities. @default 1 */
+  opacity?: number;
+  /**
+   * When false, skips JS gradient vars so SCSS static fallbacks apply.
+   * @default true
+   */
+  animated?: boolean;
 }
 
 /**
@@ -264,6 +288,14 @@ export interface AtomixGlassProps extends React.HTMLAttributes<HTMLDivElement> {
   highContrast?: boolean;
   withoutEffects?: boolean;
   withLiquidBlur?: boolean;
+  /**
+   * Liquid glass rim — boolean shorthand or structured config.
+   * Takes precedence over legacy `withBorder` when provided.
+   */
+  border?: boolean | GlassBorderConfig;
+  /**
+   * @deprecated Use `border` instead. When `border` is omitted, defaults to this value.
+   */
   withBorder?: boolean;
   withOverLightLayers?: boolean;
 

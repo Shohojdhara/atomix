@@ -1,13 +1,16 @@
 import { ATOMIX_GLASS } from '../constants/components';
 import {
-  calculateDistance,
+  buildGlassBorderCssVars,
+  computeBorderTensionFactor,
+} from '../../components/AtomixGlass/glass-border-styles';
+import {
   calculateMouseInfluence,
   validateGlassSize,
   clampBlur,
   smoothstep,
   softClamp,
 } from '../../components/AtomixGlass/glass-utils';
-import type { GlassSize, MousePosition, OverLightObjectConfig } from '../types/components';
+import type { GlassSize, MousePosition } from '../types/components';
 
 /**
  * Updates the styles of the AtomixGlass wrapper and container elements imperatively
@@ -46,6 +49,8 @@ export const updateAtomixGlassStyles = (
     saturation?: number;
 
     isFixedOrSticky?: boolean;
+    borderAnimated?: boolean;
+    borderOpacityMultiplier?: number;
   }
 ) => {
   if (!wrapperElement && !containerElement) return;
@@ -73,6 +78,8 @@ export const updateAtomixGlassStyles = (
     saturation = ATOMIX_GLASS.DEFAULTS.SATURATION,
 
     isFixedOrSticky = false,
+    borderAnimated = true,
+    borderOpacityMultiplier = 1,
   } = params;
 
   // Calculate mouse influence
@@ -104,8 +111,7 @@ export const updateAtomixGlassStyles = (
     : `translate(${elasticTranslation.x}px, ${elasticTranslation.y}px) scaleX(${scaleX}) scaleY(${scaleY})`;
 
   // ── Apple Liquid Depth Refinements ───────────────────────────────
-  const stretchMagnitude = calculateDistance({ x: 0, y: 0 }, elasticTranslation);
-  const tensionFactor = smoothstep(stretchMagnitude / 80);
+  const tensionFactor = computeBorderTensionFactor(elasticTranslation);
 
   // Subtle lighting boost on stretch
   const lightingContrast = Math.min(1.8, overLightConfig.contrast + tensionFactor * 0.2);
@@ -118,42 +124,6 @@ export const updateAtomixGlassStyles = (
     const absMx = Math.abs(mx);
     const absMy = Math.abs(my);
     const GRADIENT = ATOMIX_GLASS.CONSTANTS.GRADIENT;
-
-    // ── Velocity-Based Rotation ─────────────────────────────────────
-    // Combine mouse offset with velocity for dynamic rotation
-    const velocityRotation =
-      (mouseVelocity.x + elasticVelocity.x) * (GRADIENT.VELOCITY_ANGLE_MULTIPLIER || 2.5);
-    const borderGradientAngle =
-      GRADIENT.BASE_ANGLE + mx * GRADIENT.ANGLE_MULTIPLIER + velocityRotation;
-
-    // Chromatic offsets for depth
-    const chromaticOffset = GRADIENT.CHROMATIC_OFFSET || 1.5;
-    const angleR = borderGradientAngle - chromaticOffset;
-    const angleB = borderGradientAngle + chromaticOffset;
-
-    const borderStop1 = Math.max(
-      GRADIENT.BORDER_STOP_1.MIN,
-      GRADIENT.BORDER_STOP_1.BASE + my * GRADIENT.BORDER_STOP_1.MULTIPLIER
-    );
-    const borderStop2 = Math.min(
-      GRADIENT.BORDER_STOP_2.MAX,
-      GRADIENT.BORDER_STOP_2.BASE + my * GRADIENT.BORDER_STOP_2.MULTIPLIER
-    );
-
-    // Modulate border opacity by tension (glow on stretch)
-    const tensionGlow = 1 + tensionFactor * 0.5;
-    const borderOpacities = [
-      (GRADIENT.BORDER_OPACITY.BASE_1 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW) *
-        tensionGlow,
-      (GRADIENT.BORDER_OPACITY.BASE_2 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH) *
-        tensionGlow,
-      (GRADIENT.BORDER_OPACITY.BASE_3 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_LOW) *
-        tensionGlow,
-      (GRADIENT.BORDER_OPACITY.BASE_4 + absMx * GRADIENT.BORDER_OPACITY.MULTIPLIER_HIGH) *
-        tensionGlow,
-    ];
-
-    const configBorderOpacity = overLightConfig.borderOpacity;
     const whiteColor = ATOMIX_GLASS.CONSTANTS.PALETTE.WHITE;
     const blackColor = ATOMIX_GLASS.CONSTANTS.PALETTE.BLACK;
 
@@ -177,10 +147,16 @@ export const updateAtomixGlassStyles = (
       y: GRADIENT.CENTER_POSITION + my * GRADIENT.BASE_LAYER_MULTIPLIER,
     };
 
+    // Opacity is either 0 (hidden) or 1 (visible) — actual visual intensity is
+    // encoded in each gradient's rgba alpha.  The typed @property CSS vars
+    // transition these 0→1 values smoothly via CSS (no JS animation needed).
     const opacityValues = {
-      hover1: isHovered || isActive ? 0.35 : 0,
-      hover2: isActive ? 0.35 : 0,
-      hover3: isHovered ? 0.25 : isActive ? 0.45 : 0,
+      // hover-1: ambient highlight glow — present on hover and during press
+      hover1: isHovered || isActive ? 1 : 0,
+      // hover-2: press depth shadow — only fires on active (mousedown)
+      hover2: isActive ? 1 : 0,
+      // hover-3: global soft-light surface shift — half-strength on hover, full on press
+      hover3: isActive ? 1 : isHovered ? 0.55 : 0,
       // Dark chrome: faint smoky tint; over-light keeps stronger fill
       base: isOverLight ? overLightConfig.opacity : 0.14,
       over: isOverLight ? overLightConfig.opacity * 1.1 : 0.1,
@@ -200,37 +176,42 @@ export const updateAtomixGlassStyles = (
     style.setProperty('--atomix-glass-brightness', lightingBrightness.toString());
 
     // ── Chromatic Rim Lighting ──────────────────────────────────────
-    // Layer 1: Core White/Blue highlight
-    style.setProperty(
-      '--atomix-glass-border-gradient-1',
-      `linear-gradient(${angleB}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[0] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[1] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`
-    );
-    // Layer 2: Subtle Red/Warm highlight (offset angle)
-    style.setProperty(
-      '--atomix-glass-border-gradient-2',
-      `linear-gradient(${angleR}deg, rgba(${whiteColor}, 0) 0%, rgba(${whiteColor}, ${(borderOpacities[2] ?? 1) * configBorderOpacity}) ${borderStop1}%, rgba(${whiteColor}, ${(borderOpacities[3] ?? 1) * configBorderOpacity}) ${borderStop2}%, rgba(${whiteColor}, 0) 100%)`
-    );
+    const borderVars = ATOMIX_GLASS.BORDER.GRADIENT_CSS_VARS;
+    if (borderAnimated && !effectiveWithoutEffects) {
+      const borderCssVars = buildGlassBorderCssVars({
+        mouseOffset,
+        mouseVelocity,
+        elasticVelocity,
+        borderOpacity: overLightConfig.borderOpacity,
+        opacityMultiplier: borderOpacityMultiplier,
+        tensionFactor,
+      });
+      style.setProperty(borderVars.GRADIENT_1, borderCssVars[borderVars.GRADIENT_1] ?? '');
+      style.setProperty(borderVars.GRADIENT_2, borderCssVars[borderVars.GRADIENT_2] ?? '');
+    } else {
+      style.removeProperty(borderVars.GRADIENT_1);
+      style.removeProperty(borderVars.GRADIENT_2);
+    }
 
-    // Hover gradients
+    // Hover gradients — cursor-relative radial positions for realistic light tracking.
+    // hover-1: white overlay highlight following cursor (works on both dark + light)
     style.setProperty(
       '--atomix-glass-hover-1-gradient',
-      isOverLight
-        ? `radial-gradient(circle at ${hoverPositions.hover1.x}% ${hoverPositions.hover1.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.BLACK_END}%)`
-        : `radial-gradient(circle at ${hoverPositions.hover1.x}% ${hoverPositions.hover1.y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_1.WHITE_STOP}%)`
+      `radial-gradient(65% 55% at ${hoverPositions.hover1.x}% ${hoverPositions.hover1.y}%, rgba(${whiteColor}, 0.24) 0%, rgba(${whiteColor}, 0.06) 45%, rgba(${whiteColor}, 0) 72%)`
     );
 
+    // hover-2: press depth — darkens at cursor with multiply blend, isOverLight uses stronger black
     style.setProperty(
       '--atomix-glass-hover-2-gradient',
       isOverLight
-        ? `radial-gradient(circle at ${hoverPositions.hover2.x}% ${hoverPositions.hover2.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.BLACK_END}%)`
-        : `radial-gradient(circle at ${hoverPositions.hover2.x}% ${hoverPositions.hover2.y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_2.WHITE_STOP}%)`
+        ? `radial-gradient(60% 50% at ${hoverPositions.hover2.x}% ${hoverPositions.hover2.y}%, rgba(${blackColor}, 0.22) 0%, rgba(${blackColor}, 0.06) 50%, rgba(${blackColor}, 0) 72%)`
+        : `radial-gradient(60% 50% at ${hoverPositions.hover2.x}% ${hoverPositions.hover2.y}%, rgba(${blackColor}, 0.18) 0%, rgba(${blackColor}, 0.04) 50%, rgba(${blackColor}, 0) 72%)`
     );
 
+    // hover-3: full-surface soft-light tint; linear gradient angled with cursor X
     style.setProperty(
       '--atomix-glass-hover-3-gradient',
-      isOverLight
-        ? `radial-gradient(circle at ${hoverPositions.hover3.x}% ${hoverPositions.hover3.y}%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_START}) 0%, rgba(${blackColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_MID}) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_STOP}%, rgba(${blackColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.BLACK_END}%)`
-        : `radial-gradient(circle at ${hoverPositions.hover3.x}% ${hoverPositions.hover3.y}%, rgba(${whiteColor}, ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.WHITE_START}) 0%, rgba(${whiteColor}, 0) ${ATOMIX_GLASS.CONSTANTS.GRADIENT_OPACITY.HOVER_3.WHITE_STOP}%)`
+      `linear-gradient(${150 + mx * 0.3}deg, rgba(${whiteColor}, ${isOverLight ? 0.08 : 0.12}) 0%, rgba(${whiteColor}, 0.04) 55%, rgba(${whiteColor}, 0) 100%)`
     );
 
     style.setProperty(

@@ -57,7 +57,6 @@ interface AtomixGlassContainerProps
   onMouseEnter?: () => void;
   onMouseDown?: () => void;
   onMouseUp?: () => void;
-  isHovered?: boolean;
   isActive?: boolean;
   overLight?: boolean;
   overLightConfig?: {

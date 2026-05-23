@@ -58,7 +58,8 @@ function MyComponent() {
 | `debugOverLight` | boolean | false | Enable debug logging for overLight detection and configuration |
 | `mode` | 'standard' \| 'polar' \| 'prominent' \| 'shader' | 'standard' | The glass effect mode |
 | `onClick` | function | undefined | Click handler |
-| `withBorder` | boolean | true | Whether to show border effects |
+| `border` | boolean \| GlassBorderConfig | true | Liquid glass rim (~0.5px). Structured: `{ enabled?, width?, opacity?, animated? }` |
+| `withBorder` | boolean | true | **Deprecated** — use `border` (alias when `border` is omitted) |
 | `withLiquidBlur` | boolean | false | Whether to enable liquid blur effects |
 | `withoutEffects` | boolean | false | Whether to disable all visual effects |
 | `reducedMotion` | boolean | false | Force reduced motion preference |
