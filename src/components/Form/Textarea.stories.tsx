@@ -104,7 +104,7 @@ Textarea component provides a multi-line text input field for longer content. It
       description: 'Number of visible text lines',
       table: {
         type: { summary: 'number' },
-        defaultValue: { summary: 2 },
+        defaultValue: { summary: '2' },
       },
     },
     cols: {
@@ -138,7 +138,7 @@ Textarea component provides a multi-line text input field for longer content. It
       description: 'Whether the textarea is disabled',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     invalid: {
@@ -146,7 +146,7 @@ Textarea component provides a multi-line text input field for longer content. It
       description: 'Whether the textarea is invalid',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     valid: {
@@ -154,7 +154,7 @@ Textarea component provides a multi-line text input field for longer content. It
       description: 'Whether the textarea is valid',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     glass: {
@@ -162,7 +162,7 @@ Textarea component provides a multi-line text input field for longer content. It
       description: 'Enable glass morphism effect',
       table: {
         type: { summary: 'boolean' },
-        defaultValue: { summary: false },
+        defaultValue: { summary: 'false' },
       },
     },
     defaultValue: {

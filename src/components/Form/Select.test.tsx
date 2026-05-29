@@ -20,9 +20,9 @@ describe('Select Component', () => {
     // Check native select options
     const select = document.querySelector('select');
     expect(select).not.toBeNull();
-    expect(select?.options).toHaveLength(3); // Placeholder + 2
-    expect(select?.options[1].value).toBe('1');
-    expect(select?.options[2].value).toBe('2');
+    expect(select!.options).toHaveLength(3); // Placeholder + 2
+    expect(select!.options[1]!.value).toBe('1');
+    expect(select!.options[2]!.value).toBe('2');
   });
 
   it('renders compound options correctly', async () => {
@@ -43,9 +43,9 @@ describe('Select Component', () => {
     await waitFor(() => {
         const select = document.querySelector('select');
         expect(select).not.toBeNull();
-        expect(select?.options).toHaveLength(3); // Placeholder + 2
-        expect(select?.options[1].value).toBe('1');
-        expect(select?.options[2].value).toBe('2');
+        expect(select!.options).toHaveLength(3); // Placeholder + 2
+        expect(select!.options[1]!.value).toBe('1');
+        expect(select!.options[2]!.value).toBe('2');
     });
   });
 
