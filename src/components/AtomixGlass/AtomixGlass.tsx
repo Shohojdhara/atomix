@@ -180,7 +180,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
     globalMousePosition,
     mouseOffset,
     transformStyle,
-    getShaderTime,
     handleMouseEnter,
     handleMouseLeave,
     handleMouseDown,
@@ -213,13 +212,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
 
     style,
     isFixedOrSticky,
-    withTimeAnimation,
-    animationSpeed,
-    withMultiLayerDistortion,
-    distortionOctaves,
-    distortionLacunarity,
-    distortionGain,
-    distortionQuality,
   });
 
 
@@ -429,7 +421,6 @@ const AtomixGlassInner = forwardRef<HTMLDivElement, AtomixGlassProps>(function A
         shaderVariant={shaderVariant}
         withLiquidBlur={withLiquidBlur}
         isFixedOrSticky={isFixedOrSticky}
-        shaderTime={getShaderTime()}
         withTimeAnimation={withTimeAnimation}
         animationSpeed={animationSpeed}
         withMultiLayerDistortion={withMultiLayerDistortion}

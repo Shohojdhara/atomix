@@ -2015,6 +2015,11 @@ export const ATOMIX_GLASS = {
     MIN_BLUR: 0.1,
     MOUSE_INFLUENCE_DIVISOR: 100,
     EDGE_FADE_PIXELS: 2,
+    // Interaction intensity multipliers shared by the hook and the imperative style updater
+    INTERACTION: {
+      HOVER_INTENSITY: 1.4,
+      ACTIVE_INTENSITY: 1.6,
+    },
     // Elasticity physics constants — Apple-tuned: soft springs, fast settling, minimal stretch
     ELASTICITY_TRANSLATION_FACTOR: 0.06, // Subtler elastic shift (was 0.1)
     ELASTICITY_DISTANCE_THRESHOLD: 200,

@@ -1,9 +1,15 @@
 // Adapted from https://github.com/shuding/liquid-glass
 
-export interface Vec2 {
-  x: number;
-  y: number;
-}
+import {
+  clamp,
+  easeInOutCubic,
+  easeOutQuart,
+  smoothstepEdge as smoothStep,
+  vec2Length as calculateLength,
+} from './glass-utils';
+import type { Vec2 } from './glass-utils';
+
+export type { Vec2 } from './glass-utils';
 
 export interface ShaderOptions {
   width: number;
@@ -34,31 +40,6 @@ const DEFAULT_CANVAS_WIDTH = 256;
 const DEFAULT_CANVAS_HEIGHT = 256;
 
 // Utility functions
-const smoothStep = (a: number, b: number, t: number): number => {
-  // Add input validation
-  if (typeof a !== 'number' || typeof b !== 'number' || typeof t !== 'number') {
-    return 0;
-  }
-
-  const clamped = Math.max(0, Math.min(1, (t - a) / (b - a)));
-  return clamped * clamped * (3 - 2 * clamped);
-};
-
-const calculateLength = (x: number, y: number): number => {
-  // Add input validation and error handling
-  if (typeof x !== 'number' || typeof y !== 'number' || isNaN(x) || isNaN(y)) {
-    return 0;
-  }
-
-  // Prevent potential overflow
-  const maxX = Math.max(Math.abs(x), Math.abs(y));
-  if (maxX === 0) return 0;
-
-  const scaledX = x / maxX;
-  const scaledY = y / maxX;
-  return maxX * Math.sqrt(scaledX * scaledX + scaledY * scaledY);
-};
-
 const roundedRectSDF = (
   x: number,
   y: number,
@@ -94,42 +75,6 @@ const validateVec2 = (vec: Vec2): boolean => {
   return (
     vec && typeof vec.x === 'number' && typeof vec.y === 'number' && !isNaN(vec.x) && !isNaN(vec.y)
   );
-};
-
-const clampValue = (value: number, min: number, max: number): number => {
-  // Add input validation
-  if (typeof value !== 'number' || typeof min !== 'number' || typeof max !== 'number') {
-    return min;
-  }
-
-  if (isNaN(value)) return min;
-  if (isNaN(min)) return 0;
-  if (isNaN(max)) return 1;
-
-  return Math.max(min, Math.min(max, value));
-};
-
-// Advanced easing functions for Apple-style smooth animations
-const easeInOutCubic = (t: number): number => {
-  // Add input validation
-  if (typeof t !== 'number' || isNaN(t)) {
-    return 0;
-  }
-
-  const clampedT = Math.max(0, Math.min(1, t));
-  return clampedT < 0.5
-    ? 4 * clampedT * clampedT * clampedT
-    : 1 - Math.pow(-2 * clampedT + 2, 3) / 2;
-};
-
-const easeOutQuart = (t: number): number => {
-  // Add input validation
-  if (typeof t !== 'number' || isNaN(t)) {
-    return 0;
-  }
-
-  const clampedT = Math.max(0, Math.min(1, t));
-  return 1 - Math.pow(1 - clampedT, 4);
 };
 
 // Perlin-like noise for organic distortion
@@ -503,8 +448,8 @@ export const fragmentShaders = {
     const finalY = iy + totalDistortionY + chromaticOffset.y * 0.5;
 
     return createTexture(
-      clampValue(finalX * scaled + 0.5, 0, 1),
-      clampValue(finalY * scaled + 0.5, 0, 1)
+      clamp(finalX * scaled + 0.5, 0, 1),
+      clamp(finalY * scaled + 0.5, 0, 1)
     );
   },
 
@@ -545,7 +490,7 @@ export const fragmentShaders = {
     const totalX = ix + (organicX * 0.035 + fluidVelocityX + vortexX) * mask;
     const totalY = iy + (organicY * 0.035 + fluidVelocityY + vortexY) * mask;
 
-    return createTexture(clampValue(totalX + 0.5, 0, 1), clampValue(totalY + 0.5, 0, 1));
+    return createTexture(clamp(totalX + 0.5, 0, 1), clamp(totalY + 0.5, 0, 1));
   },
 
   // High-end glass with advanced refraction and depth
@@ -593,7 +538,7 @@ export const fragmentShaders = {
     const finalX = ix + (refractionX + depthX + organicNoise * 0.015) * edgeMask;
     const finalY = iy + (refractionY + depthY + organicNoise * 0.015) * edgeMask;
 
-    return createTexture(clampValue(finalX + 0.5, 0, 1), clampValue(finalY + 0.5, 0, 1));
+    return createTexture(clamp(finalX + 0.5, 0, 1), clamp(finalY + 0.5, 0, 1));
   },
 
   // Metallic liquid effect with shimmer
@@ -630,7 +575,7 @@ export const fragmentShaders = {
     const totalX = ix + (wave1 + shimmer + Math.cos(flowAngle) * flowEffect) * mask;
     const totalY = iy + (wave2 + shimmer * 0.8 + Math.sin(flowAngle) * flowEffect) * mask;
 
-    return createTexture(clampValue(totalX + 0.5, 0, 1), clampValue(totalY + 0.5, 0, 1));
+    return createTexture(clamp(totalX + 0.5, 0, 1), clamp(totalY + 0.5, 0, 1));
   },
 
   // basiBasi - Expert Premium Glass Shader
@@ -784,7 +729,7 @@ export const fragmentShaders = {
     const finalX = ix + totalDistortionX * 0.85; // Scale down for subtlety
     const finalY = iy + totalDistortionY * 0.85;
 
-    return createTexture(clampValue(finalX + 0.5, 0, 1), clampValue(finalY + 0.5, 0, 1));
+    return createTexture(clamp(finalX + 0.5, 0, 1), clamp(finalY + 0.5, 0, 1));
   },
 
   // Aliases for compatibility
@@ -903,13 +848,13 @@ export class ShaderDisplacementGenerator {
           const g = smoothedDy / maxScale + 0.5;
 
           const pixelIndex = (y * w + x) * 4;
-          data[pixelIndex] = clampValue(r * 255, NORMALIZATION_CLAMP.min, NORMALIZATION_CLAMP.max); // Red channel (X displacement)
-          data[pixelIndex + 1] = clampValue(
+          data[pixelIndex] = clamp(r * 255, NORMALIZATION_CLAMP.min, NORMALIZATION_CLAMP.max); // Red channel (X displacement)
+          data[pixelIndex + 1] = clamp(
             g * 255,
             NORMALIZATION_CLAMP.min,
             NORMALIZATION_CLAMP.max
           ); // Green channel (Y displacement)
-          data[pixelIndex + 2] = clampValue(
+          data[pixelIndex + 2] = clamp(
             g * 255,
             NORMALIZATION_CLAMP.min,
             NORMALIZATION_CLAMP.max
@@ -951,6 +896,3 @@ export class ShaderDisplacementGenerator {
     return this.canvasDPI;
   }
 }
-
-// Re-export animation system functions for convenience
-export { createFBMEngine, liquidGlassWithTime } from './animation-system';

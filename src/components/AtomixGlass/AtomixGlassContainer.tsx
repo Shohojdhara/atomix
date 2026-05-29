@@ -77,7 +77,6 @@ interface AtomixGlassContainerProps
   withLiquidBlur?: boolean;
   isFixedOrSticky?: boolean;
   elasticity?: number;
-  shaderTime?: number;
 
   contentRef?: React.RefObject<HTMLDivElement | null>;
   children?: React.ReactNode;
@@ -117,7 +116,6 @@ export const AtomixGlassContainer = forwardRef<HTMLDivElement, AtomixGlassContai
       shaderVariant = 'liquidGlass',
       withLiquidBlur = false,
       isFixedOrSticky = false,
-      shaderTime,
       withTimeAnimation = false,
       animationSpeed = 1.0,
       withMultiLayerDistortion = false,

@@ -6,23 +6,15 @@ import { ATOMIX_GLASS } from '../../lib/constants/components';
 const { CONSTANTS } = ATOMIX_GLASS;
 
 /**
- * Calculate distance between two points
+ * Canonical 2D vector type shared across the glass math/shader utilities.
+ *
+ * Structurally identical to {@link MousePosition}; re-exported by `shader-utils`
+ * as the public `Vec2`.
  */
-export const calculateDistance = (pos1: MousePosition, pos2: MousePosition): number => {
-  if (
-    !pos1 ||
-    !pos2 ||
-    typeof pos1.x !== 'number' ||
-    typeof pos1.y !== 'number' ||
-    typeof pos2.x !== 'number' ||
-    typeof pos2.y !== 'number'
-  ) {
-    return 0;
-  }
-  const deltaX = pos1.x - pos2.x;
-  const deltaY = pos1.y - pos2.y;
-  return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-};
+export interface Vec2 {
+  x: number;
+  y: number;
+}
 
 /**
  * Calculate element center from bounding rect
@@ -252,6 +244,79 @@ export const softClamp = (value: number, max: number): number => {
 };
 
 /**
+ * Clamp a value to the `[min, max]` range. Returns `min` for non-finite input.
+ */
+export const clamp = (value: number, min: number, max: number): number => {
+  if (typeof value !== 'number' || isNaN(value)) {
+    return min;
+  }
+  return Math.max(min, Math.min(max, value));
+};
+
+/**
+ * Two-edge smoothstep (GLSL semantics) — Hermite interpolation between `edge0`
+ * and `edge1`. Reuses {@link smoothstep} after normalizing `x` into `[0, 1]`.
+ */
+export const smoothstepEdge = (edge0: number, edge1: number, x: number): number => {
+  if (typeof edge0 !== 'number' || typeof edge1 !== 'number' || typeof x !== 'number') {
+    return 0;
+  }
+  return smoothstep((x - edge0) / (edge1 - edge0));
+};
+
+/**
+ * Cubic ease-in-out curve. `t` is clamped to `[0, 1]`.
+ */
+export const easeInOutCubic = (t: number): number => {
+  if (typeof t !== 'number' || isNaN(t)) {
+    return 0;
+  }
+  const clamped = Math.max(0, Math.min(1, t));
+  return clamped < 0.5
+    ? 4 * clamped * clamped * clamped
+    : 1 - Math.pow(-2 * clamped + 2, 3) / 2;
+};
+
+/**
+ * Quartic ease-out curve. `t` is clamped to `[0, 1]`.
+ */
+export const easeOutQuart = (t: number): number => {
+  if (typeof t !== 'number' || isNaN(t)) {
+    return 0;
+  }
+  const clamped = Math.max(0, Math.min(1, t));
+  return 1 - Math.pow(1 - clamped, 4);
+};
+
+/**
+ * Overflow-safe Euclidean length of a 2D vector.
+ */
+export const vec2Length = (x: number, y: number): number => {
+  if (typeof x !== 'number' || typeof y !== 'number' || isNaN(x) || isNaN(y)) {
+    return 0;
+  }
+  const maxComponent = Math.max(Math.abs(x), Math.abs(y));
+  if (maxComponent === 0) return 0;
+  const scaledX = x / maxComponent;
+  const scaledY = y / maxComponent;
+  return maxComponent * Math.sqrt(scaledX * scaledX + scaledY * scaledY);
+};
+
+/**
+ * Resolves the hover/active intensity multipliers from interaction state.
+ *
+ * Single source of truth for the `HOVER_INTENSITY` / `ACTIVE_INTENSITY`
+ * multipliers shared by the hook and the imperative style updater.
+ */
+export const getInteractionIntensity = (
+  isHovered: boolean,
+  isActive: boolean
+): { hoverIntensity: number; activeIntensity: number } => ({
+  hoverIntensity: isHovered ? CONSTANTS.INTERACTION.HOVER_INTENSITY : 1,
+  activeIntensity: isActive ? CONSTANTS.INTERACTION.ACTIVE_INTENSITY : 1,
+});
+
+/**
  * Spring-damper integration helper
  * Calculates the next value based on velocity, stiffness, and damping.
  */
@@ -347,42 +412,6 @@ export function pickGlassLayoutStyle(style: CSSProperties): GlassLayoutPosition 
     ...(bottom !== undefined && { bottom }),
     ...(inset !== undefined && { inset }),
   };
-}
-
-/**
- * Builds inline layout styles for the root wrapper.
- *
- * Reserved for alternate layout strategies. The default implementation applies
- * layout on `.c-atomix-glass__container` to preserve backdrop-filter behavior.
- */
-export function pickGlassHoistedRootStyle(style: CSSProperties): CSSProperties {
-  const layout = pickGlassLayoutStyle(style);
-  const resolvedPosition = (layout.position ?? style.position ?? 'fixed') as CSSProperties['position'];
-
-  return {
-    position: resolvedPosition,
-    ...(layout.top !== undefined && { top: layout.top }),
-    ...(layout.left !== undefined && { left: layout.left }),
-    ...(layout.right !== undefined && { right: layout.right }),
-    ...(layout.bottom !== undefined && { bottom: layout.bottom }),
-    ...(layout.inset !== undefined && { inset: layout.inset }),
-  };
-}
-
-/**
- * Returns `style` without layout properties, preserving visual declarations only.
- */
-export function omitGlassLayoutStyle(style: CSSProperties): CSSProperties {
-  const {
-    position: _p,
-    top: _t,
-    left: _l,
-    right: _r,
-    bottom: _b,
-    inset: _inset,
-    ...visualStyle
-  } = style;
-  return visualStyle;
 }
 
 /**

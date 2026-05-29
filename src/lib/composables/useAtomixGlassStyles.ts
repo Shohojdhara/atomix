@@ -5,6 +5,7 @@ import {
 } from '../../components/AtomixGlass/glass-border-styles';
 import {
   calculateMouseInfluence,
+  getInteractionIntensity,
   validateGlassSize,
   clampBlur,
   smoothstep,
@@ -84,8 +85,7 @@ export const updateAtomixGlassStyles = (
 
   // Calculate mouse influence
   const mouseInfluence = calculateMouseInfluence(mouseOffset);
-  const hoverIntensity = isHovered ? 1.4 : 1;
-  const activeIntensity = isActive ? 1.6 : 1;
+  const { hoverIntensity, activeIntensity } = getInteractionIntensity(isHovered, isActive);
 
   // Calculate dynamic OverLight config
   const overLightConfig = {
