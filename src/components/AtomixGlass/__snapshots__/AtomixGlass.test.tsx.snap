@@ -8,7 +8,7 @@ exports[`AtomixGlass Visual Regression > matches snapshot with default props 1`]
   >
     <div
       class="c-atomix-glass__container"
-      style="--atomix-glass-container-radius: 16px; --atomix-glass-container-backdrop: blur(20.16px) saturate(250%) contrast(1.02) brightness(1.02); --atomix-glass-container-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.32), inset 0 1px 2px rgba(255, 255, 255, 0.06), 0 8px 32px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.16); --atomix-glass-container-shadow-opacity: 1; --atomix-glass-container-bg: none; --atomix-glass-container-text-shadow: 0px 2px 12px rgba(0, 0, 0, 0.4); --atomix-glass-container-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.32), 0 2px 8px rgba(0, 0, 0, 0.18);"
+      style="--atomix-glass-container-radius: 16px; --atomix-glass-container-backdrop: blur(20.16px) saturate(250%) contrast(1.02) brightness(1.02); --atomix-glass-container-shadow: inset 0 0.5px 0 rgba(255, 255, 255, 0.32), inset 0 1px 2px rgba(255, 255, 255, 0.06), 0 4px 16px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.08); --atomix-glass-container-shadow-opacity: 1; --atomix-glass-container-bg: none; --atomix-glass-container-text-shadow: 0px 2px 12px rgba(0, 0, 0, 0.4); --atomix-glass-container-box-shadow: 0 4px 16px rgba(0, 0, 0, 0.14), 0 1px 4px rgba(0, 0, 0, 0.10);"
     >
       <div
         class="c-atomix-glass__inner"

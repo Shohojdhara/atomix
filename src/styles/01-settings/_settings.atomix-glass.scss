@@ -29,8 +29,8 @@ $glass-border-1-opacity: 0.08 !default;
 
 // Rim shadow tokens (inset hairline + inner catch + outer lift)
 $glass-border-color: rgba(255, 255, 255, 0.28) !default;
-$glass-inner-shadow-color: rgba(255, 255, 255, 0.30) !default;
-$glass-outer-shadow-color: rgba(0, 0, 0, 0.18) !default;
+$glass-inner-shadow-color: rgba(255, 255, 255, 0.20) !default;
+$glass-outer-shadow-color: rgba(0, 0, 0, 0.08) !default;
 
 // Border-only backdrop (ring sampling)
 $glass-border-backdrop-blur: 40px !default;

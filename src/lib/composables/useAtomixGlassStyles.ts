@@ -360,7 +360,7 @@ export const updateAtomixGlassStyles = (
       '--atomix-glass-container-box-shadow',
       isOverLight
         ? '0px 16px 70px rgba(0, 0, 0, 0.75)'
-        : '0 8px 32px rgba(0, 0, 0, 0.32), 0 2px 8px rgba(0, 0, 0, 0.18)'
+        : '0 4px 16px rgba(0, 0, 0, 0.14), 0 1px 4px rgba(0, 0, 0, 0.10)'
     );
   }
 };

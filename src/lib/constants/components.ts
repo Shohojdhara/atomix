@@ -2136,7 +2136,7 @@ export const ATOMIX_GLASS = {
     // Container shadows — hairline inner catch + soft floating lift (Apple player bar)
     CONTAINER_SHADOW: {
       LIGHT:
-        'inset 0 0.5px 0 rgba(255, 255, 255, 0.32), inset 0 1px 2px rgba(255, 255, 255, 0.06), 0 8px 32px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.16)',
+        'inset 0 0.5px 0 rgba(255, 255, 255, 0.32), inset 0 1px 2px rgba(255, 255, 255, 0.06), 0 4px 16px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.08)',
     },
 
     // Phase 1: Animation System Constants
