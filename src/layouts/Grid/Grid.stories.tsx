@@ -670,13 +670,47 @@ export const AlignmentAndSpacing: Story = {
         </div>
       </div>
 
+      {/* Row Gap */}
+      <div className="u-mb-8">
+        <h2 className="u-mb-4 u-text-brand-emphasis">Row Gap</h2>
+        <p className="u-mb-4 u-text-secondary-emphasis">
+          Wrapped rows use vertical spacing from the grid gutter width (`row-gap` via
+          `--atomix-gutter-y`):
+        </p>
+
+        <Row className="u-mb-4 u-p-3 u-bg-brand-subtle u-rounded">
+          <GridCol xs={4}>
+            <DemoCard variant="secondary">Column 1</DemoCard>
+          </GridCol>
+          <GridCol xs={4}>
+            <DemoCard variant="secondary">Column 2</DemoCard>
+          </GridCol>
+          <GridCol xs={4}>
+            <DemoCard variant="secondary">Column 3</DemoCard>
+          </GridCol>
+          <GridCol xs={4}>
+            <DemoCard variant="secondary">Column 4</DemoCard>
+          </GridCol>
+          <GridCol xs={4}>
+            <DemoCard variant="secondary">Column 5</DemoCard>
+          </GridCol>
+          <GridCol xs={4}>
+            <DemoCard variant="secondary">Column 6</DemoCard>
+          </GridCol>
+        </Row>
+      </div>
+
       {/* No Gutters */}
       <div className="u-mb-8">
         <h2 className="u-mb-4 u-text-brand-emphasis">No Gutters</h2>
-        <p className="u-mb-4 u-text-secondary-emphasis">Remove spacing between columns:</p>
+        <p className="u-mb-4 u-text-secondary-emphasis">
+          Remove horizontal and vertical gutter spacing between columns:
+        </p>
 
         <div className="u-mb-6">
-          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">With gutters (default)</h3>
+          <h3 className="u-mb-3 u-text-secondary-emphasis u-font-medium">
+            With gutters (default)
+          </h3>
           <Row className="u-mb-4 u-p-3 u-bg-brand-subtle u-rounded">
             <GridCol xs={4}>
               <DemoCard variant="secondary">Column 1</DemoCard>
@@ -686,6 +720,15 @@ export const AlignmentAndSpacing: Story = {
             </GridCol>
             <GridCol xs={4}>
               <DemoCard variant="secondary">Column 3</DemoCard>
+            </GridCol>
+            <GridCol xs={4}>
+              <DemoCard variant="secondary">Column 4</DemoCard>
+            </GridCol>
+            <GridCol xs={4}>
+              <DemoCard variant="secondary">Column 5</DemoCard>
+            </GridCol>
+            <GridCol xs={4}>
+              <DemoCard variant="secondary">Column 6</DemoCard>
             </GridCol>
           </Row>
         </div>
@@ -701,6 +744,15 @@ export const AlignmentAndSpacing: Story = {
             </GridCol>
             <GridCol xs={4}>
               <DemoCard variant="accent">Column 3</DemoCard>
+            </GridCol>
+            <GridCol xs={4}>
+              <DemoCard variant="accent">Column 4</DemoCard>
+            </GridCol>
+            <GridCol xs={4}>
+              <DemoCard variant="accent">Column 5</DemoCard>
+            </GridCol>
+            <GridCol xs={4}>
+              <DemoCard variant="accent">Column 6</DemoCard>
             </GridCol>
           </Row>
         </div>

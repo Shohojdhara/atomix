@@ -2,16 +2,19 @@
 @use '../01-settings/settings.grid' as grid;
 @use '../02-tools/tools.grid' as *;
 @use '../02-tools/tools.breakpoints' as *;
+@use '../02-tools/tools.rem' as *;
 
 .o-grid {
-  --#{config.$prefix}gutter-y: #{grid.$grid-gutter-width};
+  --#{config.$prefix}gutter-y: #{rem(grid.$grid-gutter-width)};
   @include make-row();
+  row-gap: var(--#{config.$prefix}gutter-y);
 
   &__col {
     @include make-col-ready();
   }
 
   &--no-gutters {
+    --#{config.$prefix}gutter-y: 0;
     margin-right: 0;
     margin-left: 0;
 

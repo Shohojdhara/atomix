@@ -118,7 +118,24 @@ The Grid component creates a flex container for organizing columns with optional
 | `className` | `string` | `''` | Additional CSS classes |
 | `justifyContent` | `JustifyContent` | - | Horizontal alignment of columns |
 | `alignItems` | `AlignItems` | - | Vertical alignment of columns |
-| `noGutters` | `boolean` | `false` | Remove spacing between columns |
+| `noGutters` | `boolean` | `false` | Remove horizontal and vertical gutter spacing |
+
+#### Gutters
+
+Grids apply spacing in two ways:
+
+- **Horizontal:** column padding derived from `$grid-gutter-width` (default `16px`)
+- **Vertical:** `row-gap` via `--atomix-gutter-y`, also sourced from `$grid-gutter-width`
+
+When columns wrap to multiple rows, the vertical gap keeps row spacing consistent with the gutter width. Override per grid with CSS:
+
+```css
+.my-grid {
+  --atomix-gutter-y: 2rem;
+}
+```
+
+Use `noGutters` to remove spacing on both axes.
 
 #### Alignment Options
 
@@ -542,6 +559,7 @@ You can nest Grid components for complex layouts:
   --atomix-container-xxl: 1320px;
 
   /* Grid gutters */
+  --atomix-gutter-y: 1rem; /* vertical row-gap on .o-grid */
   --atomix-grid-gutter-width: 1.5rem;
   --atomix-grid-gutter-width-sm: 1rem;
 

@@ -30,8 +30,10 @@ import { Grid, GridCol } from '@/layouts/Grid';
   - Adds utility class `u-justify-content-[value]`
 - `alignItems`: Control vertical alignment ('start', 'end', 'center', 'baseline', 'stretch')
   - Adds utility class `u-align-items-[value]`
-- `noGutters`: Remove gutters between columns
+- `noGutters`: Remove horizontal and vertical gutter spacing
   - Adds modifier class `o-grid--no-gutters`
+
+Grids apply `row-gap` from `--atomix-gutter-y` (defaults to `$grid-gutter-width`) when columns wrap to multiple rows. Horizontal gutters use the existing column padding model. Override vertical spacing with `--atomix-gutter-y` on any `.o-grid`.
 
 ### GridCol
 
@@ -89,8 +91,10 @@ import { Container, Row, GridCol } from '@/layouts/Grid';
   - Adds utility class `u-justify-content-[value]`
 - `alignItems`: Control vertical alignment ('start', 'end', 'center', 'baseline', 'stretch')
   - Adds utility class `u-align-items-[value]`
-- `noGutters`: Remove gutters between columns
+- `noGutters`: Remove horizontal and vertical gutter spacing
   - Adds modifier class `o-grid--no-gutters`
+
+Grids apply `row-gap` from `--atomix-gutter-y` (defaults to `$grid-gutter-width`) when columns wrap to multiple rows. Horizontal gutters use the existing column padding model. Override vertical spacing with `--atomix-gutter-y` on any `.o-grid`.
 
 ## Breakpoints
 
