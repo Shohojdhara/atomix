@@ -1990,7 +1990,7 @@ export const ATOMIX_GLASS = {
     get ABERRATION_INTENSITY() {
       return this.DISPLACEMENT_SCALE * 0.02;
     },
-    ELASTICITY: 0.05,
+    ELASTICITY: 0,
     get CORNER_RADIUS() {
       return 16; // Use 16 to match SCSS design system (was 20)
     },
