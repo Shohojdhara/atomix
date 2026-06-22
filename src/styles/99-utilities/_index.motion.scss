@@ -1,0 +1,5 @@
+// Motion utilities bundle — transitions, transforms, and state variants
+@forward 'utilities.transition';
+@forward 'utilities.transform';
+@forward 'utilities.state';
+@use 'utilities.generate-motion';

@@ -350,7 +350,7 @@ function FilterableDataTable() {
     <div className="u-gap-4">
       {/* Filters */}
       <Card>
-        <div className="u-grid u-grid-cols-1 u-md-grid-cols-4 u-gap-4">
+        <div className="u-grid u-grid-cols-1 u-grid-cols-md-4 u-gap-4">
           <FormGroup label="Category">
             <Select 
               options={[
@@ -636,7 +636,7 @@ function MasterDetailTable() {
   const [selectedRow, setSelectedRow] = useState(null);
 
   return (
-    <div className="u-grid u-grid-cols-1 u-lg-grid-cols-2 u-gap-6">
+    <div className="u-grid u-grid-cols-1 u-grid-cols-lg-2 u-gap-6">
       <div>
         <h3 className="u-font-semibold u-mb-4">Users</h3>
         <DataTable 

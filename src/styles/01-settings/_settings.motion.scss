@@ -1,0 +1,50 @@
+@use 'sass:string';
+
+// Motion tokens for transition and transform utilities (utility-layer only)
+
+$utility-transition-durations: (
+  75: 75ms,
+  100: 100ms,
+  150: 150ms,
+  200: 200ms,
+  300: 300ms,
+  500: 500ms,
+  700: 700ms,
+  1000: 1000ms,
+) !default;
+
+$utility-transition-timing-functions: (
+  linear: linear,
+  in: cubic-bezier(0.4, 0, 1, 1),
+  out: cubic-bezier(0, 0, 0.2, 1),
+  'in-out': cubic-bezier(0.4, 0, 0.2, 1),
+) !default;
+
+$utility-transition-properties: (
+  none: none,
+  all: all,
+  colors: string.unquote('color, background-color, border-color, text-decoration-color, fill, stroke'),
+  opacity: opacity,
+  shadow: box-shadow,
+  transform: transform,
+) !default;
+
+$utility-transform-scales: (
+  0: scale(0),
+  50: scale(0.5),
+  75: scale(0.75),
+  90: scale(0.9),
+  95: scale(0.95),
+  100: scale(1),
+  105: scale(1.05),
+  110: scale(1.1),
+  125: scale(1.25),
+  150: scale(1.5),
+) !default;
+
+$utility-transform-rotates: (
+  0: rotate(0deg),
+  45: rotate(45deg),
+  90: rotate(90deg),
+  180: rotate(180deg),
+) !default;

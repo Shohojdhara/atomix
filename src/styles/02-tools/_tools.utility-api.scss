@@ -29,6 +29,12 @@ $utility-defaults: (
 @mixin generate-utility($utility, $infix: '', $is-rfs: false) {
   $values: map.get($utility, values);
   $css-var: map.get($utility, css-var);
+  $pseudo: map.get($utility, pseudo);
+  $legacy-state: map.get($utility, state);
+
+  @if $pseudo == null and $legacy-state != null {
+    $pseudo: $legacy-state;
+  }
 
   // If the values are a list or string, convert it to a map
   @if meta.type-of($values) == 'string' or meta.type-of($values) == 'list' {
@@ -38,6 +44,13 @@ $utility-defaults: (
   @each $key, $value in $values {
     $properties: map.get($utility, property);
     $property-class: map.get($utility, class);
+    $local-vars: map.get($utility, local-vars);
+    $local-vars-only: $value == null and $properties == null and $local-vars and list.length($local-vars) > 0;
+
+    @if $value == null and not $local-vars-only {
+      $warn-class: if($property-class, $property-class, $properties);
+      @warn 'Utility value is null for class "#{ $warn-class }" key "#{ $key }" — class will not be generated.';
+    }
 
     // Handle case where property-class is null
     @if $property-class == null and $properties {
@@ -48,15 +61,8 @@ $utility-defaults: (
       );
     }
 
-    // State variants (hover, focus, active, etc.)
     // Create a local copy of infix to avoid affecting other utilities
     $local-infix: $infix;
-    $state: map.get($utility, state);
-    $local-infix: if(
-      $state,
-      if(meta.type-of($state) == 'string', '#{$state}#{$local-infix}', $local-infix),
-      $local-infix
-    );
 
     // Escape special characters in key for valid CSS class names
     $escaped-key: if($key, _escape-key($key), null);
@@ -69,28 +75,14 @@ $utility-defaults: (
         '#{$property-class}#{$local-infix}-#{$escaped-key}',
         '#{$property-class}#{$local-infix}'
       );
+      $selector: '.#{$class-name}';
 
-      .#{$class-name} {
-        @if $css-var {
-          // Handle CSS variable generation
-          $css-variable-name: str-replace(#{$property-class}, '.', '\\.');
-          --atomix-u-#{$css-variable-name}: #{$value};
-        } @else if $properties {
-          @each $property in $properties {
-            #{$property}: $value;
-          }
-        } @else if $value != null {
-          // Guard: only emit property declaration if value is not null
-          #{$property-class}: $value;
-        }
+      @if $pseudo {
+        $selector: '#{$selector}:#{$pseudo}';
+      }
 
-        // Add local CSS variables if specified
-        $local-vars: map.get($utility, local-vars);
-        @if $local-vars and list.length($local-vars) > 0 {
-          @each $local-var-name, $local-var-value in $local-vars {
-            --#{$local-var-name}: #{$local-var-value};
-          }
-        }
+      #{$selector} {
+        @include _apply-utility-declarations($utility, $property-class, $properties, $css-var, $value);
       }
     } @else {
       // Generate class with custom class name
@@ -98,34 +90,45 @@ $utility-defaults: (
       $modifier: if($key, '-#{$escaped-key}', '');
 
       // Responsive infix goes between class and modifier: .u-class-{bp}-{value}
-      .#{$base-class}#{$local-infix}#{$modifier} {
-        @if $css-var and $properties {
-          // Handle CSS variable generation with properties
-          @each $property in $properties {
-            $css-variable-name: str-replace(#{$property}, '.', '\\.');
-            --atomix-u-#{$css-variable-name}: #{$value};
-          }
-        } @else if $css-var {
-          // Handle CSS variable generation without properties
-          $css-variable-name: str-replace(#{$base-class}, '.', '\\.');
-          --atomix-u-#{$css-variable-name}#{$modifier}: #{$value};
-        } @else if $properties {
-          @each $property in $properties {
-            #{$property}: $value;
-          }
-        } @else if $value != null {
-          // Guard: only emit property declaration if value is not null
-          #{$base-class}: $value;
-        }
+      $selector: '.#{$base-class}#{$local-infix}#{$modifier}';
 
-        // Add local CSS variables if specified
-        $local-vars: map.get($utility, local-vars);
-        @if $local-vars and list.length($local-vars) > 0 {
-          @each $local-var-name, $local-var-value in $local-vars {
-            --#{$local-var-name}: #{$local-var-value};
-          }
-        }
+      @if $pseudo {
+        $selector: '#{$selector}:#{$pseudo}';
       }
+
+      #{$selector} {
+        @include _apply-utility-declarations($utility, $base-class, $properties, $css-var, $value);
+      }
+    }
+  }
+}
+
+@mixin _apply-utility-declarations($utility, $class-name, $properties, $css-var, $value) {
+  @if $css-var and $properties {
+    // Handle CSS variable generation with properties
+    @each $property in $properties {
+      $css-variable-name: str-replace(#{$property}, '.', '\\.');
+      --atomix-u-#{$css-variable-name}: #{$value};
+    }
+  } @else if $css-var {
+    // Handle CSS variable generation without properties
+    $css-variable-name: str-replace(#{$class-name}, '.', '\\.');
+    --atomix-u-#{$css-variable-name}: #{$value};
+  } @else if $properties {
+    @each $property in $properties {
+      @if $value != null {
+        #{$property}: $value;
+      }
+    }
+  } @else if $value != null {
+    #{$class-name}: $value;
+  }
+
+  // Add local CSS variables if specified
+  $local-vars: map.get($utility, local-vars);
+  @if $local-vars and list.length($local-vars) > 0 {
+    @each $local-var-name, $local-var-value in $local-vars {
+      --#{$local-var-name}: #{$local-var-value};
     }
   }
 }
@@ -169,6 +172,7 @@ $utility-defaults: (
         values: map.get($config, values),
         class: map.get($config, class),
         state: map.get($config, state),
+        pseudo: map.get($config, pseudo),
         rtl: map.get($config, rtl),
         css-var: map.get($config, css-var),
         local-vars: map.get($config, local-vars),

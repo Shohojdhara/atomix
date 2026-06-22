@@ -10,7 +10,7 @@ $utilities-link: (
   'link-opacity': (
     css-var: true,
     class: u-link-opacity,
-    state: hover,
+    pseudo: hover,
     values: (
       10: 0.1,
       25: 0.25,
@@ -22,7 +22,7 @@ $utilities-link: (
   'link-offset': (
     property: text-underline-offset,
     class: u-link-offset,
-    state: hover,
+    pseudo: hover,
     values: (
       1: 0.125em,
       2: 0.25em,
@@ -48,7 +48,7 @@ $utilities-link: (
   'link-underline-opacity': (
     css-var: true,
     class: u-link-underline-opacity,
-    state: hover,
+    pseudo: hover,
     values: (
       0: 0,
       10: 0.1,

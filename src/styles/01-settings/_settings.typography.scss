@@ -50,7 +50,11 @@ $font-size-sm: $font-size-base * 0.875 !default; //14px
 $font-size-md: $font-size-base * 1.125 !default; //18px
 $font-size-lg: $font-size-base * 1.25 !default; //20px
 $font-size-xl: $font-size-base * 1.5 !default; //20px
-$font-size-2xl: $font-size-base * 2 !default; //20px
+$font-size-2xl: $font-size-base * 2 !default; //32px
+$font-size-3xl: $font-size-base * 2.25 !default; //36px
+$font-size-4xl: $font-size-base * 2.5 !default; //40px
+$font-size-5xl: $font-size-base * 3 !default; //48px
+$font-size-6xl: $font-size-base * 3.75 !default; //60px
 
 $h1-font-size: $font-size-base * 2.5 !default; //40px
 $h2-font-size: $font-size-base * 2 !default; //32px

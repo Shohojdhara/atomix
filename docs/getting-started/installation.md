@@ -358,7 +358,7 @@ Atomix includes a comprehensive set of utility classes for quick styling without
 <div class="u-block">Display block</div>
 <div class="u-flex">Display flex</div>
 <div class="u-grid">Display grid</div>
-<div class="u-none u-md-block">Hidden on mobile, visible on medium screens and up</div>
+<div class="u-none u-block-md">Hidden on mobile, visible on medium screens and up</div>
 ```
 
 ### Flex Utilities
@@ -406,7 +406,7 @@ Many utilities include responsive variants:
 
 ```html
 <!-- Visible only on medium screens and up -->
-<div class="u-none u-md-block">Shown on medium screens and up</div>
+<div class="u-none u-block-md">Shown on medium screens and up</div>
 
 <!-- Different text alignment based on screen size -->
 <p class="u-text-center u-text-md-start u-text-lg-end">

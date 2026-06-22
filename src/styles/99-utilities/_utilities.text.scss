@@ -7,22 +7,11 @@
 // Define utilities for text
 $utilities-text: (
   'font-size': (
-    rfs: true,
     property: font-size,
     class: u-text,
     values: map.merge(
         color-maps.$font-sizes-extended,
         (
-          xs: map.get(color-maps.$font-sizes-extended, 'xs'),
-          sm: map.get(color-maps.$font-sizes-extended, 'sm'),
-          base: map.get(color-maps.$font-sizes-extended, 'base'),
-          lg: map.get(color-maps.$font-sizes-extended, 'lg'),
-          xl: map.get(color-maps.$font-sizes-extended, 'xl'),
-          '2xl': map.get(color-maps.$font-sizes-extended, '2xl'),
-          '3xl': map.get(color-maps.$font-sizes-extended, '3xl'),
-          '4xl': map.get(color-maps.$font-sizes-extended, '4xl'),
-          '5xl': map.get(color-maps.$font-sizes-extended, '5xl'),
-          '6xl': map.get(color-maps.$font-sizes-extended, '6xl'),
           1: map.get(color-maps.$font-sizes-extended, 'h1'),
           2: map.get(color-maps.$font-sizes-extended, 'h2'),
           3: map.get(color-maps.$font-sizes-extended, 'h3'),

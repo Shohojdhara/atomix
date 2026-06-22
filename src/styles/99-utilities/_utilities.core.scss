@@ -1,0 +1,44 @@
+// Core utility generator (spacing, layout, typography, colors, sizing, effects)
+// Import via @shohojdhara/atomix/scss/utilities/core
+
+@use 'sass:map';
+@use '../02-tools/_tools.utility-api' as util-api;
+@use '../01-settings/settings.breakpoints' as breakpoints;
+@use 'utilities.background' as bg;
+@use 'utilities.border' as border;
+@use 'utilities.display' as display;
+@use 'utilities.flex' as flex;
+@use 'utilities.gradient' as gradient;
+@use 'utilities.link' as link;
+@use 'utilities.object-fit' as obj-fit;
+@use 'utilities.opacity' as opacity;
+@use 'utilities.overflow' as overflow;
+@use 'utilities.position' as position;
+@use 'utilities.shadow' as shadow;
+@use 'utilities.sizes' as sizes;
+@use 'utilities.spacing' as spacing;
+@use 'utilities.text' as text;
+@use 'utilities.text-gradient' as textGradient;
+@use 'utilities.visibility' as visibility;
+@use 'utilities.z-index' as z-index;
+
+$utilities-core: ();
+$utilities-core: map.merge($utilities-core, bg.$utilities-bg);
+$utilities-core: map.merge($utilities-core, border.$utilities-border);
+$utilities-core: map.merge($utilities-core, display.$utilities-display);
+$utilities-core: map.merge($utilities-core, flex.$utilities-flex);
+$utilities-core: map.merge($utilities-core, gradient.$utilities-gradient);
+$utilities-core: map.merge($utilities-core, link.$utilities-link);
+$utilities-core: map.merge($utilities-core, obj-fit.$utilities-object-fit);
+$utilities-core: map.merge($utilities-core, opacity.$utilities-opacity);
+$utilities-core: map.merge($utilities-core, overflow.$utilities-overflow);
+$utilities-core: map.merge($utilities-core, position.$utilities-position);
+$utilities-core: map.merge($utilities-core, shadow.$utilities-shadow);
+$utilities-core: map.merge($utilities-core, sizes.$utilities-sizes);
+$utilities-core: map.merge($utilities-core, spacing.$utilities-spacing);
+$utilities-core: map.merge($utilities-core, text.$utilities-text);
+$utilities-core: map.merge($utilities-core, visibility.$utilities-visibility);
+$utilities-core: map.merge($utilities-core, z-index.$utilities-z-index);
+$utilities-core: map.merge($utilities-core, textGradient.$utilities-text-gradient);
+
+@include util-api.generate-utilities($utilities-core, breakpoints.$grid-breakpoints);

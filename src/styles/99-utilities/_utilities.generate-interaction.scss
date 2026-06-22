@@ -1,0 +1,7 @@
+// Interaction utility generator — opt-in via @shohojdhara/atomix/scss/utilities/interaction
+
+@use '../02-tools/_tools.utility-api' as util-api;
+@use '../01-settings/settings.breakpoints' as breakpoints;
+@use 'utilities.interaction' as interaction;
+
+@include util-api.generate-utilities(interaction.$utilities-interaction, breakpoints.$grid-breakpoints);

@@ -1,13 +1,11 @@
-// Forward all utility files
+// Core utilities bundle — spacing, flex, typography, colors, sizing, and effects
 @forward 'utilities.background';
 @forward 'utilities.border';
 @forward 'utilities.clearfix';
 @forward 'utilities.display';
 @forward 'utilities.flex';
-@forward 'utilities.glass-fixes';
 @forward 'utilities.gradient';
-@forward 'utilities.grid';
-@forward 'utilities.interaction';
+@forward 'utilities.glass-fixes';
 @forward 'utilities.link';
 @forward 'utilities.object-fit';
 @forward 'utilities.opacity';
@@ -16,15 +14,11 @@
 @forward 'utilities.shadow';
 @forward 'utilities.sizes';
 @forward 'utilities.spacing';
-@forward 'utilities.state';
 @forward 'utilities.text';
 @forward 'utilities.text-gradient';
-@forward 'utilities.transition';
-@forward 'utilities.transform';
 @forward 'utilities.visibility';
 @forward 'utilities.visually-hidden';
 @forward 'utilities.z-index';
 @forward 'utilities.touch-target';
 
-// Forward the main utilities generator
-@forward 'utilities';
+@use 'utilities.core';

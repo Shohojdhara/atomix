@@ -28,6 +28,21 @@ $utilities-position: (
     class: u-end,
     values: $position-values,
   ),
+  'inset': (
+    property: inset,
+    class: u-inset,
+    values: $position-values,
+  ),
+  'inset-x': (
+    property: inset-inline,
+    class: u-inset-x,
+    values: $position-values,
+  ),
+  'inset-y': (
+    property: inset-block,
+    class: u-inset-y,
+    values: $position-values,
+  ),
   'translate-middle': (
     property: transform,
     class: u-translate-middle,

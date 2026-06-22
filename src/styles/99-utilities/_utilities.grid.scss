@@ -1,0 +1,55 @@
+@use '../01-settings/settings.grid' as grid;
+
+// Define utilities for CSS Grid layout
+$utilities-grid: (
+  'grid-template-columns': (
+    responsive: true,
+    property: grid-template-columns,
+    class: u-grid-cols,
+    values: grid.$utility-grid-template-columns,
+  ),
+  'grid-template-rows': (
+    responsive: true,
+    property: grid-template-rows,
+    class: u-grid-rows,
+    values: grid.$utility-grid-template-rows,
+  ),
+  'grid-column': (
+    responsive: true,
+    property: grid-column,
+    class: u-col-span,
+    values: grid.$utility-grid-column-spans,
+  ),
+  'grid-row': (
+    responsive: true,
+    property: grid-row,
+    class: u-row-span,
+    values: grid.$utility-grid-row-spans,
+  ),
+  'place-items': (
+    responsive: true,
+    property: place-items,
+    class: u-place-items,
+    values: (
+      start: start,
+      end: end,
+      center: center,
+      baseline: baseline,
+      stretch: stretch,
+    ),
+  ),
+  'place-content': (
+    responsive: true,
+    property: place-content,
+    class: u-place-content,
+    values: (
+      start: start,
+      end: end,
+      center: center,
+      between: space-between,
+      around: space-around,
+      evenly: space-evenly,
+      stretch: stretch,
+    ),
+  ),
+);

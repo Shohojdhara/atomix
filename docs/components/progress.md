@@ -394,7 +394,7 @@ function DashboardMetrics() {
   ];
 
   return (
-    <div className="u-grid u-grid-cols-1 u-md-grid-cols-2 u-gap-4">
+    <div className="u-grid u-grid-cols-1 u-grid-cols-md-2 u-gap-4">
       {metrics.map((metric, index) => (
         <Card key={index}>
           <div className="u-gap-3">

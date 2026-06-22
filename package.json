@@ -83,6 +83,26 @@
       "require": "./src/styles/99-utilities/_index.scss",
       "default": "./src/styles/99-utilities/_index.scss"
     },
+    "./scss/utilities/core": {
+      "import": "./src/styles/99-utilities/_index.core.scss",
+      "require": "./src/styles/99-utilities/_index.core.scss",
+      "default": "./src/styles/99-utilities/_index.core.scss"
+    },
+    "./scss/utilities/grid": {
+      "import": "./src/styles/99-utilities/_index.grid.scss",
+      "require": "./src/styles/99-utilities/_index.grid.scss",
+      "default": "./src/styles/99-utilities/_index.grid.scss"
+    },
+    "./scss/utilities/interaction": {
+      "import": "./src/styles/99-utilities/_index.interaction.scss",
+      "require": "./src/styles/99-utilities/_index.interaction.scss",
+      "default": "./src/styles/99-utilities/_index.interaction.scss"
+    },
+    "./scss/utilities/motion": {
+      "import": "./src/styles/99-utilities/_index.motion.scss",
+      "require": "./src/styles/99-utilities/_index.motion.scss",
+      "default": "./src/styles/99-utilities/_index.motion.scss"
+    },
     "./theme": {
       "types": "./dist/theme.d.ts",
       "import": "./dist/theme.js",

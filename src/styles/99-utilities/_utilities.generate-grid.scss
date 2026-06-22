@@ -1,0 +1,7 @@
+// Grid utility generator — opt-in via @shohojdhara/atomix/scss/utilities/grid
+
+@use '../02-tools/_tools.utility-api' as util-api;
+@use '../01-settings/settings.breakpoints' as breakpoints;
+@use 'utilities.grid' as grid;
+
+@include util-api.generate-utilities(grid.$utilities-grid, breakpoints.$grid-breakpoints);

@@ -130,7 +130,7 @@ function CardLoadingStates() {
   };
 
   return (
-    <div className="u-grid u-grid-cols-1 u-md-grid-cols-3 u-gap-4">
+    <div className="u-grid u-grid-cols-1 u-grid-cols-md-3 u-gap-4">
       <Card>
         <div className="u-position-relative u-min-h-32">
           {loadingStates.users ? (

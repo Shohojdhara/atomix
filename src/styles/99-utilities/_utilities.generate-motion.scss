@@ -1,0 +1,15 @@
+// Motion utility generator — opt-in via @shohojdhara/atomix/scss/utilities/motion
+
+@use 'sass:map';
+@use '../02-tools/_tools.utility-api' as util-api;
+@use '../01-settings/settings.breakpoints' as breakpoints;
+@use 'utilities.transition' as transition;
+@use 'utilities.transform' as transform;
+@use 'utilities.state' as state;
+
+$utilities-motion: ();
+$utilities-motion: map.merge($utilities-motion, transition.$utilities-transition);
+$utilities-motion: map.merge($utilities-motion, transform.$utilities-transform);
+$utilities-motion: map.merge($utilities-motion, state.$utilities-state);
+
+@include util-api.generate-utilities($utilities-motion, breakpoints.$grid-breakpoints);

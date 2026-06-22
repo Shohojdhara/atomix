@@ -165,6 +165,39 @@ This document establishes consistent naming conventions for CSS utility classes 
 | Glass Debug      | `.u-glass-debug`      | Shows red debug outline for glass components                        |
 | Glass No Motion  | `.u-glass-no-motion`  | Disables transitions/animations (respects `prefers-reduced-motion`) |
 
+### 11. Grid (opt-in bundle)
+
+| Property       | Class Prefix      | Examples                                      |
+| -------------- | ----------------- | --------------------------------------------- |
+| Grid Columns   | `u-grid-cols`     | `.u-grid-cols-1`, `.u-grid-cols-md-3`         |
+| Grid Rows      | `u-grid-rows`     | `.u-grid-rows-2`, `.u-grid-rows-lg-4`         |
+| Column Span    | `u-col-span`      | `.u-col-span-2`, `.u-col-span-full`           |
+| Row Span       | `u-row-span`      | `.u-row-span-2`, `.u-row-span-full`           |
+| Place Items    | `u-place-items`   | `.u-place-items-center`                       |
+| Place Content  | `u-place-content` | `.u-place-content-between`                    |
+
+### 12. Interaction (opt-in bundle)
+
+| Property       | Class Prefix        | Examples                                |
+| -------------- | ------------------- | --------------------------------------- |
+| Cursor         | `u-cursor`          | `.u-cursor-pointer`, `.u-cursor-help`   |
+| Pointer Events | `u-pointer-events`  | `.u-pointer-events-none`                |
+| User Select    | `u-select`          | `.u-select-none`, `.u-select-all`       |
+| Touch Action   | `u-touch-action`    | `.u-touch-action-manipulation`          |
+
+### 13. Motion (opt-in bundle)
+
+| Property    | Class Prefix     | Examples                                           |
+| ----------- | ---------------- | -------------------------------------------------- |
+| Transition  | `u-transition`   | `.u-transition-colors`, `.u-transition-transform`  |
+| Duration    | `u-duration`     | `.u-duration-200`, `.u-duration-300`               |
+| Easing      | `u-ease`         | `.u-ease-in-out`, `.u-ease-out`                    |
+| Scale       | `u-scale`        | `.u-scale-100`, `.u-scale-105`                     |
+| Rotate      | `u-rotate`       | `.u-rotate-45`, `.u-rotate-90`                     |
+| Hover state | `u-hover-*`      | `.u-hover-bg-primary`, `.u-hover-scale-105`        |
+| Active state| `u-active-*`     | `.u-active-scale-95`                               |
+| Focus state | `u-focus-*`      | `.u-focus-outline-none`                            |
+
 ## Value Scales
 
 ### Spacing Scale

@@ -82,7 +82,7 @@ Adjust text alignment and visibility responsively.
 
 Control display and flex behavior across breakpoints.
 
-- **Display**: `.u-none`, `.u-md-block`, `.u-lg-flex`.
+- **Display**: `.u-none`, `.u-block-md`, `.u-flex-lg`.
 - **Flex Direction**: `.u-flex-column`, `.u-flex-md-row`.
 - **Justify Content**: `.u-justify-center`, `.u-justify-lg-between`.
 - **Align Items**: `.u-items-center`, `.u-items-md-start`.

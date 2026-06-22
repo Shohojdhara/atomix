@@ -29,3 +29,22 @@
   }
   @return $result;
 }
+
+/// Negates numeric values in a map and prefixes keys with `n` (e.g. `1` → `n1: -0.25rem`).
+/// Skips zero values. Used for negative margin utilities.
+@function negativify-map($map) {
+  $result: ();
+
+  @each $key, $value in $map {
+    @if $key != 0 {
+      $result: map.merge(
+        $result,
+        (
+          'n#{$key}': $value * -1,
+        )
+      );
+    }
+  }
+
+  @return $result;
+}

@@ -1,3 +1,6 @@
+@use 'sass:map';
+@use '../02-tools/tools.map-loop' as map-loop;
+
 $spacer: 1rem !default;
 
 $spacing-sizes: (
@@ -74,12 +77,21 @@ $spacing-sizes: (
   200: 50rem, //800px
 ) !default;
 
+// Semantic gap aliases (optional shorthand for common spacing steps)
+$semantic-gap-sizes: (
+  xs: map.get($spacing-sizes, 1),
+  sm: map.get($spacing-sizes, 2),
+  md: map.get($spacing-sizes, 4),
+  lg: map.get($spacing-sizes, 6),
+  xl: map.get($spacing-sizes, 8),
+) !default;
+
 $spacing-important: false !default;
 $enable-negative-margins: false !default;
 
 $negative-spacers: null !default;
 
 @if $enable-negative-margins {
-  $negative-spacers: negativify-map($spacing-sizes) !default;
+  $negative-spacers: map-loop.negativify-map($spacing-sizes) !default;
 }
 

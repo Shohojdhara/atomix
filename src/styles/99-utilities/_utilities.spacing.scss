@@ -178,18 +178,18 @@ $utilities-spacing: (
       responsive: true,
       property: gap,
       class: u-gap,
-      values: $spacing-sizes,
+      values: map.merge($spacing-sizes, $semantic-gap-sizes),
     ),
   'row-gap': (
     responsive: true,
     property: row-gap,
     class: u-row-gap,
-    values: $spacing-sizes,
+    values: map.merge($spacing-sizes, $semantic-gap-sizes),
   ),
   'column-gap': (
     responsive: true,
     property: column-gap,
     class: u-column-gap,
-    values: $spacing-sizes,
+    values: map.merge($spacing-sizes, $semantic-gap-sizes),
   ),
 );

@@ -1,0 +1,44 @@
+// Define utilities for pointer, cursor, and selection interaction
+$utilities-interaction: (
+  'cursor': (
+    property: cursor,
+    class: u-cursor,
+    values: (
+      auto: auto,
+      default: default,
+      pointer: pointer,
+      wait: wait,
+      text: text,
+      move: move,
+      help: help,
+      'not-allowed': not-allowed,
+    ),
+  ),
+  'pointer-events': (
+    property: pointer-events,
+    class: u-pointer-events,
+    values: (
+      none: none,
+      auto: auto,
+    ),
+  ),
+  'user-select': (
+    property: user-select,
+    class: u-select,
+    values: (
+      none: none,
+      text: text,
+      all: all,
+      auto: auto,
+    ),
+  ),
+  'touch-action': (
+    property: touch-action,
+    class: u-touch-action,
+    values: (
+      auto: auto,
+      none: none,
+      manipulation: manipulation,
+    ),
+  ),
+);

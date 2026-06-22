@@ -1,0 +1,15 @@
+@use '../01-settings/settings.motion' as motion;
+
+// Define utilities for CSS transforms
+$utilities-transform: (
+  'transform': (
+    property: transform,
+    class: u-scale,
+    values: motion.$utility-transform-scales,
+  ),
+  'transform-rotate': (
+    property: transform,
+    class: u-rotate,
+    values: motion.$utility-transform-rotates,
+  ),
+);

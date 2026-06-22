@@ -1,0 +1,64 @@
+@use 'sass:map';
+@use '../01-settings/settings.design-tokens' as color-maps;
+@use '../01-settings/settings.box-shadow' as shadows;
+
+// State-variant utilities (hover, focus, active) using pseudo-class wrapping
+$utilities-state: (
+  'hover-background-color': (
+    property: background-color,
+    class: u-hover-bg,
+    pseudo: hover,
+    responsive: false,
+    values: color-maps.$utilities-bg-colors,
+  ),
+  'hover-color': (
+    property: color,
+    class: u-hover-text,
+    pseudo: hover,
+    responsive: false,
+    values: color-maps.$utilities-text-colors,
+  ),
+  'hover-box-shadow': (
+    property: box-shadow,
+    class: u-hover-shadow,
+    pseudo: hover,
+    responsive: false,
+    values: (
+      sm: shadows.$box-shadow-sm,
+      md: shadows.$box-shadow-md,
+      lg: shadows.$box-shadow-lg,
+      xl: shadows.$box-shadow-xl,
+    ),
+  ),
+  'hover-transform-scale': (
+    property: transform,
+    class: u-hover-scale,
+    pseudo: hover,
+    responsive: false,
+    values: (
+      95: scale(0.95),
+      100: scale(1),
+      105: scale(1.05),
+      110: scale(1.1),
+    ),
+  ),
+  'active-transform-scale': (
+    property: transform,
+    class: u-active-scale,
+    pseudo: active,
+    responsive: false,
+    values: (
+      95: scale(0.95),
+      100: scale(1),
+    ),
+  ),
+  'focus-outline': (
+    property: outline,
+    class: u-focus-outline,
+    pseudo: focus-visible,
+    responsive: false,
+    values: (
+      none: none,
+    ),
+  ),
+);
